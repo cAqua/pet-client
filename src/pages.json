@@ -6,18 +6,7 @@
 				"navigationBarTitleText": "首页"
 			}
 		},
-		{
-			"path": "pages/search/index",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
-		},
-		{
-			"path": "pages/list/index",
-			"style": {
-				"navigationBarTitleText": "列表"
-			}
-		},
+	
 		{
 			"path": "pages/PetCrcle/index",
 			"style": {
@@ -37,24 +26,14 @@
 		"backgroundColor": "#fff",
 		"position": "bottom",
 		"borderStyle": "black",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/index",
 				"text": "首页",
 				"iconPath": "./static/icon/home.png",
 				"selectedIconPath": "./static/icon/_home.png"
 			},
-			{
-				"pagePath": "pages/search/index",
-				"text": "搜索",
-				"iconPath": "./static/icon/search.png",
-				"selectedIconPath": "./static/icon/_search.png"
-			},
-			{
-				"pagePath": "pages/list/index",
-				"text": "列表",
-				"iconPath": "./static/icon/list.png",
-				"selectedIconPath": "./static/icon/_list.png"
-			},
+		
 			{
 				"pagePath": "pages/PetCrcle/index",
 				"text": "宠物圈",
@@ -74,5 +53,12 @@
 		"navigationBarTitleText": "Pet",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"easycom": { // uni-ui 规则如下配置
+			"autoscan": true,
+			"custom": {
+				"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+			}
 	}
+
 }

@@ -1,33 +1,36 @@
 <template>
-  <view> 
-       <button id='send'>发送消息到服务器</button>
-       <div>
-            <h3>服务器响应的消息：</h3>
-            <i id='msg'></i>
-       </div></view>
+  <view class="home"> </view>
 </template>
 
 <script>
-	import io from '../../js_sdk/huzhen555-uniappsocketio/uniapp.socket.io.js'
+import {getData} from '../../js/Weapp-User-Api'
 export default {
-	data(){
-		return {
-			socket:null
-		}
-	},
-  methods: {
- 
-  },
+  name: "home",
+  components: {},
 
-  onLoad(){
-   
+  data() {
+    return {};
   },
   mounted() {
-  	// this.socket = io("http://localhost:3000" || "/");
-	const socket = io('http://127.0.0.1:3000');
-  }
+
+    // this.request({
+    //   url:"http://157.122.54.189:9088/image/v1/vertical/category",
+
+    // }).then(result => [
+    //   console.log(result)
+    // ])
+    console.log(
+      this.request
+    );
+    
+
+    
+  },
+  methods: {},
 };
 </script>
 
-<style>
+<style lang='scss' scoped>
+.home {
+}
 </style>
