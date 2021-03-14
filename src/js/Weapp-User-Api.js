@@ -1,12 +1,19 @@
+import request from './request'; // 封装好的请求组件
 
 
-function getData(){
-  // const url = 'http://157.122.54.189:9088/image/v1/vertical/category',
-  
+
+function getData() {
+    return request({
+        url: "/image/v1/vertical/category"
+    }).catch(error => {
+        console.warn('错误信息' + error )
+    })
+
 }
 
 
 
-export{
-  getData,
+
+export {
+    getData
 }

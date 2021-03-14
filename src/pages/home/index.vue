@@ -1,5 +1,5 @@
 <template>
-  <view class="home"> </view>
+  <view class="home">首页 </view>
 </template>
 
 <script>
@@ -13,18 +13,14 @@ export default {
   },
   mounted() {
 
-    // this.request({
-    //   url:"http://157.122.54.189:9088/image/v1/vertical/category",
 
-    // }).then(result => [
-    //   console.log(result)
-    // ])
-    console.log(
-      this.request
-    );
-    
 
-    
+    //    getData()
+    //  .then(res => {
+    //   console.log(res);
+    // })
+   
+
   },
   methods: {},
 };

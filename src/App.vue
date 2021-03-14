@@ -1,7 +1,17 @@
+<template>
+	
+</template>
+
+
 <script>
 	export default {
 		onLaunch: function() {
-			// console.log('App Launch')
+
+
+			uni.onTabBarMidButtonTap(function(){
+				console.log('dianji');
+			})
+			
 		},
 		onShow: function() {
 			// console.log('App Show')

@@ -1,5 +1,8 @@
 <template>
-  <view>宠物圈</view>
+
+    
+<view>宠物</view>
+ 
 </template>
 
 <script>

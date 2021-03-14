@@ -6,13 +6,16 @@
 				"navigationBarTitleText": "首页"
 			}
 		},
-	
+
 		{
 			"path": "pages/PetCrcle/index",
 			"style": {
 				"navigationBarTitleText": "宠物圈"
 			}
 		},
+
+		
+
 		{
 			"path": "pages/my/index",
 			"style": {
@@ -26,6 +29,7 @@
 		"backgroundColor": "#fff",
 		"position": "bottom",
 		"borderStyle": "black",
+
 		"list": [
 			{
 				"pagePath": "pages/home/index",
@@ -34,12 +38,16 @@
 				"selectedIconPath": "./static/icon/_home.png"
 			},
 		
+		 
 			{
 				"pagePath": "pages/PetCrcle/index",
 				"text": "宠物圈",
 				"iconPath": "./static/icon/PetCrcle.png",
 				"selectedIconPath": "./static/icon/_PetCrcle.png"
 			},
+		
+		
+
 			{
 				"pagePath": "pages/my/index",
 				"text": "我的",
@@ -47,6 +55,7 @@
 				"selectedIconPath": "./static/icon/_my.png"
 			}
 		]
+
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -54,6 +63,7 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
+
 	"easycom": { // uni-ui 规则如下配置
 			"autoscan": true,
 			"custom": {
