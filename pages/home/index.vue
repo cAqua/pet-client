@@ -1,32 +1,40 @@
 <template>
-  <view class="home">123 </view>
+	<view class="content">
+		
+
+		<u-tabbar 
+		:list="tabbar" 
+		:mid-button="true" 
+		active-color=#007aff  
+		:before-switch="beforeSwitch" ></u-tabbar>		
+	</view>
 </template>
 
 <script>
-import {getData} from '../../store/Weapp-User-Api.js'
-export default {
-  name: "home",
-  components: {},
+	export default { 
+		components:{},
+		data() {
+			return {
+				tabbar:this.$vuex.state.uViewTabBar  //刷新tabbar
+			}
+		},
+		methods:{
+			
+			beforeSwitch(index){  //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
+				// console.log(index)
+				return true;
+			}
+		},
+		onLoad() {
+			
 
-  data() {
-    return {};
-  },
-  mounted() {
-
-
-
-       getData()
-     .then(res => {
-      console.log(res);
-    })
-   
-
-  },
-  methods: {},
-};
+			
+			
+		},
+		onShow(){
+		},
+	}
 </script>
 
-<style lang='scss' scoped>
-.home {
-}
+<style lang="scss" scoped>
 </style>

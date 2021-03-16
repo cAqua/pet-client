@@ -1,14 +1,34 @@
 <template>
-
-    
-<view>宠物</view>
- 
+	<view class="content">
+		 宠物
+		<u-tabbar 
+		:list="tabbar" 
+		:mid-button="true" 
+		active-color=#007aff  
+		:before-switch="beforeSwitch" ></u-tabbar>
+	</view>
 </template>
 
 <script>
-export default {
+	export default { 
+		data() {
+			return {
+				tabbar:this.$vuex.state.uViewTabBar  //刷新tabbar
+			}
+		},
+		methods:{
+			
+			beforeSwitch(index){  //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
+				// console.log(index)
+				return true;
+			}
+		},
+		onLoad() {
+			
 
-}
+		
+		}
+	}
 </script>
 
 <style>
