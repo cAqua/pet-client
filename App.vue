@@ -2,32 +2,7 @@
 
 <script>
 	export default {
-		globalData: {
-			uViewTabBar: [
-				{
-					iconPath: "/static/icon/home.png",
-					selectedIconPath: "/static/icon/_home.png",
-					text: '首页',
-					count: 0,
-					isDot: true,
-					pagePath: "/pages/home/index",
-
-				},
-				{
-					iconPath: "/static/icon/PetCrcle.png",
-					selectedIconPath: "/static/icon/_PetCrcle.png",
-					text: '宠物圈',
-					midButton: true,
-					pagePath: "/pages/PetCrcle/index"
-				},
-				{
-					iconPath: "/static/icon/my.png",
-					selectedIconPath: "/static/icon/_my.png",
-					text: '我的',
-					pagePath: "/pages/my/index"
-				},
-			],
-		},
+		globalData: {}, //全局属性 通过 getApp().globalData.*** 读取变量
 		
 		onLaunch: function() {
 			

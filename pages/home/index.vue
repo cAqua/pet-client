@@ -1,26 +1,27 @@
 <template>
 	<view class="content">
-		
-
+		 å® ç‰©
+		 
+		 
+		 
 		<u-tabbar 
 		:list="tabbar" 
 		:mid-button="true" 
 		active-color=#007aff  
-		:before-switch="beforeSwitch" ></u-tabbar>		
+		:before-switch="beforeSwitch" ></u-tabbar>
 	</view>
 </template>
 
 <script>
 	export default { 
-		components:{},
 		data() {
 			return {
-				tabbar:this.$vuex.state.uViewTabBar  //Ë¢ĞÂtabbar
+				tabbar:this.$vuex.state.uViewTabBar  //åˆ·æ–°tabbar
 			}
 		},
 		methods:{
 			
-			beforeSwitch(index){  //ÇĞ»»Ç°»Øµ÷ true ÔÊĞí false²»ÔÊĞí Ïê¼û https://uviewui.com/components/tabbar.html
+			beforeSwitch(index){  //åˆ‡æ¢å‰å›è°ƒ true å…è®¸ falseä¸å…è®¸ è¯¦è§ https://uviewui.com/components/tabbar.html
 				// console.log(index)
 				return true;
 			}
@@ -28,13 +29,11 @@
 		onLoad() {
 			
 
-			
-			
-		},
-		onShow(){
-		},
+		
+		}
 	}
 </script>
 
-<style lang="scss" scoped>
+<style>
+
 </style>
