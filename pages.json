@@ -29,29 +29,23 @@
 		}
 	],
 	"tabBar": {
-		"color": "#8a8a8a",
+		"color": "#aaffff",
 		"selectedColor": "#007aff",
 		"backgroundColor": "#fff",
 		"position": "bottom",
 		"borderStyle": "black",
-
 		"list": [{
 				"pagePath": "pages/home/index",
 				"text": "首页",
 				"iconPath": "static/icon/home.png",
 				"selectedIconPath": "static/icon/_home.png"
 			},
-
-
 			{
 				"pagePath": "pages/PetCrcle/index",
 				"text": "宠物圈",
 				"iconPath": "static/icon/PetCrcle.png",
 				"selectedIconPath": "static/icon/_PetCrcle.png"
 			},
-
-
-
 			{
 				"pagePath": "pages/my/index",
 				"text": "我的",
