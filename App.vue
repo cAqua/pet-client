@@ -13,15 +13,15 @@
 			// console.log('App Hide')
 		},
 
-	}
+	} 
 </script>
 
 <style lang="scss">/*每个页面公共css */
 	
-	/* #ifdef MP-WEIXIN */
+	/* #ifdef MP-WEIXIN */ 
 	@import "@/UI/uView/index.scss";
-	@import '@/src/weixin/style/base.wxss'; /* 标签初始化样式 */
-	/* #endif */
-	@import '@/src/weixin/style/iconfont.wxss'; /* uni_icon */
-	
+	@import '@/src/mp-weixin/style/base.wxss'; /* 标签初始化样式 */
+	/* #endif */  
+	@import '@/src/mp-weixin/style/iconfont.wxss'; /* uni_icon */
+	 
 </style>

@@ -1,11 +1,8 @@
 <template>
 	<view class="content">
 		 宠物
-		<u-tabbar 
-		:list="tabbar" 
-		:mid-button="true" 
-		active-color=#007aff  
-		:before-switch="beforeSwitch" ></u-tabbar>
+		 
+		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch" ></u-tabbar>
 	</view>
 </template>
 
@@ -13,7 +10,8 @@
 	export default { 
 		data() {
 			return {
-				tabbar:this.$vuex.state.uViewTabBar  //刷新tabbar
+				tabbar:this.$vuex.state.uViewTabBar,  //刷新tabbar
+				$tcolor:this.$vuex.state.$tcolor
 			}
 		},
 		methods:{

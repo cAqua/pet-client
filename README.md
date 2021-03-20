@@ -7,8 +7,7 @@
 - store 全局js文件夹 
 - src/Socketio && style 聊天框架 && 基础样式
 - static 静态文件 
-- src/style 样式文件夹
-- pages.json 注册页面
+- pages.json 注册页面 注册页面记得加条件编译
 - uni.scss 全局样式文件 目前存放主题色 <font color=#007aff>$tcolor</font>
 - UI ui库
 - uni_modules uni-ui

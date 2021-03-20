@@ -12,7 +12,7 @@
 	"pages": [// 这里的条件编译是 不同平台展示的  第一启动项不一样
 		//#ifdef MP-WEIXIN
 		{
-			"path": "pages/weixin/home/index",
+			"path": "platforms/mp-weixin/home/index",
 			"style": {
 				"navigationBarTitleText": "首页"
 			},
@@ -23,30 +23,29 @@
 
 		//#ifdef H5
 		{
-			"path": "pages/H5/home/index",
+			"path": "platforms/h5/home/index",
 			"style": {
 				"navigationBarTitleText": "首页"
-			},
-			"enablePullDownRefresh": true
+			}
 		},
 		//#endif
 		
 		
 		{
-			"path": "pages/weixin/my/index",
+			"path": "platforms/mp-weixin/my/index",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
 		},
 
 		{
-			"path": "pages/weixin/register/index",
+			"path": "platforms/mp-weixin/register/index",
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
 		},
 		{
-			"path": "pages/weixin/PetCrcle/index",
+			"path": "platforms/mp-weixin/PetCrcle/index",
 			"style": {
 				"navigationBarTitleText": "宠物圈"
 			}
@@ -61,22 +60,22 @@
 		"position": "bottom",
 		"borderStyle": "black",
 		"list": [{
-				"pagePath": "pages/weixin/home/index",
+				"pagePath": "platforms/mp-weixin/home/index",
 				"text": "首页",
-				"iconPath": "static/weixin/icon/home.png",
-				"selectedIconPath": "static/weixin/icon/_home.png"
+				"iconPath": "static/mp-weixin/icon/home.png",
+				"selectedIconPath": "static/mp-weixin/icon/_home.png"
 			},
 			{
-				"pagePath": "pages/weixin/PetCrcle/index",
+				"pagePath": "platforms/mp-weixin/PetCrcle/index",
 				"text": "宠物圈",
-				"iconPath": "static/weixin/icon/PetCrcle.png",
-				"selectedIconPath": "static/weixin/icon/_PetCrcle.png"
+				"iconPath": "static/mp-weixin/icon/PetCrcle.png",
+				"selectedIconPath": "static/mp-weixin/icon/_PetCrcle.png"
 			},
 			{
-				"pagePath": "pages/weixin/my/index",
+				"pagePath": "platforms/mp-weixin/my/index",
 				"text": "我的",
-				"iconPath": "static/weixin/icon/my.png",
-				"selectedIconPath": "static/weixin/icon/_my.png"
+				"iconPath": "static/mp-weixin/icon/my.png",
+				"selectedIconPath": "static/mp-weixin/icon/_my.png"
 			}
 		]
 

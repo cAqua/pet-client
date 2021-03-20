@@ -3,7 +3,7 @@
 		<view class="MyContent">
 			<button open-type="getUserInfo" @click="getuserinfo()">获取用户信息</button>
 		</view>
-		<u-tabbar :list="tabbar" :mid-button="true" active-color=#007aff :before-switch="beforeSwitch">
+		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch">
 		</u-tabbar>
 	</view>
 </template>
@@ -11,11 +11,12 @@
 <script>
 	import {
 		getUserInfoApi
-	} from '@/store/weixin/Weapp-User-Api.js';
+	} from '@/store/mp-weixin/Weapp-User-Api.js';
 	export default {
 		data() {
 			return {
-				tabbar: this.$vuex.state.uViewTabBar //刷新tabbar
+				tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
+				$tcolor:this.$vuex.state.$tcolor
 			}
 		},
 		methods: {

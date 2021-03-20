@@ -155,6 +155,9 @@
 				}
 			},
 			elColor() {
+				
+				// console.log(this.activeColor)
+				
 				return (index) => {
 					// 判断方法同理于elIconPath
 					let pagePath = this.list[index].pagePath;

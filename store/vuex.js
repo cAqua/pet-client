@@ -5,30 +5,31 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		uViewTabBar: [
+		uViewTabBar: [ //定义tabbar
 			{
-				iconPath: "/static/weixin/icon/home.png",
-				selectedIconPath: "/static/weixin/icon/_home.png",
+				iconPath: "/static/mp-weixin/icon/home.png",
+				selectedIconPath: "/static/mp-weixin/icon/_home.png",
 				text: '首页',
 				count: 0,
 				isDot: true,
-				pagePath: "/pages/weixin/home/index",
+				pagePath: "/platforms/mp-weixin/home/index",
 		
 			},
 			{
-				iconPath: "/static/weixin/icon/PetCrcle.png",
-				selectedIconPath: "/static/weixin/icon/_PetCrcle.png",
+				iconPath: "/static/mp-weixin/icon/PetCrcle.png",
+				selectedIconPath: "/static/mp-weixin/icon/_PetCrcle.png",
 				text: '宠物圈',
 				midButton: true,
-				pagePath: "/pages/weixin/PetCrcle/index"
+				pagePath: "/platforms/mp-weixin/PetCrcle/index"
 			},
 			{
-				iconPath: "/static/weixin/icon/my.png",
-				selectedIconPath: "/static/weixin/icon/_my.png",
+				iconPath: "/static/mp-weixin/icon/my.png",
+				selectedIconPath: "/static/mp-weixin/icon/_my.png",
 				text: '我的',
-				pagePath: "/pages/weixin/my/index"
+				pagePath: "/platforms/mp-weixin/my/index"
 			},
-		]
+		],
+		$tcolor:'#007aff' //全局主体颜色
 	},
 	mutations: {
 		functions(state, provider) {
