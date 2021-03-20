@@ -7,26 +7,26 @@ const store = new Vuex.Store({
 	state: {
 		uViewTabBar: [
 			{
-				iconPath: "/static/icon/home.png",
-				selectedIconPath: "/static/icon/_home.png",
+				iconPath: "/static/weixin/icon/home.png",
+				selectedIconPath: "/static/weixin/icon/_home.png",
 				text: '首页',
 				count: 0,
 				isDot: true,
-				pagePath: "/pages/home/index",
+				pagePath: "/pages/weixin/home/index",
 		
 			},
 			{
-				iconPath: "/static/icon/PetCrcle.png",
-				selectedIconPath: "/static/icon/_PetCrcle.png",
+				iconPath: "/static/weixin/icon/PetCrcle.png",
+				selectedIconPath: "/static/weixin/icon/_PetCrcle.png",
 				text: '宠物圈',
 				midButton: true,
-				pagePath: "/pages/PetCrcle/index"
+				pagePath: "/pages/weixin/PetCrcle/index"
 			},
 			{
-				iconPath: "/static/icon/my.png",
-				selectedIconPath: "/static/icon/_my.png",
+				iconPath: "/static/weixin/icon/my.png",
+				selectedIconPath: "/static/weixin/icon/_my.png",
 				text: '我的',
-				pagePath: "/pages/my/index"
+				pagePath: "/pages/weixin/my/index"
 			},
 		]
 	},

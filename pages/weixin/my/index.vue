@@ -9,16 +9,33 @@
 </template>
 
 <script>
-	import {getUserInfoApi} from '@/store/Weapp-User-Api.js';
+	import {
+		getUserInfoApi
+	} from '@/store/weixin/Weapp-User-Api.js';
 	export default {
 		data() {
 			return {
-				tabbar:this.$vuex.state.uViewTabBar  //刷新tabbar
+				tabbar: this.$vuex.state.uViewTabBar //刷新tabbar
 			}
 		},
 		methods: {
 
 			getuserinfo() { //获取用户信息
+
+				// uni.getProvider({
+				// 	service: 'oauth',
+				// 	success: function(facilitator) {
+
+				// 	console.log("facilitator: ",facilitator);
+					
+				// 	},
+				// 	fail:function(error){
+						
+				// 	}
+				// })
+
+
+ 
 
 
 				// uni.getProvider({
@@ -58,7 +75,7 @@
 				// })
 
 
-				
+
 
 
 
@@ -79,8 +96,8 @@
 		onLoad() {
 
 		},
-		onShow(){
-		
+		onShow() {
+
 		},
 	}
 </script>

@@ -12,7 +12,6 @@
 
 			<!-- 轮播图 -->
 			<uni-swiper-dot class="uni-swiper-dot" :info="info" :current="current" field="content" :mode="mode">
-				<!-- <swiper interval="3000" autoplay="true" class="swiper-box" @change="change"> -->
 				<swiper  class="swiper-box" @change="change">
 					<swiper-item v-for="(item ,index) in info" :key="index">
 
@@ -43,16 +42,16 @@
 				tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
 				searchConteng: '', //搜索框的值
 				info: [{
-						content: '/static/home_image/1.jpg'
+						content: '/static/weixin/home_image/1.jpg'
 					},
 					{
-						content: '/static/home_image/2.jpg'
+						content: '/static/weixin/home_image/2.jpg'
 					},
 					{
-						content: '/static/home_image/3.jpg'
+						content: '/static/weixin/home_image/3.jpg'
 					},
 					{
-						content: '/static/home_image/4.jpg'
+						content: '/static/weixin/home_image/4.jpg'
 					}
 				],
 				current: 0,

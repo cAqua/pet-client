@@ -196,6 +196,7 @@
 			// 切换tab
 			switchTab(index) {
 				// 发出事件和修改v-model绑定的值
+				
 				this.$emit('change', index);
 				// 如果有配置pagePath属性，使用uni.switchTab进行跳转
 				if(this.list[index].pagePath) {

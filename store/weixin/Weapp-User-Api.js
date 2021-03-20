@@ -1,4 +1,4 @@
-import request from './request'; // 封装好的请求组件
+import request from '../request'; // 封装好的请求组件
 
 
 

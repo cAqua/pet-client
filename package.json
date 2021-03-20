@@ -1,6 +1,6 @@
 {
   "name": "pet",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "npm run dev:h5",
@@ -32,9 +32,7 @@
     "@vue/shared": "^3.0.0",
     "core-js": "^3.6.5",
     "flyio": "^0.6.2",
-    "regenerator-runtime": "^0.12.1",
-    "vue": "^2.6.11",
-    "vuex": "^3.2.0"
+    "regenerator-runtime": "^0.12.1"
   },
   "devDependencies": {
     "@babel/runtime": "~7.12.0",
@@ -54,25 +52,23 @@
     "cross-env": "^7.0.2",
     "jest": "^25.4.0",
     "mini-types": "*",
-    "miniprogram-api-typings": "*",
-    "postcss-comment": "^2.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "miniprogram-api-typings": "*"
   },
   "browserslist": [
     "Android >= 4",
     "ios >= 8"
   ],
-"uni-app": {
+  "uni-app": {
     "scripts": {
-        "mp-dingtalk": { 
-            "title":"微信小程序", 
-            "env": { 
-                "UNI_PLATFORM": "mp-weixin" 
-            },
-            "define": { 
-                "MP-DINGTALK": true 
-            }
+      "mp-weixin": {
+        "title": "微信小程序",
+        "env": {
+          "UNI_PLATFORM": "mp-weixin"
+        },
+        "define": {
+          "MP-DINGTALK": true
         }
+      }
     }
-}
+  }
 }

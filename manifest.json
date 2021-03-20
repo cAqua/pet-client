@@ -67,7 +67,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 微信小程序特有相关 */
-        "appid" : "wx766824d16851a790",
+        "appid" : "wx2603e459c7f9b084",
         "setting" : {
             "urlCheck" : false
         },
@@ -85,5 +85,18 @@
     },
     "mp-qq" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "欢迎来到后台管理",
+        "router" : {
+            "mode" : "hash"
+        },
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
+        }
     }
 }
