@@ -1,5 +1,5 @@
 <template style="background-color: #f5f5f5;">
-	<view class="home_body">
+	<scroll-view scroll-y="true" class="home_body">
 
 		<view class="home">
 
@@ -11,9 +11,9 @@
 
 
 			<!-- 轮播图 -->
-			<uni-swiper-dot class="uni-swiper-dot" :current="current" mode="default" field="nav" :info="info">
-				<swiper class="swiper-box" @change="change" autoplay="true" circular="true" next-margin="5px"
-					previous-margin="5px">
+			<uni-swiper-dot class="uni-swiper-dot" :current="current" :info="info">
+				<swiper class="swiper-box" @change="swiperSlide" autoplay="true" circular="true" next-margin="5px"
+					previous-margin="5px" indicator-dots="true">
 					<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
 
 						<view class="swiper-item">
@@ -23,6 +23,8 @@
 					</swiper-item>
 				</swiper>
 			</uni-swiper-dot>
+
+
 
 			<view class="Merchant">
 
@@ -67,7 +69,7 @@
 
 							{{item.detailed}}
 						</view>
-						<view>距离{{item.distance}}  km</view>
+						<view>距离{{item.distance}} km</view>
 
 					</view>
 
@@ -86,7 +88,7 @@
 		<u-tabbar :list="tabbar" :mid-button="true" :active-color="$tcolor" :before-switch="beforeSwitch">
 		</u-tabbar>
 
-	</view>
+	</scroll-view>
 </template>
 
 <script>
@@ -111,76 +113,85 @@
 						content: '/static/mp-weixin/home_image/4.jpg'
 					}
 				],
-				MerchantList: [
+				MerchantList: [{
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
 					{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
-				{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
-				{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
-				{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
-				{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
-				{
-					store_image: "../../../static/mp-weixin/icon/store_image.png",
-					name: '柴柴宠物店',
-					phone: '130********',
-					label: '宠物店',
-					btn_image: "../../../static/mp-weixin/icon/phone_icon.png",
-					detailed: '广东省天河区珠村南端大街三号',
-					distance: '4.4'
-				},
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
+					{
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
+					{
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
+					{
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
+					{
+						store_image: "/static/mp-weixin/icon/store_image.png",
+						name: '柴柴宠物店',
+						phone: '130********',
+						label: '宠物店',
+						btn_image: "/static/mp-weixin/icon/phone_icon.png",
+						detailed: '广东省天河区珠村南端大街三号',
+						distance: '4.4'
+					},
 				]
 			}
 
 		},
 		methods: {
 
-			search(e) { //搜索框时间
+			search(e) { //搜索框触发
 				console.log(e);
 			},
 
-			change(e) {
+			swiperSlide(e) { //轮播图 滑动触发
 				this.current = e.detail.current;
 			},
 
+			onPullDownRefresh() { // 下拉刷新列表数据事件
 
+				setTimeout(() => {
+					uni.stopPullDownRefresh()
+				}, 1000)
+				console.log('下拉刷新 列表数据')
+			},
+
+			onReachBottom() { //触底函数
+				console.log("触底增加列表数据")
+			},
 
 
 
@@ -192,7 +203,6 @@
 		},
 		onLoad() {
 
-
 		},
 
 	}
@@ -201,7 +211,24 @@
 <style lang="scss" scoped>
 	.home_body {
 
+		// .home::before {
+		// display: block;
+		// width: 100%;
+		// content: " ";
+		// height: 100rpx;
+		// }
+
 		.home {
+			margin-top: 100rpx;
+
+			.uni-search-bar {
+				//搜索栏
+				width: 100%;
+				position: fixed;
+				top: 0;
+				z-index: 99;
+
+			}
 
 			//轮播图
 			.uni-swiper-dot {
@@ -251,7 +278,7 @@
 		.Merchant_List {
 			display: flex;
 			flex-direction: column;
-			background-color: #f5f5f5;
+			background-color: #f4f4f4;
 			margin: $uni-spacing-col-lg 0;
 
 			.Merchant_info {

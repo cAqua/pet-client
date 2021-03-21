@@ -1,42 +1,38 @@
 <template>
 	<view class="MyBody">
-		<view class="MyContent">
-			<button open-type="getUserInfo" @click="getuserinfo()">获取用户信息</button>
-		</view>
+
+
+		<my-personage></my-personage>
+
+		<!-- 自定义rabbar栏 -->
 		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch">
 		</u-tabbar>
+
 	</view>
 </template>
 
 <script>
 	import {
 		getUserInfoApi
-	} from '@/store/mp-weixin/Weapp-User-Api.js';
+	} from '@/store/mp-weixin/Weapp-User-Api.js'; //请求
 	export default {
 		data() {
 			return {
 				tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
-				$tcolor:this.$vuex.state.$tcolor
+				$tcolor: this.$vuex.state.$tcolor, //全局主题颜色
+				roleIspersonage: '', //选择了用户还是商家
+				roleISmerchant: '',
 			}
+		},
+		onLoad() {
+
+
+
 		},
 		methods: {
 
 			getuserinfo() { //获取用户信息
 
-				// uni.getProvider({
-				// 	service: 'oauth',
-				// 	success: function(facilitator) {
-
-				// 	console.log("facilitator: ",facilitator);
-					
-				// 	},
-				// 	fail:function(error){
-						
-				// 	}
-				// })
-
-
- 
 
 
 				// uni.getProvider({
@@ -94,9 +90,7 @@
 				return true;
 			},
 		},
-		onLoad() {
 
-		},
 		onShow() {
 
 		},
@@ -104,5 +98,48 @@
 </script>
 
 <style lang="scss" scoped>
+	.MyBody {
 
+		// //个人信息
+		// .personalInfo {
+		// 	display: flex;
+		// 	align-items: center;
+		// 	width: 750rpx;
+		// 	height: 240rpx;
+		// 	padding: 20rpx;
+		// 	background: #fb6f18;
+
+		// 	.info {
+		// 		width: 100%;
+		// 		display: flex;
+
+		// 		.portrait {
+		// 			flex: 2;
+		// 			font-size: 38rpx;
+
+		// 			image {
+		// 				width: 150rpx;
+		// 				height: 150rpx;
+		// 			}
+		// 		}
+
+		// 		.name {
+		// 			flex: 8;
+		// 			display: flex;
+		// 			justify-content: space-between;
+		// 			align-items: center;
+		// 			padding-left: 20rpx;
+		// 			font-size: 38rpx;
+		// 			color: #FFFFFF;
+		// 			.icon {
+		// 				uni-icons {}
+		// 			}
+		// 		}
+
+		// 	}
+		// }
+
+
+
+	}
 </style>
