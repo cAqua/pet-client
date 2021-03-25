@@ -2,7 +2,9 @@
 	<view class="MyBody">
 
 
-		<my-personage></my-personage>
+		<my-personage v-if="UserType === 'user'"></my-personage>
+		
+		<my-merchant v-if="UserType === 'merchant'"></my-merchant>
 
 		<!-- 自定义rabbar栏 -->
 		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch">
@@ -20,12 +22,10 @@
 			return {
 				tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
 				$tcolor: this.$vuex.state.$tcolor, //全局主题颜色
-				roleIspersonage: '', //选择了用户还是商家
-				roleISmerchant: '',
-			}
+				UserType:uni.getStorageSync("UserType") //当前是 用户 || 商家
+		}
 		},
 		onLoad() {
-
 
 
 		},

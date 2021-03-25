@@ -1,5 +1,16 @@
-<template style="background-color: #f5f5f5;">
+<template style="background-color: #f3f4f6;">
 	<scroll-view scroll-y="true" class="home_body">
+
+		<u-mask v-if="UmaskFlag" :show="UmaskFlag" zoom="true" mask-click-able='false'>
+			<view class="warp">
+				<view class="rect">
+
+					<view style="background-color: #2979ff;" @click="Umask('user')">用户</view>
+					<view style="background-color: #fa3534;" @click="Umask('merchant')">商家</view>
+
+				</view>
+			</view>
+		</u-mask>
 
 		<view class="home">
 
@@ -37,7 +48,8 @@
 				</view>
 
 				<!--  主体 -->
-				<view class="Merchant_List" v-for="(item,index) in MerchantList" :key=index>
+				<view v-if="MerchantList.length > 0" class="Merchant_List" v-for="(item,index) in MerchantList"
+					:key=index>
 
 					<view class="Merchant_info">
 						<view class="Merchant_phone">
@@ -99,6 +111,8 @@
 				$tcolor: this.$vuex.state.$tcolor, //全局主体颜色
 				searchConteng: '', //搜索框的值
 				current: 0, //轮播图索引
+				UmaskFlag: this.$vuex.state.UmaskFlag, //
+				UserType: '', //客户类型
 				swiperInfo: [{
 						content: '/static/mp-weixin/home_image/1.jpg'
 					},
@@ -171,7 +185,51 @@
 			}
 
 		},
+		onLoad() {
+
+			// 2种情况
+			/* 
+			1. usertype 已经有值 豁 没有值
+			 如果是通过点击了遮罩层 肯定有值
+			 遮罩层的点击是判断之前有没有数据的
+			 一种情况 需要点击遮罩层 获取值 一种需要判断 type 有没有值在执行
+			 定义一个函数在 执行 获取 getstorage的时候在执行 获取数据
+			 */
+			this.UserType = uni.getStorageSync('UserType')
+			this.getInfo()
+
+
+		},
 		methods: {
+
+			getInfo() {
+
+				if (this.UserType == 'user') { //获取用户信息 || 商家
+					this.getUserInfo();
+				} else if (this.UserType == 'merchant') {
+					this.getMerchantInfo();
+				} else {
+					console.warn('当前没有客户类型需要点击遮罩层在重新调用');
+				}
+			},
+
+			getUserInfo() { //获取用户 信息
+				console.log('开始获取用户数据');
+			},
+
+			getMerchantInfo() { //获取商家 信息
+				console.log('开始获取商家数据');
+			},
+
+
+
+			Umask(e) { //遮罩层 选择用户商家
+				this.UserType = e;
+				this.UmaskFlag = false;
+				this.getInfo()
+				uni.setStorageSync('UmaskFlag', 'true');
+				uni.setStorageSync('UserType', e, ) //客户类型 商家 || 用户
+			},
 
 			search(e) { //搜索框触发
 				console.log(e);
@@ -181,29 +239,16 @@
 				this.current = e.detail.current;
 			},
 
-			onPullDownRefresh() { // 下拉刷新列表数据事件
-
-				setTimeout(() => {
-					uni.stopPullDownRefresh()
-				}, 1000)
-				console.log('下拉刷新 列表数据')
-			},
-
 			onReachBottom() { //触底函数
 				console.log("触底增加列表数据")
 			},
-
-
-
 
 			beforeSwitch(index) { //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
 				// console.log(index)
 				return true;
 			}
 		},
-		onLoad() {
 
-		},
 
 	}
 </script>
@@ -211,12 +256,37 @@
 <style lang="scss" scoped>
 	.home_body {
 
-		// .home::before {
-		// display: block;
-		// width: 100%;
-		// content: " ";
-		// height: 100rpx;
-		// }
+		.warp {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+
+			.rect {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0 30rpx;
+				width: 100%;
+				height: 120px;
+				// background-color: #fff;
+
+				view {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 150rpx;
+					height: 150rpx;
+					border-radius: 50%;
+					margin: 0 40rpx;
+					color: #FFFFFF;
+				}
+
+
+			}
+		}
+
+
 
 		.home {
 			margin-top: 100rpx;
@@ -280,6 +350,7 @@
 			flex-direction: column;
 			background-color: #f4f4f4;
 			margin: $uni-spacing-col-lg 0;
+			font-size: $uni-font-size-base;
 
 			.Merchant_info {
 				display: flex;

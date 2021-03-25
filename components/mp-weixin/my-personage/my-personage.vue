@@ -3,7 +3,7 @@
 		<view class="personalInfo">
 			<view class="info">
 				<view class="portrait">
-					<image  :src="userPortrait" ></image>
+					<image :src="userPortrait"></image>
 				</view>
 
 				<view class="name">
@@ -24,12 +24,7 @@
 </template>
 
 <script>
-	import {
-		getUserInfoApi
-	} from "@/store/mp-weixin/Weapp-User-Api.js"; //请求
-	import colorGradient from '../../../UI/uView/libs/function/colorGradient';
-	// import uCellGroupVue from "../../../UI/uView/components/u-cell-group/u-cell-group.vue";
-	// import colorGradient from "../../../UI/uView/libs/function/colorGradient";
+	import {getUserInfoApi} from "@/store/mp-weixin/Weapp-User-Api.js"; //请求
 	export default {
 		data() {
 			return {
@@ -37,8 +32,8 @@
 				$tcolor: this.$vuex.state.$tcolor, //全局主题颜色
 				roleIspersonage: "", //选择了用户还是商家
 				roleISmerchant: "",
-				userPortrait:'../../../static/mp-weixin/icon/default-portrait.png',//头像
-				userName:'Hi,您尚未登录',
+				userPortrait: '../../../static/mp-weixin/icon/default-portrait.png', //头像
+				userName: 'Hi,您尚未登录',
 			};
 		},
 		created() {
@@ -47,40 +42,47 @@
 
 		},
 		methods: {
-			getuserinfo() {
+getuserinfo() {
 
 
 				let thatFacilitator = ''
+				
 
-				let facilitatorValue = new Promise((resolve, reject) => {
-					uni.getProvider({
-						service: "oauth",
-						success: (facilitator) => {
-							thatFacilitator = facilitator.service;
-							resolve(facilitator)
-						},
-						fail: (error) => console.log(error),
-					});
-				});
+				// let getProvider = new Promise((resolve, reject) => { //返回服务商
+				// 	uni.getProvider({
+				// 		service: "oauth",
+				// 		success: (facilitator) => {
+				// 			thatFacilitator = facilitator.service;
+				// 			// console.log("facilitator: ",facilitator);
+				// 			resolve(facilitator)
+				// 		},
+				// 		fail: (error) => console.log(error),
+				// 	});
+				// });
 
-				let infoResValue = facilitatorValue.then(() => {
-					return new Promise((resolve, reject) => {
-						uni.login({
-							provider: thatFacilitator,
-							timeout: 5000,
-							lang: "zh_CN",
-							success: (loginRes) =>resolve(loginRes),
-							fail: (error) => console.log(error),
-						});
-					});
-				});
+				// let infoResValue = getProvider.then(() => {
+				// 	return new Promise((resolve, reject) => {
+				// 		uni.login({
+				// 			provider: thatFacilitator,
+				// 			timeout: 5000,
+				// 			lang: "zh_CN",
+				// 			success: (loginRes) =>{
+				// 				console.log("loginRes: ",loginRes);
+				// 				resolve(loginRes);
+				// 			},
+				// 			fail: (error) => console.log(error),
+				// 		});
+				// 	});
+				// });
 
 
 
-				infoResValue.then((loginRes) => {
+
+				// infoResValue.then((loginRes) => {
 					return new Promise((resolve, reject) => {
 						uni.getUserInfo({
-							provider: thatFacilitator,
+							// provider: thatFacilitator,
+							provider: 'weixin',
 							lang: "zh_CN",
 							success: (infoRes) => {
 								this.userPortrait = infoRes.userInfo.avatarUrl
@@ -92,11 +94,11 @@
 								})
 							},
 							fail: (error) => console.warn(error),
-							complete: i => console.log(i)
+							complete: i =>{}
 						});
 					});
 					// console.log(loginRes);
-				});
+				// });
 
 			},
 

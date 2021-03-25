@@ -29,8 +29,8 @@ const store = new Vuex.Store({
 				pagePath: "/platforms/mp-weixin/my/index"
 			},
 		],
-		$tcolor:'#007aff', //全局主体颜色
-		role:'roleIspersonage', //选择了用户
+		$tcolor:'#2979ff', //全局主体颜色
+		UmaskFlag:'false' //遮罩层
 	},
 	mutations: {
 		functions(state, provider) {
