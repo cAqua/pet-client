@@ -30,7 +30,9 @@ const store = new Vuex.Store({
 			},
 		],
 		$tcolor:'#2979ff', //全局主体颜色
-		UmaskFlag:'false' //遮罩层
+		UmaskFlag:'false', //遮罩层
+		UserInfo:{}, //用户数据
+		MerchantInfo:{},//商家数据
 	},
 	mutations: {
 		functions(state, provider) {

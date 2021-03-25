@@ -22,7 +22,8 @@
 			return {
 				tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
 				$tcolor: this.$vuex.state.$tcolor, //全局主题颜色
-				UserType:uni.getStorageSync("UserType") //当前是 用户 || 商家
+				UserType:uni.getStorageSync("UserType") ,//当前是 用户 || 商家
+				UserType:'user' //当前是 用户 || 商家
 		}
 		},
 		onLoad() {
@@ -31,10 +32,25 @@
 		},
 		methods: {
 
-			getuserinfo() { //获取用户信息
+			getuserinfo(e) { //获取用户信息
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// console.log(e);
 				// uni.getProvider({
 				// 	service: 'oauth',
 				// 	success: function(facilitator) {
