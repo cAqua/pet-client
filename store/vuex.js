@@ -33,11 +33,24 @@ const store = new Vuex.Store({
 		UmaskFlag:'false', //遮罩层
 		UserInfo:{}, //用户数据
 		MerchantInfo:{},//商家数据
+		hasLogin:false,
 	},
 	mutations: {
-		functions(state, provider) {
-       
+		login(state, provider) {
+			state.hasLogin = true;
+			state.userInfo = provider;
+			uni.setStorage({ //缓存用户登陆状态
+				key: 'userInfo',
+				data: provider
+			})
 		},
+		logout(state) {
+			state.hasLogin = false;
+			state.userInfo = {};
+			uni.removeStorage({
+				key: 'userInfo'
+			})
+		}
 	
 	}
 })

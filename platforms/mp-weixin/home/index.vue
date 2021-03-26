@@ -89,13 +89,15 @@
                 <view>{{ item.label }}</view>
               </view>
 
-              <button
-                class="phone_btn"
-                open-type="getUserInfo"
-                @getuserinfo="getUserInfo"
-              >
+              <!-- <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo"> -->
+
+              <!-- 单击调用 用户数据统一插槽 -->  
+              <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
                 <image :src="item.btn_image"></image>
               </button>
+
+              <!-- </button> -->
+
             </view>
             <view class="Merchant_place">
               <view class="icon">
@@ -123,9 +125,13 @@
 </template>
 
 <script>
-// import uCellGroupVue from "../../../UI/uView/components/u-cell-group/u-cell-group.vue";
-// import colorGradient from "../../../UI/uView/libs/function/colorGradient";
+import { mapMutations } from "@/store/vuex.js";
+
+
+
 export default {
+  components:{
+  },
   data() {
     return {
       tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
@@ -175,7 +181,7 @@ export default {
           btn_image: "/static/mp-weixin/icon/phone_icon.png",
           detailed: "广东省天河区珠村南端大街三号",
           distance: "4.4",
-        },
+        },  
         {
           store_image: "/static/mp-weixin/icon/store_image.png",
           name: "柴柴宠物店",
@@ -207,97 +213,18 @@ export default {
     };
   },
   onLoad() {
-    // 2种情况
-    /* 
-			1.
-        getuserinfo
-        和
-        userType分开
-       
-			 */
-    // this.getInfo();
-    // console.log('info');
+
   },
   methods: {
-    // getInfo(info) {
-    //   if (this.UserType == "user") { 	//获取用户信息 || 商家
-    //   	this.getUserInfo();
-    //   } else if (this.UserType == "merchant") {
-    //   	this.getMerchantInfo(info);
-    //   } else {
-    //   	console.warn("当前没有客户类型需要点击遮罩层在重新调用");
-    //   }
-    // },
 
-    getUserInfo(e) {
-      //获取用户 信息
-      // 模拟第一次登录
+    getUserInfo(e){
 
-			if( Object.keys(uni.getStorageSync("UserInfo")).length > 0 ){ //说明本地数据里面有数据
-				console.log('有数据了');
-				return
-			}
-      
-
-      if (e.detail.userInfo) {  //判断是不是
-        // 是否有授权数据
-        let UserInfo = e.detail.userInfo;
-
-        uni.login({
-          provider: "weixin",
-          lang: "zh_CN",
-          success: (loginRes) => {
-            UserInfo.id = loginRes.code;
-            // this.$vuex.state.UserInfo = UserInfo;
-
-            uni.setStorageSync("UserInfo", UserInfo);
-
-            console.log("已授权");
-          },
-          fail: () => console.error("失败"),
-        });
-      } else {
-        //点击了取消授权
-        uni.showToast({
-          title: "请允许授权",
-          icon: "none",
-        });
-      }
-
-      // let infoResValue = new Promise((resolve, reject) => {
-      // 			uni.login({
-      // 				provider: "weixin", //服务商
-      // 				timeout: 5000,
-      // 				lang: "zh_CN",
-      // 				success: (loginRes) => {
-      // 					console.log("loginRes: ", loginRes);
-      // 					resolve(loginRes.code);
-      // 				},
-      // 				fail: (error) => console.log(error),
-      // 				// complete: (loginRes) => console.log(loginRes.errMsg),
-      // 			});
-      // 		});
-
-      // 		let UserInfo = infoResValue.then((loginRes) => {
-      // 			return new Promise((resolve, reject) => {
-      // 				uni.getUserInfo({
-      // 					provider: "weixin",
-      // 					lang: "zh_CN",
-      // 					success: (infoRes) => {
-      // 						console.log(infoRes);
-      // 						infoRes.userInfo.code = loginRes;
-      // 						resolve(infoRes.userInfo);
-      // 					},
-      // 					fail: (error) => console.error(error),
-      // 					// complete: (i) => console.warn(i),
-      // 				});
-      // 			});
-      // 		});
-      // 		UserInfo.then((result) => {
-      // 			console.log(result);
-      // 			// this.$vuex.state.UserInfo = result;
-      // 		});
     },
+
+
+    
+
+    
 
     getMerchantInfo() {
       //获取商家 信息
@@ -360,7 +287,7 @@ export default {
       height: 120px;
       // background-color: #fff;
 
-      view {
+      button {
         display: flex;
         align-items: center;
         justify-content: center;

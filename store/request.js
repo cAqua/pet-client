@@ -1,7 +1,7 @@
 	//封装全局请求组件
 
 
-	let baseURL = "http://localhost:3000", 
+	let baseURL = "http://8.136.181.16", 
 			ajaxTimes = 0;
 
 	export default function (options) {

@@ -7,8 +7,6 @@ function getUserInfoApi(param) {
         url: "/api/insertUser",
 		method:"POST",
 		data:param,
-    }).catch(error => {
-        console.warn('错误信息' + error )
     })
 }
 
