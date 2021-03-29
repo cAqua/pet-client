@@ -125,7 +125,6 @@
 </template>
 
 <script>
-import { mapMutations } from "@/store/vuex.js";
 
 
 
@@ -134,12 +133,12 @@ export default {
   },
   data() {
     return {
-      tabbar: this.$vuex.state.uViewTabBar, //刷新tabbar
-      $tcolor: this.$vuex.state.$tcolor, //全局主体颜色
+      tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
+      $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
+      UmaskFlag: this.$store.state.home.UmaskFlag, //显示 隐藏遮罩层
+      // UserType: uni.getStorageSync("UserType"), //客户类型
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
-      UmaskFlag: this.$vuex.state.UmaskFlag, //
-      UserType: uni.getStorageSync("UserType"), //客户类型
       swiperInfo: [
         {
           content: "/static/mp-weixin/home_image/1.jpg",
@@ -212,6 +211,9 @@ export default {
       ],
     };
   },
+	created() {
+		console.log(this.UmaskFlag);
+	},
   onLoad() {
 
   },
@@ -233,10 +235,14 @@ export default {
 
     Umask(e) {
       //遮罩层 选择用户商家
-      this.UserType = e;
+      // this.UserType = e;
       this.UmaskFlag = false;
-      uni.setStorageSync("UmaskFlag", "true");
-      uni.setStorageSync("UserType", e); //客户类型 商家 || 用户
+      uni.setStorage({
+        key:"UmaskFlag", 
+        data:false,
+        fail:()=>{uni.showToast({title:'存储商家信息错误'})}
+      });
+      uni.setStorage({key:"UserType",data:e}); //客户类型 商家 || 用户
     },
 
     search(e) {

@@ -4,36 +4,44 @@
 		"custom": {
 			"^u-(.*)": "@/UI/uView/components/u-$1/u-$1.vue", //uView
 			"^uni-(.*)": "@/UI/uni_modules/uni-$1/components/uni-$1/uni-$1.vue", //uni-ui 匹配规则
-			"^my-(.*)": "@/components/mp-weixin/my-$1/my-$1.vue"  //个人中心 匹配规则
+			"^my-(.*)": "@/components/mp-weixin/my-$1/my-$1.vue" //个人中心 匹配规则
 		}
 	},
 
 
-	"pages": [// 这里的条件编译是 不同平台展示的  第一启动项不一样
+	"pages": [ // 这里的条件编译是 不同平台展示的  第一启动项不一样
 		//#ifdef MP-WEIXIN
+		// {
+		// 	"path": "platforms/mp-weixin/y-PetCrcle/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "宠物圈"
+		// 	}
+		// },
+		// {
+		// 	"path": "platforms/mp-weixin/y-my/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "个人中心"
+		// 	}
+		// },
+
 
 		{
-			"path": "platforms/mp-weixin/my/index",
+			"path": "platforms/mp-weixin/y-home/index",
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "首页"
 			}
 		},
-		
-		// {
-		// 	"path": "platforms/mp-weixin/home/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "首页"
-		// 	}
-		// },
 
-		
+
+
 		// {
-		// 	"path": "platforms/mp-weixin/home/home-details/index",
+		// 	"path": "platforms/mp-weixin/y-register/index",
 		// 	"style": {
-		// 		"navigationBarTitleText": "商家详情"
+		// 		"navigationBarTitleText": "注册"
 		// 	}
-		// },
-		
+		// }
+
+
 		//#endif
 
 
@@ -45,33 +53,32 @@
 			}
 		},
 		//#endif
-		
-		// {
-		// 	"path": "platforms/mp-weixin/my/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "个人中心"
-		// 	}
-		// },
-		
-		
+
 		{
-			"path": "platforms/mp-weixin/home/index",
+			"path": "platforms/mp-weixin/y-my/index",
 			"style": {
-				"navigationBarTitleText": "首页",
-					"enablePullDownRefresh": true
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 
 
+		// {
+		// 	"path": "platforms/mp-weixin/y-home/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "首页"
+		// 	}
+		// },
+
+
 
 		{
-			"path": "platforms/mp-weixin/register/index",
+			"path": "platforms/mp-weixin/y-register/index",
 			"style": {
 				"navigationBarTitleText": "注册"
 			}
 		},
 		{
-			"path": "platforms/mp-weixin/PetCrcle/index",
+			"path": "platforms/mp-weixin/y-PetCrcle/index",
 			"style": {
 				"navigationBarTitleText": "宠物圈"
 			}
@@ -86,19 +93,19 @@
 		"position": "bottom",
 		"borderStyle": "black",
 		"list": [{
-				"pagePath": "platforms/mp-weixin/home/index",
+				"pagePath": "platforms/mp-weixin/y-home/index",
 				"text": "首页",
 				"iconPath": "static/mp-weixin/icon/home.png",
 				"selectedIconPath": "static/mp-weixin/icon/_home.png"
 			},
 			{
-				"pagePath": "platforms/mp-weixin/PetCrcle/index",
+				"pagePath": "platforms/mp-weixin/y-PetCrcle/index",
 				"text": "宠物圈",
 				"iconPath": "static/mp-weixin/icon/PetCrcle.png",
 				"selectedIconPath": "static/mp-weixin/icon/_PetCrcle.png"
 			},
 			{
-				"pagePath": "platforms/mp-weixin/my/index",
+				"pagePath": "platforms/mp-weixin/y-my/index",
 				"text": "我的",
 				"iconPath": "static/mp-weixin/icon/my.png",
 				"selectedIconPath": "static/mp-weixin/icon/_my.png"

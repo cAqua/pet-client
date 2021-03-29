@@ -10,8 +10,8 @@
 	export default { 
 		data() {
 			return {
-				tabbar:this.$vuex.state.uViewTabBar,  //刷新tabbar
-				$tcolor:this.$vuex.state.$tcolor
+				tabbar:this.$store.state.home.uViewTabBar,  //刷新tabbar
+				$tcolor:this.$store.state.$tcolor //
 			}
 		},
 		methods:{
@@ -21,6 +21,7 @@
 				return true;
 			}
 		},
+		
 		onLoad() {
 			
 
