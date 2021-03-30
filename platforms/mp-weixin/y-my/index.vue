@@ -6,7 +6,9 @@
 		<!-- :info=UserInfo -->
 
     <my-merchant v-if="UserType === 'merchant'"></my-merchant>
-
+    <view v-for="(item,index) in userInfo" :key='index'>
+111
+    </view>
     <!-- 自定义rabbar栏 -->
     <u-tabbar
       :list="tabbar"
@@ -19,6 +21,12 @@
 </template>
 
 <script>
+    import {
+        mapState,
+        mapMutations,
+        mapGetters,
+        mapActions
+    } from 'vuex';
 export default {
   data() {
     return {
@@ -27,6 +35,15 @@ export default {
       UserType: uni.getStorageSync("UserType"), //当前是 用户 || 商家
 			// UserInfo:uni.getStorageSync("UserInfo"),
     };
+  },
+  computed:{
+
+
+
+    ...mapState('home',{
+      userInfo:'userInfo'
+    })
+
   },
   onLoad() {
 
