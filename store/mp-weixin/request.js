@@ -9,8 +9,9 @@
 
 		ajaxTimes++
 		uni.showLoading({
-			title: '加载中...',
-			mask: true
+			// title: '加载中...',
+			mask: true,
+			icon:'loading'
 		})
 		return new Promise((resolve, reject) => {
 			uni.request({

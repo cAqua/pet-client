@@ -33,16 +33,12 @@ export default {
       tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主题颜色
       UserType: uni.getStorageSync("UserType"), //当前是 用户 || 商家
-			// UserInfo:uni.getStorageSync("UserInfo"),
     };
   },
   computed:{
 
 
 
-    ...mapState('home',{
-      userInfo:'userInfo'
-    })
 
   },
   onLoad() {

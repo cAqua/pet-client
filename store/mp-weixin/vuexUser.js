@@ -42,8 +42,6 @@ export default {
 		},
 		userLogin(state, userInfo) {
 
-			let thatUserInfo = Object;
-
 			if (userInfo) {
 
 				let loginRes = new Promise((resolve, reject) => {

@@ -21,6 +21,7 @@
 		// 	"path": "platforms/mp-weixin/y-my/index",
 		// 	"style": {
 		// 		"navigationBarTitleText": "个人中心"
+		
 		// 	}
 		// },
 
@@ -61,16 +62,12 @@
 			}
 		},
 
-
 		// {
 		// 	"path": "platforms/mp-weixin/y-home/index",
 		// 	"style": {
 		// 		"navigationBarTitleText": "首页"
 		// 	}
 		// },
-
-
-
 		{
 			"path": "platforms/mp-weixin/y-register/index",
 			"style": {
@@ -82,7 +79,20 @@
 			"style": {
 				"navigationBarTitleText": "宠物圈"
 			}
+		},
+		{
+			"path": "platforms/mp-weixin/y-petCrcle-comments/index",
+			"style": {
+				"navigationBarTitleText": "评论"
+			}
+		},
+		{
+			"path": "platforms/mp-weixin/y-petCrcle-Publish/index",
+			"style": {
+				"navigationBarTitleText": "发表说说"
+			}
 		}
+		
 	],
 
 

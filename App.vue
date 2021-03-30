@@ -5,8 +5,7 @@
 		onLaunch: function() { //全局出发一次
 			
 			//判断当前是否选择了角色 看是否弹窗让用户选择
-			this.$store.state.home.UmaskFlag = 
-			uni.getStorageSync('UserType').length > 0 ?  false : true 
+			this.$store.state.home.UmaskFlag = uni.getStorageSync('UserType').length > 0 ?  false : true 
 
 		},
 		onShow: function() {

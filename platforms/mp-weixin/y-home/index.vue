@@ -91,13 +91,16 @@
 
               <!-- <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo"> -->
 
-              <!-- 单击调用 用户数据统一插槽 -->  
-              <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
+              <!-- 单击调用 用户数据统一插槽 -->
+              <button
+                class="phone_btn"
+                open-type="getUserInfo"
+                @getuserinfo="getUserInfo"
+              >
                 <image :src="item.btn_image"></image>
               </button>
 
               <!-- </button> -->
-
             </view>
             <view class="Merchant_place">
               <view class="icon">
@@ -125,12 +128,9 @@
 </template>
 
 <script>
-
-
-
+import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
-  components:{
-  },
+  components: {},
   data() {
     return {
       tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
@@ -180,7 +180,7 @@ export default {
           btn_image: "/static/mp-weixin/icon/phone_icon.png",
           detailed: "广东省天河区珠村南端大街三号",
           distance: "4.4",
-        },  
+        },
         {
           store_image: "/static/mp-weixin/icon/store_image.png",
           name: "柴柴宠物店",
@@ -211,22 +211,32 @@ export default {
       ],
     };
   },
-	created() {
-		console.log(this.UmaskFlag);
-	},
-  onLoad() {
-
-  },
+  created() {},
+  onLoad() {},
   methods: {
+    ...mapMutations("home", ["userLogin"]), //登录退出
+    ...mapMutations("home", { //防止多次点击
+      getUserInfoFlagFun: "getUserInfoFlag",
+    }),
 
-    getUserInfo(e){
+    getUserInfo(e) {
 
+      return
+      // console.log(
+      //   uni.getStorageSync("UserInfo").id
+      // );
+      // if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
+      //   this.getUserInfoFlagFun();
+      //   console.warn("首页:已有数据不需要请求");
+      //   return
+      // }
+
+
+      // this.userLogin(e.detail.userInfo);// 能进入这里的说明授权点了确定 而且是第一次进入并且本地没有数据
+
+
+      
     },
-
-
-    
-
-    
 
     getMerchantInfo() {
       //获取商家 信息
@@ -238,11 +248,13 @@ export default {
       // this.UserType = e;
       this.UmaskFlag = false;
       uni.setStorage({
-        key:"UmaskFlag", 
-        data:false,
-        fail:()=>{uni.showToast({title:'存储商家信息错误'})}
+        key: "UmaskFlag",
+        data: false,
+        fail: () => {
+          uni.showToast({ title: "存储商家信息错误" });
+        },
       });
-      uni.setStorage({key:"UserType",data:e}); //客户类型 商家 || 用户
+      uni.setStorage({ key: "UserType", data: e }); //客户类型 商家 || 用户
     },
 
     search(e) {

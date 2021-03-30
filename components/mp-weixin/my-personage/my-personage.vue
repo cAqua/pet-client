@@ -42,9 +42,7 @@ export default {
     };
   },
   props: {
-    info: {
-      type: Object,
-    },
+
   },
   computed: {
     ...mapState(
@@ -59,7 +57,7 @@ export default {
       this.userInfo.usernmae = uni.getStorageSync("UserInfo").usernmae;
       this.userInfo.img = uni.getStorageSync("UserInfo").img;
       this.getUserInfoFlagFun();
-      console.warn("该登录类型是其他页面登录了所以这里不用获取缓存");
+      console.warn("个人中心:其他页面登录了所以这里不用获取缓存");
     }
   },
   methods: {
@@ -74,15 +72,15 @@ export default {
 
       if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
 
-      this.userInfo.usernmae = uni.getStorageSync("UserInfo").usernmae;
-      this.userInfo.img = uni.getStorageSync("UserInfo").img;
+        this.userInfo.usernmae = uni.getStorageSync("UserInfo").usernmae;
+        this.userInfo.img = uni.getStorageSync("UserInfo").img;
         this.getUserInfoFlagFun();
-        console.warn("该登录类型是,用户在首页没有确定授权在本页面需要登录,点击按钮触发");
+        console.warn("个人中心首页没有确定授权在本页面需要登录,点击按钮触发");
         return uni.showToast({ title: "登录成功", icon: "success" });
       }
 
       // 能进入这里的说明授权点了确定 而且是第一次进入并且本地没有数据
-      this.thatUserInfo = this.userLogin(e.detail.userInfo);
+      this.userLogin(e.detail.userInfo);
     },
 
     beforeSwitch(index) {
