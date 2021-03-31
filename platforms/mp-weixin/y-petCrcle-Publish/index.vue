@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
-		<view class="load">	
-		<button @click="submit">发表</button>
+		<view class="load">
+			<button @click="submit">发表</button>
 		</view>
 		<textarea class="tar" v-model="main" placeholder="记录每一刻~" />
-		<u-upload   ref="uUpload" :before-upload="beforeUpload" :action="action" :auto-upload="false" max-count="9" ></u-upload>
+		<u-upload   ref="uUpload" :form-data="formData"   :before-upload="beforeUpload" :action="action" :auto-upload="false" max-count="9" ></u-upload>
 	</view>
 </template>
 
@@ -13,36 +13,44 @@ export default {
 		data() {
 			return {
 				// 服务器地址
-				// action: 'http://192.168.1.181:812/UploadingTools/upload_ajax.ashx?action=uniappUViewBatch',
 				action: 'http://8.136.181.16/api/dunamic',
 				// load:true, //隐藏上传进度条
 				main:'' ,//发表的文章
-				filesArr: []
+				// filesArr: [],
+				formData:{
+					DunamicId:'123',
+					id:'12312',
+					DuamincContent:''
+				}
 			
 			}
 		},
-		methods:{
-				beforeUpload(index, list) {
-											// 只上传偶数索引的文件
-											// if(index % 2 == 0) return true;
-											// else return false;
-											
-											console.log("index:即当前上传文件在上传列表中的索引");
-											console.log(index);
-											console.log("lists:当前所有的文件列表");
-											console.log(list);
-										},
+		onLoad() {
+			
+		},
+		methods:{ 
+
 				 			submit() {
+								let _this = this
+								// this.$refs.uUpload.upload();
+							uni.getStorage({
+							    key: 'UserInfo',
+							    success: function (res) {
+							        // console.log(res.data.id);
+										_this.formData.id = res.data.id
+							    }
+							});
+							_this.formData.DuamincContent = _this.main
+							setTimeout(()=>{
+							if( _this.formData.DuamincContent != '' && _this.formData.id != '' &&_this.formData.DunamicId != ''){
 								this.$refs.uUpload.upload();
-				 				let files = [];
-				 				// 通过filter，筛选出上传进度为100的文件(因为某些上传失败的文件，进度值不为100，这个是可选的操作)
-				 				files = this.$refs.uUpload.lists.filter(val => {
-				 					return val.progress == 100;
-				 				})
-				 				// 如果您不需要进行太多的处理，直接如下即可
-				 				// files = this.$refs.uUpload.lists;
-				 				console.log(files)
-								// clear()
+								
+							}else{
+									console.log(_this.formData)
+							}
+								
+							},1000)
+
 				 			}
 				
 		}

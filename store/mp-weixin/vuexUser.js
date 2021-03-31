@@ -1,6 +1,7 @@
 import {
 	getUserInfoApi
 } from "@/store/mp-weixin/Weapp-User-Api.js";
+// import { reject } from "core-js/fn/promise";
 
 
 
@@ -100,15 +101,16 @@ export default {
 				});
 
 			});
+			 
 			return await new Promise((resolve_1, reject_1) => {
 
 				getUserInfoApi(info)
 					.then(res => {
 
-						if (res.code == 0) { uni.showToast({ title: '登录失败请再次点击登录按钮' }); }
-						else if (res.code == -1) {
+						if (res.data.code == 0) { uni.showToast({ title: '登录失败请再次点击登录按钮' }); }
+						else if (res.data.code == -1) {
 
-							if (res.desc == '插入成功' || '用户已经存在') {
+							if (res.data.desc == '插入成功' || '用户已经存在') {
 
 								uni.setStorage({
 									key: "UserInfo",
@@ -120,12 +122,12 @@ export default {
 										}),
 											state.userInfo = info;
 										state.thatUserInfo = false;
-										resolve_1();
+										res.resolve_1();
 									}
 								}); //用户信息存在本地
 							}
 							else {
-								return reject_1(res.desc);
+								return reject_1(res.data.desc);
 							}
 
 						}

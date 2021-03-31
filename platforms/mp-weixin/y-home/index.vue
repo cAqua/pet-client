@@ -202,25 +202,6 @@ export default {
     };
   },
   created() {
-
-
-    setInterval(() => {
-      
-          //   getUserInfoApi({
-          // "id":"osS0G5lXrmWZ9lM3WMvejFFf4Y78",
-          // "usernmae":"Minato",
-          // "img":"https://thirdwx.qlogo.cn/mmopen/vi_32/gqpgq8OicaDP4NEVvGTdhHhRKYbGa82NLthzS4maXJVNGqKHicGBjLzZZRmib7jgyMabqKZ7NovUW4HP00Kcq0qvw/132",
-          // "place":"China-Guangzhou",
-          // "source":"weixin",
-          // "userlongitude":"116.3971281",
-          // "userlaitude":"39.9165271"}).then(res=>{
-          //   console.log(res);
-          // })
-      
-    }, 10);
-
-      
-    
     
   },
   onLoad() {},
@@ -230,27 +211,25 @@ export default {
       getUserInfoFlagFun: "getUserInfoFlag",
     }),
 
-    getUserInfo(e) {
+     getUserInfo(e) {
 
 
-      return 
 
-      // console.log(
-      //   uni.getStorageSync("UserInfo").id
-      // );
-      // if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
-      //   this.getUserInfoFlagFun();
-      //   console.warn("首页:已有数据不需要请求");
-			// 	uni.navigateTo({
-			// 		url:'./home-details/index',
-			// 	})
+
+      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
+        this.getUserInfoFlagFun();
+        console.warn("首页:已有数据不需要请求");
+				uni.navigateTo({
+					url:'./home-details/index',
+				})
         
-      //   return
-      // }
+        return
+      }
     
 
+        //本地没有用户数据会访问 请求
         this.userLogin();
-      
+        
     },
 
     getMerchantInfo() {

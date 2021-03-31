@@ -16,16 +16,16 @@
 		return new Promise((resolve, reject) => {
 			uni.request({
 				url: baseURL + options.url,
+				data: options.data || {},
 				header: {
-					'content-type':'application/x-www-form-urlencoded'
+					'content-type':'atext/plain'
 				},
 				method: options.method || 'GET',
-				data: options.data || {},
 				success: res => {
-					resolve(res.data)
+					resolve(res)
 				},
 				fail: err => {
-					reject(err)
+					reject(console.log('请求失败'+ err))
 				},
 				complete: () => {
 					ajaxTimes--
