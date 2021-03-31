@@ -13,7 +13,8 @@ export default {
 		data() {
 			return {
 				// 服务器地址
-				action: 'http://192.168.1.181:812/UploadingTools/upload_ajax.ashx?action=uniappUViewBatch',
+				// action: 'http://192.168.1.181:812/UploadingTools/upload_ajax.ashx?action=uniappUViewBatch',
+				action: 'http://8.136.181.16/api/dunamic',
 				// load:true, //隐藏上传进度条
 				main:'' ,//发表的文章
 				filesArr: []

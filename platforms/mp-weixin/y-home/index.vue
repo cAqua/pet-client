@@ -9,19 +9,10 @@
     >
       <view class="warp">
         <view class="rect">
-          <button
-            style="background-color: #2979ff"
-            open-type="getUserInfo"
-            @click="Umask('user')"
-            @getuserinfo="getUserInfo"
-          >
+          <button style="background-color: #2979ff" @click="Umask('user')">
             用户
           </button>
-          <button
-            style="background-color: #fa3534"
-            open-type="getUserInfo"
-            @click="Umask('merchant')"
-          >
+          <button style="background-color: #fa3534" @click="Umask('merchant')">
             商家
           </button>
         </view>
@@ -92,11 +83,7 @@
               <!-- <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo"> -->
 
               <!-- 单击调用 用户数据统一插槽 -->
-              <button
-                class="phone_btn"
-                open-type="getUserInfo"
-                @getuserinfo="getUserInfo"
-              >
+              <button class="phone_btn" @click="getUserInfo()">
                 <image :src="item.btn_image"></image>
               </button>
 
@@ -129,6 +116,9 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+import {
+	getUserInfoApi
+} from "@/store/mp-weixin/Weapp-User-Api.js";
 export default {
   components: {},
   data() {
@@ -211,7 +201,28 @@ export default {
       ],
     };
   },
-  created() {},
+  created() {
+
+
+    setInterval(() => {
+      
+          //   getUserInfoApi({
+          // "id":"osS0G5lXrmWZ9lM3WMvejFFf4Y78",
+          // "usernmae":"Minato",
+          // "img":"https://thirdwx.qlogo.cn/mmopen/vi_32/gqpgq8OicaDP4NEVvGTdhHhRKYbGa82NLthzS4maXJVNGqKHicGBjLzZZRmib7jgyMabqKZ7NovUW4HP00Kcq0qvw/132",
+          // "place":"China-Guangzhou",
+          // "source":"weixin",
+          // "userlongitude":"116.3971281",
+          // "userlaitude":"39.9165271"}).then(res=>{
+          //   console.log(res);
+          // })
+      
+    }, 10);
+
+      
+    
+    
+  },
   onLoad() {},
   methods: {
     ...mapMutations("home", ["userLogin"]), //登录退出
@@ -221,20 +232,24 @@ export default {
 
     getUserInfo(e) {
 
-      return
+
+      return 
+
       // console.log(
       //   uni.getStorageSync("UserInfo").id
       // );
       // if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
       //   this.getUserInfoFlagFun();
       //   console.warn("首页:已有数据不需要请求");
+			// 	uni.navigateTo({
+			// 		url:'./home-details/index',
+			// 	})
+        
       //   return
       // }
+    
 
-
-      // this.userLogin(e.detail.userInfo);// 能进入这里的说明授权点了确定 而且是第一次进入并且本地没有数据
-
-
+        this.userLogin();
       
     },
 
@@ -245,16 +260,16 @@ export default {
 
     Umask(e) {
       //遮罩层 选择用户商家
-      // this.UserType = e;
       this.UmaskFlag = false;
       uni.setStorage({
         key: "UmaskFlag",
         data: false,
         fail: () => {
-          uni.showToast({ title: "存储商家信息错误" });
+          return uni.showToast({ title: "存储商家信息错误" });
         },
       });
       uni.setStorage({ key: "UserType", data: e }); //客户类型 商家 || 用户
+      this.userLogin();
     },
 
     search(e) {

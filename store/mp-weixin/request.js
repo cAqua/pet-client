@@ -16,6 +16,9 @@
 		return new Promise((resolve, reject) => {
 			uni.request({
 				url: baseURL + options.url,
+				header: {
+					'content-type':'application/x-www-form-urlencoded'
+				},
 				method: options.method || 'GET',
 				data: options.data || {},
 				success: res => {

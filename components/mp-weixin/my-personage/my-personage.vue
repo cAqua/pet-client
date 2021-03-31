@@ -11,8 +11,8 @@
           <view>
             <button
               hover-class="none"
-              open-type="getUserInfo"
-              @getuserinfo="getuserinfo"
+             
+              @click="getuserinfo()"
             >
               {{ userInfo.usernmae }}
               <!-- 名称在vuex.home -->
@@ -80,7 +80,7 @@ export default {
       }
 
       // 能进入这里的说明授权点了确定 而且是第一次进入并且本地没有数据
-      this.userLogin(e.detail.userInfo);
+      this.userLogin();
     },
 
     beforeSwitch(index) {

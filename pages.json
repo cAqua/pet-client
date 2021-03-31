@@ -54,20 +54,27 @@
 			}
 		},
 		//#endif
-
-		{
-			"path": "platforms/mp-weixin/y-my/index",
-			"style": {
-				"navigationBarTitleText": "个人中心"
-			}
-		},
-
 		// {
 		// 	"path": "platforms/mp-weixin/y-home/index",
 		// 	"style": {
 		// 		"navigationBarTitleText": "首页"
 		// 	}
 		// },
+
+		{
+			"path": "platforms/mp-weixin/y-home/home-details/index",
+			"style": {
+				"navigationBarTitleText": "商家详情"
+			}
+		},
+				{
+			"path": "platforms/mp-weixin/y-my/index",
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		},
+
+
 		{
 			"path": "platforms/mp-weixin/y-register/index",
 			"style": {
