@@ -34,7 +34,7 @@
 		</view>
 		<!-- 发表按钮 -->
 		<view class="Publish" @tap="go">
-			<u-icon name="plus"  color="#666" size="36"></u-icon>
+			<u-icon name="plus" color="#666" size="36"></u-icon>
 		</view>
 
 		<u-divider>到底了</u-divider>
@@ -134,13 +134,15 @@
 			}
 		},
 		methods: {
+			// 页面加载时刷新
 			onLoad() {
 				setTimeout(function() {
 					console.log('start pulldown');
 				}, 1000);
 				uni.startPullDownRefresh();
-
 			},
+
+			// 下拉时刷新
 			onPullDownRefresh() {
 				console.log('refresh');
 				setTimeout(function() {
@@ -149,11 +151,14 @@
 			},
 			onShow() {
 
+
 			},
-			beforeSwitch(index) { //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
-				// console.log(index)
-				return true;
-			},
+
+			// beforeSwitch(index) { //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
+			// 	// console.log(index)
+			// 	return true;
+			// },
+	
 			getImgIndex(index, ind) {
 				console.log(index, ind);
 
@@ -199,7 +204,7 @@
 				//调用预览图片的方法
 
 			},
-			go(){
+			go() {
 				uni.navigateTo({
 					url: '../y-petCrcle-Publish/index'
 				})
@@ -304,7 +309,8 @@
 		// text-align: right;
 		padding: 15px 20px 0;
 	}
-	.Publish{
+
+	.Publish {
 		width: 80rpx;
 		height: 80rpx;
 		background-color: #ccc;
@@ -314,5 +320,5 @@
 		bottom: 20%;
 		line-height: 80rpx;
 		text-align: center;
-		}
+	}
 </style>

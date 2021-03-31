@@ -108,9 +108,9 @@
 				// console.log(this.name)
 				this.user = user
 			},
-			open() {
-				console.log(this.user)
-			},
+			// open() {
+			// 	console.log(this.user)
+			// },
 			getImgIndex(index) {
 				console.log(index);
 

@@ -1,7 +1,7 @@
 	//封装全局请求组件
 
 
-	let baseURL = "http://8.136.181.16", 
+	let baseURL = "http://localhost:3000", 
 			ajaxTimes = 0;
 
 	export default function (options) {
@@ -17,9 +17,9 @@
 			uni.request({
 				url: baseURL + options.url,
 				data: options.data || {},
-				header: {
-					'content-type':'atext/plain'
-				},
+				// header: {
+				// 	'content-type':'atext/plain'
+				// },
 				method: options.method || 'GET',
 				success: res => {
 					resolve(res)

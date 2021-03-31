@@ -4,7 +4,9 @@
 			<button @click="submit">发表</button>
 		</view>
 		<textarea class="tar" v-model="main" placeholder="记录每一刻~" />
-		<u-upload   ref="uUpload" :form-data="formData"   :before-upload="beforeUpload" :action="action" :auto-upload="false" max-count="9" ></u-upload>
+		<u-upload  :show-progress="show"  ref="uUpload" :form-data="formData" @on-remove="onRemove"
+		 @on-progress="onPro"  @on-success="onSuccess" @on-change="onChange" @on-error="onErr"  
+		 :before-upload="beforeUpload" :action="action" :auto-upload="false" max-count="9" ></u-upload>
 	</view>
 </template>
 
@@ -13,13 +15,13 @@ export default {
 		data() {
 			return {
 				// 服务器地址
-				action: 'http://8.136.181.16/api/dunamic',
-				// load:true, //隐藏上传进度条
+				action: "http://localhost:3000/api/dunamic",
+				show:false, //隐藏上传进度条
 				main:'' ,//发表的文章
 				// filesArr: [],
 				formData:{
 					DunamicId:'123',
-					id:'12312',
+					id:'',
 					DuamincContent:''
 				}
 			
@@ -28,14 +30,49 @@ export default {
 		onLoad() {
 			
 		},
+		
 		methods:{ 
-
+			
+               onRemove(index,list){
+               	console.log(list)
+               	
+               	console.log("删除了")
+               	},
+								
+								
+               	onSuccess(index,list){
+               uni.navigateBack({
+                   delta: 1
+               });
+               		console.log("成功了")
+               		},
+               		onChange(){
+               			console.log('修改了')
+               			},
+										
+										
+               			onErr(){
+               console.log('失败啦')
+               				},
+											
+               				onPro(){
+                    uni.showLoading({
+                        title: ' 发表中...',
+												mask:true,
+												duration:100000
+                    });
+					
+							
+							
+               					console.log('上传中')
+               				},
 				 			submit() {
 								let _this = this
 								// this.$refs.uUpload.upload();
 							uni.getStorage({
 							    key: 'UserInfo',
 							    success: function (res) {
+									
 							        // console.log(res.data.id);
 										_this.formData.id = res.data.id
 							    }
@@ -48,10 +85,11 @@ export default {
 							}else{
 									console.log(_this.formData)
 							}
-								
+							
 							},1000)
 
 				 			}
+				
 				
 		}
 	}

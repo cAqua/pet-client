@@ -84,7 +84,9 @@
 		{
 			"path": "platforms/mp-weixin/y-PetCrcle/index",
 			"style": {
-				"navigationBarTitleText": "宠物圈"
+				"navigationBarTitleText": "宠物圈",
+				"enablePullDownRefresh": true
+				
 			}
 		},
 		{
