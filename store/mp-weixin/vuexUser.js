@@ -122,7 +122,7 @@ export default {
 										}),
 											state.userInfo = info;
 										state.thatUserInfo = false;
-										res.resolve_1();
+										resolve_1();
 									}
 								}); //用户信息存在本地
 							}

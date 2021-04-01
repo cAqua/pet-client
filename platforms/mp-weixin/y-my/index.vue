@@ -7,7 +7,7 @@
 
     <my-merchant v-if="UserType === 'merchant'"></my-merchant>
     <view v-for="(item,index) in userInfo" :key='index'>
-111
+
     </view>
     <!-- 自定义rabbar栏 -->
     <u-tabbar

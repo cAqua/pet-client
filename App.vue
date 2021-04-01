@@ -23,7 +23,6 @@
 
 	/* #ifdef MP-WEIXIN */
 	@import "@/UI/uView/index.scss";
-	@import '@/src/mp-weixin/style/base.wxss';
 	/* 标签初始化样式 */
 	/* #endif */
 	@import '@/src/mp-weixin/style/iconfont.wxss';

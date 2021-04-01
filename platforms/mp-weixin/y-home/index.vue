@@ -1,4 +1,4 @@
-<template style="background-color: #f3f4f6;">
+<template style="background-color: #f7f7f7">
   <scroll-view scroll-y="true" class="home_body">
     <!-- 遮罩层 -->
     <u-mask
@@ -20,17 +20,6 @@
     </u-mask>
 
     <view class="home">
-      <!-- 搜索框 -->
-      <uni-search-bar
-        class="uni-search-bar"
-        placeholder="输入查询店铺名称"
-        radius="15"
-        clearButton="auto"
-        maxlength="10"
-        @confirm="search"
-      >
-      </uni-search-bar>
-
       <!-- 轮播图 -->
       <uni-swiper-dot class="uni-swiper-dot" :current="current" :info="info">
         <swiper
@@ -40,69 +29,86 @@
           circular="true"
           next-margin="5px"
           previous-margin="5px"
-          indicator-dots="true"
         >
+          <!-- indicator-dots="true" -->
           <swiper-item v-for="(item, index) in swiperInfo" :key="index">
             <view class="swiper-item">
-              <image :src="item.content" mode="aspectFill" />
+              <image :src="item.content" mode="scaleToFill" />
             </view>
           </swiper-item>
         </swiper>
       </uni-swiper-dot>
 
+      <!-- 			<uni-search-bar class="uni-search-bar" placeholder="输入查询店铺名称" radius="15" clearButton="auto" maxlength="10"
+				@confirm="search">
+			</uni-search-bar> -->
+      <!-- 搜索框 -->
+      <view class="search">
+        <view class="search_Card">
+          <u-search
+            bgColor="#ffffff"
+            class="u-search"
+            shape="spuare"
+            placeholder="搜索附近商家"
+            v-model="searchConteng"
+            :clearabled="true"
+          ></u-search>
+        </view>
+      </view>
+
       <view class="Merchant">
-        <!-- 附近商家标题 后续可以考虑吧当前卡片封装成组件 -->
+        <!-- 附近商家标题 后续可以考虑吧当前卡片封装成组件 
         <view class="Merchant_title">
           <view class="Merchant_title_main">
             <view class="nearby">NEARBY</view>
             <view>附近商家</view>
           </view>
-        </view>
+        </view>-->
 
         <!--  主体 -->
         <view v-if="MerchantList.length > 0">
           <view
-            class="Merchant_List"
+            class="Merchant_list"
             v-for="(item, index) in MerchantList"
             :key="index"
           >
-            <view class="Merchant_info">
-              <view class="Merchant_phone">
-                <image :src="item.store_image"></image>
-              </view>
+            <view class="item">
+              <view class="L_info">
+                <view class="shopName">{{ item.shopName }}</view>
 
-              <view class="Merchant_introduce">
-                <view>{{ item.name }}</view>
-                <view>
-                  <uni-icons type="phone-filled" size="18"></uni-icons
-                  >{{ item.phone }}
+                <view class="range">{{ item.range }}</view>
+
+                <view class="BusinessHours">
+                  <!-- <uni-icons type="phone-filled" ></uni-icons> -->
+                  <u-icon name="clock" size="36"></u-icon>
+                  {{ item.BusinessHours }}
                 </view>
-                <view>{{ item.label }}</view>
+
+                <view class="address">
+                  <uni-icons
+                    type="location-filled"
+                    size="18"
+                    color="#e21a43"
+                  ></uni-icons>
+                  {{ item.address }}
+                </view>
               </view>
 
-              <!-- <button class="phone_btn" open-type="getUserInfo" @getuserinfo="getUserInfo"> -->
+              <view class="R_info">
+                <view class="distance">{{ item.distance }}</view>
 
-              <!-- 单击调用 用户数据统一插槽 -->
-              <button class="phone_btn" @click="getUserInfo()">
-                <image :src="item.btn_image"></image>
-              </button>
-
-              <!-- </button> -->
-            </view>
-            <view class="Merchant_place">
-              <view class="icon">
-                <uni-icons type="location-filled" size="18"></uni-icons>
+                <button size="mini" type="default" @click="ToDetail()">
+                  进店
+                </button>
               </view>
-              <view class="detailed">
-                {{ item.detailed }}
-              </view>
-              <view>距离{{ item.distance }} km</view>
             </view>
           </view>
         </view>
       </view>
-    </view>
 
+			<drag-button v-show="!UmaskFlag"  :isDock="true" :existTabBar="true" @btnClick="ToChatList()" />
+    </view>
+    
     <!-- uView自定义导航栏 -->
     <u-tabbar
       :list="tabbar"
@@ -116,120 +122,88 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
-import {
-	getUserInfoApi
-} from "@/store/mp-weixin/Weapp-User-Api.js";
+import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
+import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue";
+
 export default {
-  components: {},
+  components: { dragButton },
   data() {
     return {
       tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
       UmaskFlag: this.$store.state.home.UmaskFlag, //显示 隐藏遮罩层
-      // UserType: uni.getStorageSync("UserType"), //客户类型
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
       swiperInfo: [
         {
           content: "/static/mp-weixin/home_image/1.jpg",
         },
-        {
-          content: "/static/mp-weixin/home_image/2.jpg",
-        },
-        {
-          content: "/static/mp-weixin/home_image/3.jpg",
-        },
-        {
-          content: "/static/mp-weixin/home_image/4.jpg",
-        },
       ],
       MerchantList: [
         {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
+          shopName: "柴柴宠物店",
+          range: "经营范围洗澡、狗粮、宠物用品",
+          BusinessHours: "营业时间 : 10:00-22:00",
+          address: "广东省天河区珠村南端大街三号",
+          distance: "500m",
         },
         {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
+          shopName: "员村宠物店",
+          range: "经营范围洗澡、狗粮、宠物用品",
+          BusinessHours: "营业时间 : 8:00-22:00",
+          address: "广东省天河区员村南端大街三号",
+          distance: "600m",
         },
         {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
+          shopName: "黄村宠物店",
+          range: "经营范围洗澡、狗粮、宠物用品",
+          BusinessHours: "营业时间 : 6:00-18:00",
+          address: "广东省天河区黄村南端大街三号",
+          distance: "1.2km",
         },
         {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
+          shopName: "珠村宠物店",
+          range: "经营范围洗澡、狗粮、宠物用品",
+          BusinessHours: "营业时间 : 9:00-18:00",
+          address: "广东省天河区珠村南端大街三号",
+          distance: "3.0km",
         },
         {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
-        },
-        {
-          store_image: "/static/mp-weixin/icon/store_image.png",
-          name: "柴柴宠物店",
-          phone: "130********",
-          label: "宠物店",
-          btn_image: "/static/mp-weixin/icon/phone_icon.png",
-          detailed: "广东省天河区珠村南端大街三号",
-          distance: "4.4",
+          shopName: "车陂宠物店",
+          range: "经营范围洗澡、狗粮、宠物用品",
+          BusinessHours: "营业时间 : 08:00-16:00",
+          address: "广东省天河区车陂南端大街三号",
+          distance: "10km",
         },
       ],
     };
   },
-  created() {
-    
-  },
+  created() {},
   onLoad() {},
   methods: {
-    ...mapMutations("home", ["userLogin"]), //登录退出
-    ...mapMutations("home", { //防止多次点击
-      getUserInfoFlagFun: "getUserInfoFlag",
-    }),
 
-     getUserInfo(e) {
+    ToDetail() { //商家详情
 
-
-
-
-      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
+      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {
+        //本地存在用户数据
         this.getUserInfoFlagFun();
         console.warn("首页:已有数据不需要请求");
-				uni.navigateTo({
-					url:'./home-details/index',
-				})
-        
-        return
-      }
-    
+        uni.navigateTo({
+          url: "./home-details/index",
+        });
 
-        //本地没有用户数据会访问 请求
-        this.userLogin();
-        
+        return;
+      }
+
+      //本地没有用户数据会访问 请求
+      this.userLogin();
+    },
+    ToChatList() { //to聊天列表
+     
+
+      uni.navigateTo({
+        url: "/platforms/mp-weixin/y-ChatList/index",
+      });
     },
 
     getMerchantInfo() {
@@ -244,10 +218,15 @@ export default {
         key: "UmaskFlag",
         data: false,
         fail: () => {
-          return uni.showToast({ title: "存储商家信息错误" });
+          return uni.showToast({
+            title: "存储商家信息错误",
+          });
         },
       });
-      uni.setStorage({ key: "UserType", data: e }); //客户类型 商家 || 用户
+      uni.setStorage({
+        key: "UserType",
+        data: e,
+      }); //客户类型 商家 || 用户
       this.userLogin();
     },
 
@@ -271,6 +250,11 @@ export default {
       // console.log(index)
       return true;
     },
+    ...mapMutations("home", ["userLogin"]), //登录退出
+    ...mapMutations("home", {
+      //防止多次点击
+      getUserInfoFlagFun: "getUserInfoFlag",
+    }),
   },
 };
 </script>
@@ -281,9 +265,11 @@ export default {
     padding: 0;
     margin: 0;
   }
+
   button::after {
     border: none;
   }
+
   .warp {
     display: flex;
     align-items: center;
@@ -313,14 +299,42 @@ export default {
   }
 
   .home {
-    margin-top: 100rpx;
+    background: #f1f0f1;
+    // margin-top: 100rpx;
 
     .uni-search-bar {
       //搜索栏
+      // width: 100%;
+      // position: fixed;
+      // top: 0;
+      // z-index: 99;
+    }
+
+    .search {
+      //搜索栏
       width: 100%;
-      position: fixed;
-      top: 0;
-      z-index: 99;
+      height: 114rpx;
+      height: 150rpx;
+      display: flex;
+      // |		flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .search_Card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 95%;
+        height: 114rpx;
+        border-radius: 7rpx;
+        background: #ffffff;
+        padding: 15rpx 20rpx;
+        .u-search {
+          width: 100%;
+          border: 2rpx solid #e6e6e6;
+          border-radius: 10rpx;
+        }
+      }
     }
 
     //轮播图
@@ -338,93 +352,101 @@ export default {
     }
 
     //附近商家标题
-    .Merchant_title {
-      display: flex;
-      align-items: center;
-      margin: 10px;
-      width: 95%;
-      height: 52px;
-      padding-left: 2%;
-      background: linear-gradient(to top right, #bbdefa, $tcolor);
-      border-radius: $uni-border-radius-lg;
+    // .Merchant_title {
+    //   display: flex;
+    //   align-items: center;
+    //   margin: 10px;
+    //   width: 95%;
+    //   height: 52px;
+    //   padding-left: 2%;
+    //   background: linear-gradient(to top right, #bbdefa, $tcolor);
+    //   border-radius: $uni-border-radius-lg;
 
-      .Merchant_title_main {
-        width: 100%;
-        border-left: 4rpx solid #ffffff;
-        display: flex;
-        flex-direction: column;
-        font-size: $uni-font-size-lg;
-        padding-left: 2%;
-        color: #ffffff;
-        font-weight: 700;
+    //   .Merchant_title_main {
+    //     width: 100%;
+    //     border-left: 4rpx solid #ffffff;
+    //     display: flex;
+    //     flex-direction: column;
+    //     font-size: $uni-font-size-title;
+    //     padding-left: 2%;
+    //     color: #ffffff;
+    //     font-weight: 700;
 
-        .nearby {
-          font-weight: normal;
-          font-size: $uni-font-size-sm;
-        }
-      }
-    }
+    //     .nearby {
+    //       font-weight: normal;
+    //       font-size: $uni-font-size-sm;
+    //     }
+    //   }
+    // }
   }
 
   //商家信息
-  .Merchant_List {
-    display: flex;
-    flex-direction: column;
-    background-color: #f4f4f4;
-    margin: $uni-spacing-col-lg 0;
-    font-size: $uni-font-size-base;
-
-    .Merchant_info {
+  .Merchant_list {
+    width: 100%;
+    height: 300rpx;
+    background-color: #ffffff;
+    border-top: 4rpx solid #dcdcdc;
+    border-bottom: 4rpx solid #dcdcdc;
+    padding: 30rpx;
+    .item {
+      width: 100%;
+      height: 100%;
+      // background-color: aqua;
       display: flex;
-      align-items: center;
-      padding-right: 20rpx;
-
-      .Merchant_phone {
-        width: 130rpx;
-        height: 130rpx;
+      justify-content: center;
+      .L_info {
+        flex: 8;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: left;
+        font-size: $uni-font-size-base;
+        .shopName {
+          font-size: $uni-font-size-title;
+          font-weight: 700;
+        }
 
-        image {
-          width: 45px;
-          height: 45px;
+        .range {
+          color: $tcolor;
+          font-size: $uni-font-size-lg;
+        }
+
+        .BusinessHours {
+          display: flex;
+          align-items: center;
+          u-icon {
+            color: $tcolor;
+          }
+        }
+
+        .address {
+          display: flex;
+          align-items: flex-start;
+          uni-icons {
+          }
         }
       }
 
-      .Merchant_introduce {
-        width: 70%;
-
-        view {
-          margin: 6rpx 0;
-        }
-      }
-
-      .phone_btn {
-        image {
-          width: 45px;
-          height: 45px;
-        }
-      }
-    }
-
-    .Merchant_place {
-      display: flex;
-      align-items: center;
-      padding: 0 20rpx;
-
-      .icon {
-      }
-
-      .detailed {
+      .R_info {
         flex: 2;
-      }
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: right;
+        font-size: $uni-font-size-base;
+        .distance {
+        }
 
-      text {
+        // .detail {
+        button {
+          background-color: $tcolor;
+          color: #ffffff;
+          padding: 2rpx 45rpx;
+          border-radius: 9rpx;
+        }
+        // }
       }
     }
   }
 }
 </style>
-
-

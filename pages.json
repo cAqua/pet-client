@@ -21,7 +21,7 @@
 		// 	"path": "platforms/mp-weixin/y-my/index",
 		// 	"style": {
 		// 		"navigationBarTitleText": "个人中心"
-		
+
 		// 	}
 		// },
 
@@ -67,10 +67,16 @@
 				"navigationBarTitleText": "商家详情"
 			}
 		},
-				{
+		{
 			"path": "platforms/mp-weixin/y-my/index",
 			"style": {
 				"navigationBarTitleText": "个人中心"
+			}
+		},
+		{
+			"path": "platforms/mp-weixin/y-ChatList/index",
+			"style": {
+				"navigationBarTitleText": "聊天列表"
 			}
 		},
 
@@ -99,7 +105,7 @@
 				"navigationBarTitleText": "发表说说"
 			}
 		}
-		
+
 	],
 
 

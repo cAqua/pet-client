@@ -297,6 +297,7 @@ export default {
 	align-items: center;
 	padding: 0 18rpx;
 	flex: 1;
+	background-color: transparent;
 }
 
 .u-clear-icon {

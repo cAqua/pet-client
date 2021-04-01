@@ -18,7 +18,7 @@
 				url: baseURL + options.url,
 				data: options.data || {},
 				header: {
-					'content-type':'atext/plain'
+					'content-type':'application/json; charset=utf-8'
 				},
 				method: options.method || 'GET',
 				success: res => {
