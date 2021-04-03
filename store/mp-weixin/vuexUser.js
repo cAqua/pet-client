@@ -1,7 +1,6 @@
 import {
 	getUserInfoApi
 } from "@/store/mp-weixin/Weapp-User-Api.js";
-// import { reject } from "core-js/fn/promise";
 
 
 
@@ -9,32 +8,8 @@ import {
 export default {
 	namespaced: true,
 	state: {
-		uViewTabBar: [ //定义tabbar
-			{
-				iconPath: "/static/mp-weixin/icon/home.png",
-				selectedIconPath: "/static/mp-weixin/icon/_home.png",
-				text: '首页',
-				count: 0,
-				isDot: true,
-				pagePath: "/platforms/mp-weixin/y-home/index",
 
-			},
-			{
-				iconPath: "/static/mp-weixin/icon/PetCrcle.png",
-				selectedIconPath: "/static/mp-weixin/icon/_PetCrcle.png",
-				text: '宠物圈',
-				midButton: true,
-				pagePath: "/platforms/mp-weixin/y-PetCrcle/index"
-			},
-			{
-				iconPath: "/static/mp-weixin/icon/my.png",
-				selectedIconPath: "/static/mp-weixin/icon/_my.png",
-				text: '我的',
-				pagePath: "/platforms/mp-weixin/y-my/index"
-			},
-		],
 		$tcolor: '#2979ff', //全局主体颜色
-		UmaskFlag: false, //遮罩层
 		getUserInfoFlag: true, //防止多次点击登录
 		userInfo: {
 			usernmae: "Hi,您尚未登录",
@@ -46,9 +21,9 @@ export default {
 			state.getUserInfoFlag = false;
 		},
 		async userLogin(state) {
-				//获取用户数据 && 唯一id openid
+			//获取用户数据 && 唯一id openid
 
-				const info = await new Promise((resolve, reject) => {
+			const info = await new Promise((resolve, reject) => {
 
 				let info = Object;
 
@@ -101,7 +76,7 @@ export default {
 				});
 
 			});
-			 
+
 			return await new Promise((resolve_1, reject_1) => {
 
 				getUserInfoApi(info)
@@ -255,10 +230,10 @@ export default {
 // 	})
 
 
-	
-	
-	
-	
+
+
+
+
 // // })
 
 

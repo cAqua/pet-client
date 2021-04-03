@@ -26,12 +26,12 @@
 		// },
 
 
-		{
-			"path": "platforms/mp-weixin/y-home/index",
-			"style": {
-				"navigationBarTitleText": "首页"
-			}
-		},
+		// {
+		// 	"path": "platforms/mp-weixin/y-home/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "首页"
+		// 	}
+		// },
 
 
 
@@ -41,25 +41,32 @@
 		// 		"navigationBarTitleText": "注册"
 		// 	}
 		// }
-
-
-		//#endif
-
-
-		//#ifdef H5
+		
 		{
-			"path": "platforms/h5/home/index",
+			"path": "platforms/mp-weixin/y-cosplayMask/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "选择角色"
 			}
 		},
+
+
 		//#endif
+
+
+		// //#ifdef H5
 		// {
-		// 	"path": "platforms/mp-weixin/y-home/index",
+		// 	"path": "platforms/h5/home/index",
 		// 	"style": {
 		// 		"navigationBarTitleText": "首页"
 		// 	}
 		// },
+		// //#endif
+		{
+			"path": "platforms/mp-weixin/y-home/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
 
 		{
 			"path": "platforms/mp-weixin/y-home/home-details/index",
@@ -87,6 +94,7 @@
 				"navigationBarTitleText": "注册"
 			}
 		},
+
 		{
 			"path": "platforms/mp-weixin/y-PetCrcle/index",
 			"style": {

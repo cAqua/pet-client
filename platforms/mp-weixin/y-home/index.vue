@@ -1,24 +1,5 @@
 <template style="background-color: #f7f7f7">
   <scroll-view scroll-y="true" class="home_body">
-    <!-- 遮罩层 -->
-    <u-mask
-      v-if="UmaskFlag"
-      :show="UmaskFlag"
-      zoom="true"
-      mask-click-able="false"
-    >
-      <view class="warp">
-        <view class="rect">
-          <button style="background-color: #2979ff" @click="Umask('user')">
-            用户
-          </button>
-          <button style="background-color: #fa3534" @click="Umask('merchant')">
-            商家
-          </button>
-        </view>
-      </view>
-    </u-mask>
-
     <view class="home">
       <!-- 轮播图 -->
       <uni-swiper-dot class="uni-swiper-dot" :current="current" :info="info">
@@ -57,14 +38,6 @@
       </view>
 
       <view class="Merchant">
-        <!-- 附近商家标题 后续可以考虑吧当前卡片封装成组件 
-        <view class="Merchant_title">
-          <view class="Merchant_title_main">
-            <view class="nearby">NEARBY</view>
-            <view>附近商家</view>
-          </view>
-        </view>-->
-
         <!--  主体 -->
         <view v-if="MerchantList.length > 0">
           <view
@@ -106,9 +79,14 @@
         </view>
       </view>
 
-			<drag-button v-show="!UmaskFlag"  :isDock="true" :existTabBar="true" @btnClick="ToChatList()" />
+      <drag-button
+        v-show="!UmaskFlag"
+        :isDock="true"
+        :existTabBar="true"
+        @btnClick="ToChatList()"
+      />
     </view>
-    
+
     <!-- uView自定义导航栏 -->
     <u-tabbar
       :list="tabbar"
@@ -123,15 +101,15 @@
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
-import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue";
+import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
 
 export default {
   components: { dragButton },
   data() {
     return {
-      tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
+      tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
-      UmaskFlag: this.$store.state.home.UmaskFlag, //显示 隐藏遮罩层
+
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
       swiperInfo: [
@@ -140,7 +118,27 @@ export default {
         },
       ],
       MerchantList: [
-        {
+       
+      ],
+    };
+  },
+  created() {},
+  onLoad() {
+
+    uni.getLocation({
+      type: 'wgs84',
+      success:(i)=>{
+        console.log(i);
+
+        //发起当前用户地理位置 店铺信息
+        
+      },
+      fail:(e)=>{
+        console.log(e);
+
+        //展示默认的地理位置信息
+        this.MerchantList = [
+           {
           shopName: "柴柴宠物店",
           range: "经营范围洗澡、狗粮、宠物用品",
           BusinessHours: "营业时间 : 10:00-22:00",
@@ -175,14 +173,17 @@ export default {
           address: "广东省天河区车陂南端大街三号",
           distance: "10km",
         },
-      ],
-    };
+      ]
+      }
+      
+    })
+    
   },
-  created() {},
-  onLoad() {},
   methods: {
+    ToDetail() {
+      //商家详情
 
-    ToDetail() { //商家详情
+      // 需求,当点击了 用户 || 商家的时候 展示不一样的tabbar和列表
 
       if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {
         //本地存在用户数据
@@ -196,10 +197,10 @@ export default {
       }
 
       //本地没有用户数据会访问 请求
-      this.userLogin();
+      // this.userLogin();
     },
-    ToChatList() { //to聊天列表
-     
+    ToChatList() {
+      //to聊天列表
 
       uni.navigateTo({
         url: "/platforms/mp-weixin/y-ChatList/index",
@@ -211,24 +212,7 @@ export default {
       console.log("开始获取商家数据");
     },
 
-    Umask(e) {
-      //遮罩层 选择用户商家
-      this.UmaskFlag = false;
-      uni.setStorage({
-        key: "UmaskFlag",
-        data: false,
-        fail: () => {
-          return uni.showToast({
-            title: "存储商家信息错误",
-          });
-        },
-      });
-      uni.setStorage({
-        key: "UserType",
-        data: e,
-      }); //客户类型 商家 || 用户
-      this.userLogin();
-    },
+
 
     search(e) {
       //搜索框触发
@@ -270,13 +254,13 @@ export default {
     border: none;
   }
 
-  .warp {
+  .selectBtn {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
 
-    .rect {
+    .rectt {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -302,13 +286,13 @@ export default {
     background: #f1f0f1;
     // margin-top: 100rpx;
 
-    .uni-search-bar {
-      //搜索栏
-      // width: 100%;
-      // position: fixed;
-      // top: 0;
-      // z-index: 99;
-    }
+    // .uni-search-bar {
+    //搜索栏
+    // width: 100%;
+    // position: fixed;
+    // top: 0;
+    // z-index: 99;
+    // }
 
     .search {
       //搜索栏

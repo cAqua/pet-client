@@ -46,7 +46,7 @@
 	export default {
 		data() {
 			return {
-				tabbar: this.$store.state.home.uViewTabBar, //刷新tabbar
+				tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
 				$tcolor: this.$store.state.home.$tcolor,
 				user: [{
 						name: '我是你爹',

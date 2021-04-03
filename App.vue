@@ -1,30 +1,49 @@
 <script>
-	export default {
-		globalData: {}, //全局属性 通过 getApp().globalData.*** 读取变量
+export default {
+  globalData: {
+    uViewTabBar: [
+      //定义tabbar
+      {
+        iconPath: "/static/mp-weixin/icon/home.png",
+        selectedIconPath: "/static/mp-weixin/icon/_home.png",
+        text: "首页",
+        count: 0,
+        isDot: true,
+        pagePath: "/platforms/mp-weixin/y-home/index",
+      },
+      {
+        iconPath: "/static/mp-weixin/icon/PetCrcle.png",
+        selectedIconPath: "/static/mp-weixin/icon/_PetCrcle.png",
+        text: "宠物圈",
+        midButton: true,
+        pagePath: "/platforms/mp-weixin/y-PetCrcle/index",
+      },
+      {
+        iconPath: "/static/mp-weixin/icon/my.png",
+        selectedIconPath: "/static/mp-weixin/icon/_my.png",
+        text: "我的",
+        pagePath: "/platforms/mp-weixin/y-my/index",
+      },
+    ],
+  }, //全局属性 通过 getApp().globalData.*** 读取变量
 
-		onLaunch: function() { //全局出发一次
-			
-			//判断当前是否选择了角色 看是否弹窗让用户选择
-			this.$store.state.home.UmaskFlag = uni.getStorageSync('UserType').length > 0 ?  false : true 
-
-		},
-		onShow: function() {
-
-		},
-		onHide: function() {
-			// console.log('App Hide')
-		},
-
-	}
+  onLaunch: function () {
+    //全局出发一次
+  },
+  onShow: function () {},
+  onHide: function () {
+    // console.log('App Hide')
+  },
+};
 </script>
 
 <style lang="scss">
-	/*每个页面公共css */
+/*每个页面公共css */
 
-	/* #ifdef MP-WEIXIN */
-	@import "@/UI/uView/index.scss";
-	/* 标签初始化样式 */
-	/* #endif */
-	@import '@/src/mp-weixin/style/iconfont.wxss';
-	/* uni_icon */
+/* #ifdef MP-WEIXIN */
+@import "@/UI/uView/index.scss";
+/* 标签初始化样式 */
+/* #endif */
+@import "@/src/mp-weixin/style/iconfont.wxss";
+/* uni_icon */
 </style>
