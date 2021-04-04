@@ -1,7 +1,7 @@
   <template>
   <!-- 遮罩层 -->
 
-  <view class="wrap" v-if="UmaskFlag">
+  <view class="wrap" v-if="wrapFlag">
     <view class="rect">
       <view class="select">选择您的角色</view>
       <view class="selectBtn">
@@ -24,56 +24,70 @@
 商家 : 跳转个人中心 > 注册 登录
 
 */
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      UmaskFlag: false, //显示 隐藏遮罩层
+      wrapFlag:false
     };
   },
   created() {
     //判断当前是否选择了角色 看是否弹窗让用户选择
-    // this.UmaskFlag = uni.getStorageSync('UserType').length > 0 ?  false : true;
-
-    if (uni.getStorageSync("UserType") || uni.getStorageSync("UmaskFlag")) {
+    if (uni.getStorageSync("UserType")) {
       //说明有数据不需要本页面,直接跳转到首页
-      return uni.switchTab({url: "/platforms/mp-weixin/y-home/index",});
-      
+      return this.navigateToRoles() //跳转对应页面
     }
-    this.UmaskFlag = true;
+    this.wrapFlag = true
   },
   methods: {
+    ...mapActions("home", ["userLogin"]),
     Umask(e) {
       //遮罩层 选择用户商家
+      let that = this;
+      this.userLogin()
+        .then((res) => { //登录成功回调
+         
 
-      uni.getUserProfile({
-        desc: "获取用户信息登录",
-        success: (i) => {
-          this.UmaskFlag = false; //关闭遮罩层
+            uni.setStorage({ //客户类型 商家 || 用户
+              key: "UserType",
+              data: e,
+              success: () => {
+                console.warn('登录成功  ' + res);
+                  this.navigateToRoles()
+                
+              },
+              fail: () => {return uni.showToast({ title: "存储类型错误" });},
+            });
+        
+        })
+        .catch((err) => {
+          //拒绝授权
 
-          uni.setStorage({
-            key: "UserInfo",
-            data: i.userInfo,
-            fail: () => {
-              return uni.showToast({ title: "存储用户信息错误" });
-            },
-          });
-          uni.setStorage({ key: "UmaskFlag", data: false });
-          uni.setStorage({
-            key: "UserType",
-            data: e,
-            success: () => {
-              uni.switchTab({url: "/platforms/mp-weixin/y-home/index",});
-            },
-            fail: () => {
-              return uni.showToast({ title: "存储类型错误" });
-            },
-          }); //客户类型 商家 || 用户
-        },
-        fail: (err) => console.warn("用户取消授权"),
-      });
+          if (err === "refuse") {
 
-      // this.userLogin();
+            uni.setStorage({ //客户类型 商家 || 用户
+              key: "UserType",
+              data: e,
+              fail: () => {return uni.showToast({ title: "存储类型错误" });},
+            });
+
+            return this.navigateToRoles() //跳转对应页面
+          }
+        });
+        
     },
+
+    navigateToRoles(){
+
+      if(uni.getStorageSync("UserType") =='user'){
+        console.log('user');
+        uni.switchTab({ url: "/platforms/mp-weixin/y-home/index" });
+      }else{
+        console.log('商家');
+        uni.switchTab({ url: "/platforms/mp-weixin/s-chatList/index" });
+      }
+      
+    }
   },
 };
 </script>

@@ -4,23 +4,25 @@
 	let baseURL = "http://8.136.181.16", 
 			ajaxTimes = 0;
 
-	export default function (options) {
-		
-
-		ajaxTimes++
-		uni.showLoading({
-			// title: '加载中...',
-			mask: true,
-			icon:'loading'
-		})
+export default function (params) {
+			
+   if(params.form != 'silent'){//如果请求api的时候有带 silent 的字段表示静默登录 如果没有带 默认提示登录
+		 ajaxTimes++
+		 uni.showLoading({
+			 title: '加载中...',
+			 mask: true,
+			 icon:'loading'
+			})
+		}
 		return new Promise((resolve, reject) => {
+			
 			uni.request({
-				url: baseURL + options.url,
-				data: options.data || {},
+				url: baseURL + params.url,
+				data: params.data || {},
 				header: {
 					'content-type':'application/json; charset=utf-8'
 				},
-				method: options.method || 'GET',
+				method: params.method || 'GET',
 				success: res => {
 					resolve(res)
 				},
@@ -28,14 +30,17 @@
 					reject(console.log('请求失败'+ err))
 				},
 				complete: () => {
-					ajaxTimes--
-					if (ajaxTimes === 0) {
-						uni.hideLoading()
+					if(params.form != 'silent'){
+						ajaxTimes--
+						if (ajaxTimes === 0) {
+							uni.hideLoading()
+						}
 					}
 				}
 			})
 		})
 	}
+
 
 
 

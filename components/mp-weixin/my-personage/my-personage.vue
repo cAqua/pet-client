@@ -9,11 +9,7 @@
 
         <view class="name">
           <view>
-            <button
-              hover-class="none"
-             
-              @click="getuserinfo()"
-            >
+            <button hover-class="none" @click="getuserinfo()">
               {{ userInfo.usernmae }}
               <!-- 名称在vuex.home -->
             </button>
@@ -27,11 +23,13 @@
       </view>
     </view>
   </view>
+
+  
 </template>
 
 <script>
-import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
-import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+// import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "home",
@@ -39,48 +37,59 @@ export default {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主题颜色
+      userInfo: {
+        usernmae: "Hi,您尚未登录",
+        img: "/static/mp-weixin/icon/default-portrait.png",
+      },
     };
   },
-  props: {
-
-  },
+  props: {},
   computed: {
     ...mapState(
       "home", //用户数据
-      ["userInfo",'getUserInfoFlag']
+      [ "getUserInfoFlag"]
     ),
   },
   created() {
-   
-    if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) { //页面进入判断本地有没有缓存
 
-      this.userInfo.usernmae = uni.getStorageSync("UserInfo").usernmae;
-      this.userInfo.img = uni.getStorageSync("UserInfo").img;
-      this.getUserInfoFlagFun();
+    
+    //页面进入判断本地有没有缓存
+    if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {
+
+      let Info = uni.getStorageSync("UserInfo");
+      this.userInfo.usernmae = Info.usernmae; //name
+      this.userInfo.img = Info.img; //头像
+      this.getUserInfoFlagFun(); //防止多次点击
       console.warn("个人中心:其他页面登录了所以这里不用获取缓存");
     }
   },
   methods: {
-    ...mapMutations("home", ["userLogin", "userlogout"]), //登录退出
-    ...mapMutations("home", { //防止多次点击
+    ...mapActions("home", ["userLogin", "userlogout"]), //登录退出
+    ...mapMutations("home", {
+      //防止多次点击
       getUserInfoFlagFun: "getUserInfoFlag",
     }),
 
-    getuserinfo(e) {  
+    getuserinfo(e) {
 
-      if (this.getUserInfoFlag == false) return console.warn("防止多次点击");
+      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) return console.warn("本地已经有数据防止多次点击");
 
-      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {//本地存在用户数据
+      this.userLogin() //调用静默登录
+        .then((res) => {
+          //登录成功回调
 
-        this.userInfo.usernmae = uni.getStorageSync("UserInfo").usernmae;
-        this.userInfo.img = uni.getStorageSync("UserInfo").img;
-        this.getUserInfoFlagFun();
-        console.warn("个人中心首页没有确定授权在本页面需要登录,点击按钮触发");
-        return uni.showToast({ title: "登录成功", icon: "success" });
-      }
-
-      // 能进入这里的说明授权点了确定 而且是第一次进入并且本地没有数据
-      this.userLogin();
+          let UserInfo = uni.getStorageSync("UserInfo");
+          this.userInfo.usernmae = UserInfo.usernmae;
+          this.userInfo.img = UserInfo.img;
+          return uni.showToast({ title: "登录成功" });
+        })
+        .catch((err) => {
+          //拒绝授权
+          uni.showToast({
+            title: "登录失败,请授权登录后查看更多信息",
+            icon: "none",
+          });
+        });
     },
 
     beforeSwitch(index) {

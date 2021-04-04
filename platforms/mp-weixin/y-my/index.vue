@@ -1,14 +1,13 @@
 <template>
   <view class="MyBody">
-    <my-personage 
+    <my-personage ref='myPersonage'
 		v-if="UserType === 'user'"
 		></my-personage>
 		<!-- :info=UserInfo -->
 
     <my-merchant v-if="UserType === 'merchant'"></my-merchant>
-    <view v-for="(item,index) in userInfo" :key='index'>
 
-    </view>
+    <view style="width:100%;height:30px;text-align:center;background-color:aqua" @click="removeUserInfo()">注销</view>
     <!-- 自定义rabbar栏 -->
     <u-tabbar
       :list="tabbar"
@@ -43,9 +42,25 @@ export default {
   },
   onLoad() {
 
+    // uni.setStorage({
+    //   //客户类型 商家 || 用户
+    //   key: "UserType",
+    //   data: "user",
+    // });
 
+
+      
   },
   methods: {
+    ...mapActions("home",["userlogout"]),
+    removeUserInfo(){
+
+      if(Object.keys(uni.getStorageSync("UserInfo")).length <= 0 )return; 
+
+      this.$refs.myPersonage.userInfo = {usernmae: "Hi,您尚未登录",img: "/static/mp-weixin/icon/default-portrait.png",},
+      this.userlogout()
+
+    },
 
 
     beforeSwitch(index) {

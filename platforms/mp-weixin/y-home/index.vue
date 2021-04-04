@@ -118,27 +118,7 @@ export default {
         },
       ],
       MerchantList: [
-       
-      ],
-    };
-  },
-  created() {},
-  onLoad() {
-
-    uni.getLocation({
-      type: 'wgs84',
-      success:(i)=>{
-        console.log(i);
-
-        //发起当前用户地理位置 店铺信息
-        
-      },
-      fail:(e)=>{
-        console.log(e);
-
-        //展示默认的地理位置信息
-        this.MerchantList = [
-           {
+        {
           shopName: "柴柴宠物店",
           range: "经营范围洗澡、狗粮、宠物用品",
           BusinessHours: "营业时间 : 10:00-22:00",
@@ -173,31 +153,92 @@ export default {
           address: "广东省天河区车陂南端大街三号",
           distance: "10km",
         },
-      ]
-      }
-      
-    })
-    
+      ],
+    };
+  },
+  created() {},
+  onLoad() {
+    return;
+    uni.getLocation({
+      type: "wgs84",
+      success: (i) => {
+        console.log(i);
+      },
+      fail: (e) => {
+        uni.showToast({ title: "获取地址失败", icon: "none" });
+
+        return;
+
+        //展示默认的地理位置信息
+        this.MerchantList = [
+          {
+            shopName: "柴柴宠物店",
+            range: "经营范围洗澡、狗粮、宠物用品",
+            BusinessHours: "营业时间 : 10:00-22:00",
+            address: "广东省天河区珠村南端大街三号",
+            distance: "500m",
+          },
+          {
+            shopName: "员村宠物店",
+            range: "经营范围洗澡、狗粮、宠物用品",
+            BusinessHours: "营业时间 : 8:00-22:00",
+            address: "广东省天河区员村南端大街三号",
+            distance: "600m",
+          },
+          {
+            shopName: "黄村宠物店",
+            range: "经营范围洗澡、狗粮、宠物用品",
+            BusinessHours: "营业时间 : 6:00-18:00",
+            address: "广东省天河区黄村南端大街三号",
+            distance: "1.2km",
+          },
+          {
+            shopName: "珠村宠物店",
+            range: "经营范围洗澡、狗粮、宠物用品",
+            BusinessHours: "营业时间 : 9:00-18:00",
+            address: "广东省天河区珠村南端大街三号",
+            distance: "3.0km",
+          },
+          {
+            shopName: "车陂宠物店",
+            range: "经营范围洗澡、狗粮、宠物用品",
+            BusinessHours: "营业时间 : 08:00-16:00",
+            address: "广东省天河区车陂南端大街三号",
+            distance: "10km",
+          },
+        ];
+      },
+    });
   },
   methods: {
     ToDetail() {
-      //商家详情
+      //如果在遮罩层没有授权,则这里需要授权后才能进入
 
-      // 需求,当点击了 用户 || 商家的时候 展示不一样的tabbar和列表
-
-      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {
+      if (uni.getStorageSync("UserInfo")) {
         //本地存在用户数据
-        this.getUserInfoFlagFun();
-        console.warn("首页:已有数据不需要请求");
+        // this.getUserInfoFlagFun();
+        console.warn("首页:\n已有数据不需要请求\n直接进入页面");
         uni.navigateTo({
           url: "./home-details/index",
         });
-
         return;
       }
+      this.userLogin("silent") //调用静默登录
+        .then((res) => {
+          //登录成功回调
 
-      //本地没有用户数据会访问 请求
-      // this.userLogin();
+          uni.navigateTo({
+            url: "./home-details/index",
+          });
+          return uni.showToast({ title: "登录成功" });
+        })
+        .catch((err) => {
+          //拒绝授权
+          uni.showToast({
+            title: "请先授权,才能进入页面",
+            icon: "none",
+          });
+        });
     },
     ToChatList() {
       //to聊天列表
@@ -209,10 +250,9 @@ export default {
 
     getMerchantInfo() {
       //获取商家 信息
+
       console.log("开始获取商家数据");
     },
-
-
 
     search(e) {
       //搜索框触发
@@ -234,10 +274,11 @@ export default {
       // console.log(index)
       return true;
     },
-    ...mapMutations("home", ["userLogin"]), //登录退出
+    ...mapActions("home", ["userLogin"]), //异步登录退出
+    // ...mapMutations("home", ["userLogin"]), //登录退出
     ...mapMutations("home", {
       //防止多次点击
-      getUserInfoFlagFun: "getUserInfoFlag",
+      // getUserInfoFlagFun: "getUserInfoFlag",
     }),
   },
 };

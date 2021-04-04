@@ -142,7 +142,7 @@
 
 			},
 			onPullDownRefresh() {
-				console.log('refresh');
+				// console.log('refresh');
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
 				}, 1000);

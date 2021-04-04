@@ -11,56 +11,22 @@
 
 	"pages": [ // 这里的条件编译是 不同平台展示的  第一启动项不一样
 		//#ifdef MP-WEIXIN
-		// {
-		// 	"path": "platforms/mp-weixin/y-PetCrcle/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "宠物圈"
-		// 	}
-		// },
-		// {
-		// 	"path": "platforms/mp-weixin/y-my/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "个人中心"
-
-		// 	}
-		// },
-
-
-		// {
-		// 	"path": "platforms/mp-weixin/y-home/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "首页"
-		// 	}
-		// },
-
-
-
-		// {
-		// 	"path": "platforms/mp-weixin/y-register/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "注册"
-		// 	}
-		// }
 		
+		//#endif
+
 		{
 			"path": "platforms/mp-weixin/y-cosplayMask/index",
 			"style": {
-				"navigationBarTitleText": "选择角色"
+				"navigationBarTitleText": "角色选择"
+			}
+		},
+		{
+			"path": "platforms/mp-weixin/s-chatList/index",
+			"style": {
+				"navigationBarTitleText": "商家聊天列表"
 			}
 		},
 
-
-		//#endif
-
-
-		// //#ifdef H5
-		// {
-		// 	"path": "platforms/h5/home/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "首页"
-		// 	}
-		// },
-		// //#endif
 		{
 			"path": "platforms/mp-weixin/y-home/index",
 			"style": {
@@ -114,6 +80,16 @@
 			}
 		}
 
+		
+		// //#ifdef H5
+		// {
+		// 	"path": "platforms/h5/home/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "首页"
+		// 	}
+		// },
+		// //#endif
+
 	],
 
 
@@ -123,9 +99,10 @@
 		"backgroundColor": "#fff",
 		"position": "bottom",
 		"borderStyle": "black",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "platforms/mp-weixin/y-home/index",
-				"text": "首页",
+				"text": "聊天列表",
 				"iconPath": "static/mp-weixin/icon/home.png",
 				"selectedIconPath": "static/mp-weixin/icon/_home.png"
 			},

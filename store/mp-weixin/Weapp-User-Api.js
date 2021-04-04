@@ -2,17 +2,19 @@ import request from './request'; // 封装好的请求组件
 
 
                  
-function getUserInfoApi(param) { //插入表
+function userLoginApi(params,form) { //静默登录
     return request({
         url: "/api/insertUser/",
 		method:"POST",
-		data:param,
+		data:params, //参数
+        form:form || true,//登录类型
     })
 }
 
 
 
 
+
 export {
-    getUserInfoApi
+    userLoginApi,
 }
