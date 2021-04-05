@@ -11,10 +11,18 @@ function userLoginApi(params,form) { //静默登录
     })
 }
 
+function dunamic(param) { //插入表
+    return request({
+        url: "/api/dunamic/",
+		method:"POST",
+		data:param,
+    })
+}
+
 
 
 
 
 export {
-    userLoginApi,
+    userLoginApi,dunamic
 }
