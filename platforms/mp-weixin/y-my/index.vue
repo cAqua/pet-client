@@ -7,7 +7,8 @@
 
     <my-merchant v-if="UserType === 'merchant'"></my-merchant>
 
-    <view style="width:100%;height:30px;text-align:center;background-color:aqua" @click="removeUserInfo()">注销</view>
+    <view style="width:100%;height:30px;text-align:center;background-color:aqua"
+     @click="thisLogout()">注销</view>
     <!-- 自定义rabbar栏 -->
     <u-tabbar
       :list="tabbar"
@@ -52,10 +53,11 @@ export default {
       
   },
   methods: {
-    ...mapActions("home",["userlogout"]),
-    removeUserInfo(){
+    ...mapMutations("home",["userlogout"]),
 
-      if(Object.keys(uni.getStorageSync("UserInfo")).length <= 0 )return; 
+    thisLogout(){
+
+      if(Object.keys(uni.getStorageSync("UserInfo")).length <= 0 )return;//防止多次点击注销
 
       this.$refs.myPersonage.userInfo = {usernmae: "Hi,您尚未登录",img: "/static/mp-weixin/icon/default-portrait.png",},
       this.userlogout()

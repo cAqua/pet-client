@@ -18,10 +18,7 @@
   
 <script>
 /* 
-登录流程  
-打开遮罩层 选择用户还是商家
-用户 : 遮罩层|关闭遮罩层 >弹出授权 >无论关闭与否都关闭遮罩层 >首页|授权地址 如果授权了地址展示附近商家 如果没有授权 默认展示广州附近地址
-商家 : 跳转个人中心 > 注册 登录
+
 
 */
 import { mapActions } from "vuex";
@@ -43,18 +40,14 @@ export default {
     ...mapActions("home", ["userLogin"]),
     Umask(e) {
       //遮罩层 选择用户商家
-      let that = this;
-      this.userLogin()
+      this.userLogin()  //高调登录
         .then((res) => { //登录成功回调
-         
 
             uni.setStorage({ //客户类型 商家 || 用户
-              key: "UserType",
-              data: e,
+              key: "UserType",data: e,
               success: () => {
                 console.warn('登录成功  ' + res);
                   this.navigateToRoles()
-                
               },
               fail: () => {return uni.showToast({ title: "存储类型错误" });},
             });
@@ -62,22 +55,18 @@ export default {
         })
         .catch((err) => {
           //拒绝授权
-
           if (err === "refuse") {
-
             uni.setStorage({ //客户类型 商家 || 用户
-              key: "UserType",
-              data: e,
+              key: "UserType",data: e,
               fail: () => {return uni.showToast({ title: "存储类型错误" });},
             });
-
             return this.navigateToRoles() //跳转对应页面
           }
         });
         
     },
 
-    navigateToRoles(){
+    navigateToRoles(){ //跳转对应详情页面
 
       if(uni.getStorageSync("UserType") =='user'){
         console.log('user');

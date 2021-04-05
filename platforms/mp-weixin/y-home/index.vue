@@ -34,6 +34,11 @@
             v-model="searchConteng"
             :clearabled="true"
           ></u-search>
+          <view>
+            <view class="icon">
+              <image :src="siteIcon"></image>
+            </view>
+          </view>
         </view>
       </view>
 
@@ -109,7 +114,7 @@ export default {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
-
+      siteIcon:'/static/mp-weixin/icon/_site.png',
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
       swiperInfo: [
@@ -230,7 +235,8 @@ export default {
           uni.navigateTo({
             url: "./home-details/index",
           });
-          return uni.showToast({ title: "登录成功" });
+          // return uni.showToast({ title: "登录成功" });
+          return 
         })
         .catch((err) => {
           //拒绝授权
@@ -348,18 +354,29 @@ export default {
       .search_Card {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         width: 95%;
         height: 114rpx;
         border-radius: 7rpx;
         background: #ffffff;
-        padding: 15rpx 20rpx;
+        // padding: 15rpx 20rpx;
         .u-search {
-          width: 100%;
+          width: 88%;
           border: 2rpx solid #e6e6e6;
           border-radius: 10rpx;
+          margin: 15rpx 0 15rpx 10rpx;
+        }
+        .icon{
+          margin-right: 6rpx;
+          width: 5%;
+
+          image{
+            width: 35px;
+            height: 35px;
+          }
         }
       }
+
     }
 
     //轮播图
