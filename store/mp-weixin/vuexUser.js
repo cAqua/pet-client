@@ -30,13 +30,13 @@ export default {
 							uni.showToast({
 								title: '请刷新重新登录',
 								icon: 'success',
-								// success:()=>{
-								// 	setTimeout(function(){
-								// 		uni.navigateTo({
-								// 			url:'/platforms/mp-weixin/y-cosplayMask/index'
-								// 		})
-								// 	},2000)
-								// }
+								success:()=>{
+									setTimeout(function(){
+										uni.navigateTo({
+											url:'/platforms/mp-weixin/y-cosplayMask/index'
+										})
+									},2000)
+								}
 							})
 						}
 					})
@@ -82,6 +82,7 @@ export default {
 												source: "weixin", //来源
 												userlongitude: "116.3971281", //经度
 												userlaitude: "39.9165271", //纬度
+												UserType:'user'
 											};
 											resolve(info)
 
@@ -119,7 +120,6 @@ export default {
 					userLoginApi(info, silent || hint) //当前调用 使用静默登录 || 有提示框的登录
 						.then(res => {
 
-
 							if (res.data.code == 0) { uni.showToast({ title: '登录失败请再次点击登录按钮' }) }
 							else if (res.data.code == -1) {
 
@@ -128,7 +128,7 @@ export default {
 										key: "UserInfo",
 										data: info,
 										success: () => {
-											resolve(res.data.desc)
+											resolve(res.data.desc) //抛出状态信息
 										},
 										fail: () => {
 											return uni.showToast({ title: "存储用户信息错误" });
@@ -155,9 +155,7 @@ export default {
 			})
 
 		},
-		async judgment_Login_Status(){ //判断当前是否是登录状态 封装成promise 返回状态
 
-		},
 
 
 	}

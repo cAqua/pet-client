@@ -1,4 +1,4 @@
-<template style="background-color: #f7f7f7">
+<template>
   <scroll-view scroll-y="true" class="home_body">
     <view class="home">
       <!-- 轮播图 -->
@@ -114,7 +114,7 @@ export default {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
-      siteIcon:'/static/mp-weixin/icon/_site.png',
+      siteIcon: "/static/mp-weixin/icon/_site.png",
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
       swiperInfo: [
@@ -236,7 +236,7 @@ export default {
             url: "./home-details/index",
           });
           // return uni.showToast({ title: "登录成功" });
-          return 
+          return;
         })
         .catch((err) => {
           //拒绝授权
@@ -347,7 +347,7 @@ export default {
       height: 114rpx;
       height: 150rpx;
       display: flex;
-      // |		flex-direction: column;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
 
@@ -366,17 +366,16 @@ export default {
           border-radius: 10rpx;
           margin: 15rpx 0 15rpx 10rpx;
         }
-        .icon{
+        .icon {
           margin-right: 6rpx;
           width: 5%;
 
-          image{
+          image {
             width: 35px;
             height: 35px;
           }
         }
       }
-
     }
 
     //轮播图
@@ -492,3 +491,4 @@ export default {
   }
 }
 </style>
+ 
