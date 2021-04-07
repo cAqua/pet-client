@@ -37,7 +37,7 @@
 			<u-icon name="plus" color="#666" size="36"></u-icon>
 		</view>
 
-		<u-divider bg-color="#f5f5f5">到底了</u-divider>
+		<!-- <u-divider bg-color="#f5f5f5">到底了</u-divider> -->
 		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch"></u-tabbar>
 	</view>
 </template>
@@ -66,8 +66,10 @@
 				cor: "1", //当前第几页
 				der: "10", //每页多少条
 				user: [],
+				arr: [],
 				url: 'http://8.136.181.16/',
 				sum:10,
+		   	load:true,		
 
 
 			}
@@ -107,26 +109,41 @@
 			this.call()
 
 		},
-		// 上拉加载
+		// 触底
 		onReachBottom() {
-			let derr = Number(this.der);
-			toString
-			this.der = String(derr + this.sum)
-			console.log(this.cor)
-			this.call()
+			if(this.load){
+
+				this.cor++
+			  this.call()
+			}else{
+				uni.showToast({
+          title: "没有数据",
+          icon: "none",
+        });
+
+			}
+			
 		},
 		methods: {
 			// 底部加载方法
 			call() {
 				crcle({
 					"curPage": this.cor,
-					"pageSize": this.der
+					"pageSize": this.der,
+				
 				}).then(res => {
-					console.log(res.data.data)
-					this.user = res.data.data
-					complete: () => {
-						uni.stopPullDownRefresh();
+					if(res.data.data.length === 0){
+						    this.load = false;
+              uni.showToast({
+               title: "没有数据了",
+               icon: "none",
+                });
+             return;
 					}
+					this.user = [...this.user,...res.data.data]
+					console.log(this.user);
+					// this.user =res.data.data
+						// console.log(typeof( res.data.data.length))
 				})
 			},
 
