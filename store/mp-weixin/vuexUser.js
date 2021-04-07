@@ -82,6 +82,7 @@ export default {
 												source: "weixin", //来源
 												userlongitude: "116.3971281", //经度
 												userlaitude: "39.9165271", //纬度
+												UserType:'user',
 											};
 											resolve(info)
 

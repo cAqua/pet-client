@@ -18,11 +18,18 @@ function dunamic(param) { //插入表
 		data:param,
     })
 }
+function crcle(param){ //获取列表
+	return request({
+		url:"/api/dunamicList/",
+		method:'POST',
+		data:param
+	})
+}
 
 
 
 
 
 export {
-    userLoginApi,dunamic
+    userLoginApi,dunamic,crcle
 }
