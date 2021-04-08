@@ -4,7 +4,7 @@
 			<button @click="submit">发表</button>
 		</view>
 		<textarea class="tar" v-model="from.DuamincContent" placeholder="记录每一刻~" />
-		<u-upload  ref="uUpload" :form-data="from"  :action="action" @on-uploaded="onuploaded"  :auto-upload="false"></u-upload>
+		<u-upload  ref="uUpload" :form-data="from"  :action="action" @on-error="onErr" @on-uploaded="onuploaded"  :auto-upload="false" @on-progress="onPro" @on-success="onSuccess"></u-upload>
 	</view>
 </template>
 
@@ -21,16 +21,47 @@
 				from:{
 					id:'',
 					DuamincContent:'',
-					fliename:'',
-				}
+					fliename:''
+				},
+					filesArr: []
 			}
 		},
 		onLoad() {
 
 		},
+		// 上传中
+
 		methods: {
 			submit() {
-               this.$refs.uUpload.upload();
+							let file = []
+							this.$refs.uUpload.lists.forEach(el =>{
+								file.push(el.url)
+							})
+					this.filesArr = file
+								console.log(this.filesArr)
+							if( this.from.DuamincContent != '' && this.filesArr == ''){
+									dunamic({
+										"id":this.from.id,
+										"DuamincContent":this.from.DuamincContent,
+										"fliename":this.from.fliename
+										}).then(res=>{
+										console.log(res)
+									}),
+									uni.navigateBack({
+									    delta: 1
+									});
+               
+								}else if(this.from.DuamincContent != ''){
+									this.$refs.uUpload.upload();
+							
+								}else{
+									uni.showToast({
+											    title: '请填写内容',
+													icon: 'none' ,
+													mask:true,
+													duration:1000
+											});
+								}
 			},
 			onuploaded(lists, name){  // 全部图片上传完后触发
 				dunamic({
@@ -39,9 +70,31 @@
 					"fliename":this.from.fliename
 					}).then(res=>{
 					console.log(res)
-				})
-			}
-
+				}),
+				uni.navigateBack({
+				    delta: 1
+				});
+			},
+			onPro(){
+			uni.showLoading({
+			    title: ' 发表中...',
+					mask:true,
+					duration:100000
+			});			
+					console.log('上传中')
+				},
+				// 发表成功跳转页面
+				onSuccess(index,list){
+			
+				},
+				onErr(){
+				uni.showToast({
+						    title: '上传失败',
+								icon: 'none' ,
+								mask:true,
+								duration:1000
+						});
+					},
 		},
 		mounted() {
 			let _this = this;
@@ -56,11 +109,7 @@
 		}
 	}
 </script>
-<style>
-	/* 	page{
-		background-color: #f5f5f5;
-	} */
-</style>
+
 <style lang="scss" scoped>
 	.load {
 		display: flex;
@@ -75,8 +124,7 @@
 		margin: 0 30rpx 0 0;
 		font-size: $uni-font-size-sm;
 		color: #fff;
-		// padding: 0;
-		width: 100rpx;
+		padding: 0;
 		height: 60rpx;
 	}
 

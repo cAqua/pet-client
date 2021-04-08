@@ -67,9 +67,9 @@ export default {
 								provider: "weixin",
 								success: function (wxCode) {
 									let appid = "wx2603e459c7f9b084";
-									let secret = "9fd640b3208f6e196258b7b9324d0504";
+									let secret = "9fd640b3208f6e196258b7b9324d0504"; 
 									let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + wxCode.code + "&grant_type=authorization_code";
-
+									
 									uni.request({ //openid
 										url: url, // 请求路径
 										success: (result) => {
@@ -84,7 +84,9 @@ export default {
 												userlaitude: "39.9165271", //纬度
 												UserType:'user'
 											};
-											resolve(info)
+											// resolve(info)
+											console.log(result);
+											console.log(info);
 
 										},
 										fail: (error) => {
@@ -107,11 +109,14 @@ export default {
 						}
 					})
 
+					
+
 				} catch (error) {
 					console.log('捕获获取openid异常');
 				}
 
 			})
+			
 
 			return await new Promise((resolve, reject) => {
 

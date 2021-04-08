@@ -7,22 +7,22 @@
 			<view class="Pet_user">
 				<image :src="cont.img" mode="aspectFill"></image>
 				<view class="name">
-					{{cont.name}}
+					{{cont.usernmae}}
 					<view class="user-f">
-						{{cont.date}}
+						{{cont.DuaminTime}}
 					</view>
 				</view>
 			</view>
 			<!-- 标题 -->
 			<view class="Pet_title pD">
 				<text>
-					{{cont.content}}
+					{{cont.DuamincContent}}
 				</text>
 			</view>
 			<!-- 内容 -->
 			<view class="Pet_img">
-				<view v-for="(item,index) in cont.photos" :key="index" class="P_main">
-					<image mode="aspectFill" :src="item.content" @click="getImgIndex(index,ind)"></image>
+				<view v-for="(item,index) in cont.DuaminImg" :key="index" class="P_main">
+					<image mode="aspectFill" :src="url+item.content" @click="getImgIndex(index,ind)"></image>
 				</view>
 
 			</view>
@@ -33,164 +33,122 @@
 			</view>
 		</view>
 		<!-- 发表按钮 -->
-		<view class="Publish" @tap="go">
-			<u-icon name="plus"  color="#666" size="36"></u-icon>
+		<view class="Publish" @tap="go()">
+			<u-icon name="plus" color="#666" size="36"></u-icon>
 		</view>
 
-		<u-divider>到底了</u-divider>
+		<u-divider bg-color="#f5f5f5">到底了</u-divider>
 		<u-tabbar :list="tabbar" :mid-button="true" :active-color=$tcolor :before-switch="beforeSwitch"></u-tabbar>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations,
+		mapGetters,
+		mapActions
+	} from "vuex";
+	import {
+		crcle,
+		getUserInfoApi
+	} from "@/store/mp-weixin/Weapp-User-Api.js";
+	import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
+	// import { crcle } from "@/store/mp-weixin/Weapp-User-Api.js"
 	export default {
+		components: {
+			dragButton
+		},
 		data() {
 			return {
 				tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
 				$tcolor: this.$store.state.home.$tcolor,
-				user: [{
-						name: '我是你爹',
-						img: '/static/mp-weixin/home_image/1.jpg',
-						content: '我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子',
-						date: '2021-2-15',
-						zan: '120',
-						photos: [{
-								content: 'https://xyylcdn.weein.cn/group1/M00/04/19/rBUUDl78bAyAUgpEAAMr1h87H1A753.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/2.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/3.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/4.jpg'
-							},
-
-
-							{
-								content: 'https://gd3.alicdn.com/imgextra/i3/1828499121/O1CN01AjYIG72HFTBZsrJ5v_!!1828499121.jpg_400x400.jpg'
-							}
-
-						], // 存放从后台获取的数据 
-
-					},
-					{
-						name: '我是你爹',
-						img: '/static/mp-weixin/home_image/1.jpg',
-						content: '我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子',
-						date: '2021-2-15',
-						zan: '120',
-						photos: [{
-								content: '/static/mp-weixin/home_image/1.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/2.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/3.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/4.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/4.jpg'
-							},
-
-							{
-								content: 'https://gd3.alicdn.com/imgextra/i3/1828499121/O1CN01AjYIG72HFTBZsrJ5v_!!1828499121.jpg_400x400.jpg'
-							}
-
-						], // 存放从后台获取的数据 
-					},
-					{
-						name: '我是你爹',
-						img: '/static/mp-weixin/home_image/1.jpg',
-						content: '我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子我是一条哈巴狗,你别走!生下来,我来养你跟他的孩子',
-						date: '2021-2-15',
-						zan: '120',
-						photos: [{
-								content: 'https://xyylcdn.weein.cn/group1/M00/04/19/rBUUDl78bAyAUgpEAAMr1h87H1A753.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/2.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/3.jpg'
-							},
-							{
-								content: '/static/mp-weixin/home_image/4.jpg'
-							},
-
-							{
-								content: 'https://gd3.alicdn.com/imgextra/i3/1828499121/O1CN01AjYIG72HFTBZsrJ5v_!!1828499121.jpg_400x400.jpg'
-							}
-
-						], // 存放从后台获取的数据 
-					},
-				],
+				cor: "1", //当前第几页
+				der: "10", //每页多少条
+				user: [],
+				url: 'http://8.136.181.16/',
+				sum:10,
 
 
 			}
 		},
+		onLoad() {
+
+			// crcle({
+			// 	"curPage": this.cor,
+			// 	"pageSize": this.der
+			// }).then(res => {
+			// 	console.log(res.data.data)
+			// 	this.user = res.data.data
+			// 	complete: () => {
+			// 		uni.stopPullDownRefresh();
+			// 	}
+			// })
+			this.call()
+
+
+
+		},
+		onShow() {
+
+		},
+		onPullDownRefresh() {
+			// console.log('refresh');
+			// crcle({
+			// 	"curPage": this.cor,
+			// 	"pageSize": this.der
+			// }).then(res => {
+			// 	console.log(res.data.data)
+			// 	this.user = res.data.data
+			// 	complete: () => {
+			// 		uni.stopPullDownRefresh();
+			// 	}
+			// })
+			this.call()
+
+		},
+		// 上拉加载
+		onReachBottom() {
+			let derr = Number(this.der);
+			toString
+			this.der = String(derr + this.sum)
+			console.log(this.cor)
+			this.call()
+		},
 		methods: {
-			onLoad() {
-				setTimeout(function() {
-					console.log('start pulldown');
-				}, 1000);
-				uni.startPullDownRefresh();
+			// 底部加载方法
+			call() {
+				crcle({
+					"curPage": this.cor,
+					"pageSize": this.der
+				}).then(res => {
+					console.log(res.data.data)
+					this.user = res.data.data
+					complete: () => {
+						uni.stopPullDownRefresh();
+					}
+				})
+			},
 
-			},
-			onPullDownRefresh() {
-				// console.log('refresh');
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
-			},
-			onShow() {
-
-			},
 			beforeSwitch(index) { //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
 				// console.log(index)
 				return true;
 			},
+
 			getImgIndex(index, ind) {
 				console.log(index, ind);
 
 				//准备一个装图片路径的  数组imgs
 
-				let imgs = this.user[ind].photos.map(item => {
+				let imgs = this.user[ind].DuaminImg.map(item => {
 					//只返回图片路径
-					return item.content
+					return this.url + item.content
 				})
 				console.log(imgs)
 				uni.previewImage({
 					urls: imgs,
 					current: index,
-					// longPressActions: { //长按保存图片到相册
-					// 	itemList: ['保存图片'],
-					// 	success: (data) => {
-					// 		console.log(data);
-					// 		uni.saveImageToPhotosAlbum({ //保存图片到相册
-					// 			filePath: payUrl,
-					// 			success: function() {
-					// 				uni.showToast({
-					// 					icon: 'success',
-					// 					title: '保存成功'
-					// 				})
-					// 			},
-					// 			fail: (err) => {
-					// 				uni.showToast({
-					// 					icon: 'none',
-					// 					title: '保存失败，请重新尝试'
-					// 				})
-					// 			}
-					// 		});
-					// 	},
-					// 	fail: (err) => {
-					// 		console.log(err.errMsg);
-					// 	}
-					// }
+
 				})
 
 
@@ -199,10 +157,36 @@
 				//调用预览图片的方法
 
 			},
-			go(){
-				uni.navigateTo({
-					url: '../y-petCrcle-Publish/index'
-				})
+			go() {
+				if (uni.getStorageSync("UserInfo")) {
+					//本地存在用户数据
+					// this.getUserInfoFlagFun();
+					console.warn("首页:\n已有数据不需要请求\n直接进入页面");
+					uni.navigateTo({
+						url: '../y-petCrcle-Publish/index'
+					});
+					return;
+				}
+				this.userLogin("silent") //调用静默登录
+					.then((res) => {
+						//登录成功回调
+
+						uni.navigateTo({
+							url: '../y-petCrcle-Publish/index'
+						});
+						// return uni.showToast({ title: "登录成功" });
+						return
+					})
+					.catch((err) => {
+						//拒绝授权
+						uni.showToast({
+							title: "请先授权,才能进入页面",
+							icon: "none",
+						});
+					});
+				// uni.navigateTo({
+				// 	url: '../y-petCrcle-Publish/index'
+				// })
 			},
 			To(i) {
 				let user = encodeURIComponent(JSON.stringify(this.user[i]));
@@ -213,7 +197,12 @@
 					// url: '../comments/comments?id=1'
 				})
 			},
-
+			...mapActions("home", ["userLogin"]), //异步登录退出
+			// ...mapMutations("home", ["userLogin"]), //登录退出
+			...mapMutations("home", {
+				//防止多次点击
+				// getUserInfoFlagFun: "getUserInfoFlag",
+			}),
 
 		}
 
@@ -304,7 +293,8 @@
 		// text-align: right;
 		padding: 15px 20px 0;
 	}
-	.Publish{
+
+	.Publish {
 		width: 80rpx;
 		height: 80rpx;
 		background-color: #ccc;
@@ -314,5 +304,5 @@
 		bottom: 20%;
 		line-height: 80rpx;
 		text-align: center;
-		}
+	}
 </style>
