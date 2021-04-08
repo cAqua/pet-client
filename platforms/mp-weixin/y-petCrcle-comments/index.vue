@@ -22,13 +22,15 @@
 			<!-- 内容 -->
 			<view class="Pet_img">
 				<view v-for="(item,index) in user.DuaminImg" :key="index" class="P_main">
-					<image mode="aspectFill" :src="url + item.content" @click="getImgIndex(index)"></image>
+						<u-lazy-load height="250" img-mode="aspectFill" :image="url+item.content" 
+					:loading-img="loadingImg" :error-img="errorImg" @click="getImgIndex(index,ind)"></u-lazy-load>
+
 				</view>
 
 			</view>
 			<view class="Pet_icon ">
 
-				<u-icon :label="user.zan" label-size="24" size="35"  name="chat"></u-icon>
+				<u-icon label="评论"  @click="Comm"  label-size="26" size="45"  name="chat"></u-icon>
 
 			</view>
 		</view>
@@ -40,50 +42,27 @@
 		</view>
 		<!-- 总体评论 -->
 		<view class="c_mian pD">
-			<view class="c_name" v-for="(ite,ide) in commentData" :key="ide"  @tap="open = true">
+			<view class="c_name" v-for="(ite,ide) in commentData" :key="ide"  @tap="PopUp(ide)">
 				<!-- 用户ID -->
-				<text>{{ite.usernmae}}</text> :
+				
+				<text>{{ite.usernmae}}</text>:评论<text>{{ite.replyId}}</text>
 				<view class="fot-s">{{ite.CommentTime}}</view>
 				<view class="c_nr">{{ite.CommentContent}}</view>
 			</view>
 
-			<!-- 回复某人 -->
-<!-- 			<view class="c_name" @tap="open = true">
-				用户ID
-				<text>我是你的</text>回复:<text>多大肯定</text>
-				<view class="c_nr">阿斯加德哈萨克见到过会撒娇好的gas大家好噶啥大事件货款搭嘎实践活动gas大家好gas大家好噶三等奖哈撒给登记哈</view>
-			</view> -->
 		</view>
 
 	
 
-		<!-- 评论弹出层 -->
-<!-- 		<view style="padding: 0 40rpx;">
-			<u-popup v-model="show" mode="bottom" :mask="bg" width="100%" height="300rpx">
-				<view class="inpt">
-					<input type="text" placeholder="评论:" value="" />
-					<button type="default">发送</button>
-				</view>
-			</u-popup>
-			<u-button @click="show = true">打开</u-button>
-		</view> -->
-		<!-- 回复弹出层 -->
-		<view style="padding: 0 40rpx;">
-			<u-popup v-model="open" mode="bottom" :mask="bg" width="100%" height="300rpx">
-				<view class="inpt">
-					<input type="text" placeholder="回复某某某:" v-model="content" />
-					<button type="default">发送</button>
-				</view>
-			</u-popup>
-			<!-- <u-button @click="show = true">打开</u-button> -->
-		</view>
+
 
 
 </view>
 	<!-- 底部评论 -->
 	<view class="bt_pl">
 		<view class="inpt">
-			<input type="text" placeholder="评论:" v-model="content" />
+			<input type="text" :focus="showPopupBottom"  v-show="focu"  placeholder="评论:" v-model="content"  />
+				<input type="text" :focus="reply" v-show="!focu"  :placeholder="'回复' + replyId" v-model="content" />
 			<button type="default" @click="send">发送</button>
 		</view>
 	</view>
@@ -100,23 +79,27 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 				bg: false,
 				user: [],
 				CommentId:'', //评论ID
-				// id:'123',        //用户ID
 				DunamicId:'' , //动态ID
 				content:'', //  发表内容
-				// cont:'', // 回复内容
+				cont:'', // 回复内容
 				replyId:'', //回复ID
 				url: 'http://8.136.181.16/',
-				commentData:[],
+				commentData:[], // 评论列表
+				name:'',  // 当前名字
+				focu:true, // input 显示隐藏
+				showPopupBottom: false, //input聚焦
+				reply: false, //回复聚焦
+			
 			}
 		},
 			onLoad(option) {
-				console.log("已加载就触发9999");
+				// console.log("已加载就触发9999");
 				// console.log(option.id)
 				// console.log(JSON.parse(decodeURIComponent(option.id)));
 				let user = JSON.parse(decodeURIComponent(option.id));
 				// console.log(uSearchVue)
 				// this.+(this.name,[],user)
-				console.log(this.commentData)
+				// console.log(this.commentData)
 				this.user = user
 				this.DunamicId = user.DunamicId
 				this.list()
@@ -126,24 +109,46 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 	    uni.getStorage({
 			    key: 'UserInfo',
 			    success: function (res) {
-						// console.log(res.data);
+						console.log(res.data.usernmae);
 						_this.CommentId = res.data.id
+						_this.name = res.data.usernmae
 			    }
 			});
 			},
 		methods: {
+			// 点击图片弹出评论
+			Comm(){
+					this.focu = true;
+					this.showPopupBottom = true;
+					this.reply = false;
+			},
 
+			// 回复信息方法
+			 PopUp(i){
+				this.focu = false
+				this.replyId = this.commentData[i].usernmae
+				this.reply = true
+				this.showPopupBottom = false;
+				// console.log(this.replyId)
+			},
 
 			//  获取评论列表的方法
 			list(){
 					commentList({
 						DunamicId:this.DunamicId
 					}).then(res=>{
-						// console.log(res);
+						console.log(res);
 						this.commentData = res.data.data
-						console.log(this.commentData);
+						// console.log(res);
 					})
 			},
+
+			// 弹出层收起
+			hide(){
+				console.log('123');
+				this.replyId = ''
+			},
+
 			// 调用接口的方法
 			comt(){
 				comment({
@@ -153,15 +158,31 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 					CommentContent: this.content ,//评论内容
 					replyId: this.replyId , //回复ID
 				}).then(res =>{
+					// console.log(res)
 			    this.list()
-
+					this.content = ''
 				})
 			},
 			
+			// 发表评论
 			send(){
-				console.log(this.content)
-				console.log(this.CommentId)
-				this.comt()
+				// console.log(this.content)
+					console.log(this.replyId);
+				// console.log(this.CommentId)
+				if(this.content == ''){
+						uni.showToast({
+							title: "请输入评论内容!",
+							icon: "none",
+							
+						});
+						console.log(this.replyId);
+				}else if(this.replyId == this.name ){
+					this.replyId = ''
+				}else{
+					this.comt()
+				this.focu = true
+				this.replyId = ''
+				}
 			},
 
 
@@ -170,9 +191,9 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 
 				//准备一个装图片路径的  数组imgs
 
-				let imgs = this.user.photos.map(item => {
+				let imgs = this.user.DuaminImg.map(item => {
 					//只返回图片路径
-					return item.content
+					return this.url + item.content
 				})
 				console.log(imgs)
 				uni.previewImage({
@@ -324,24 +345,23 @@ height: 100%;
 
 	.c_name {
 		width: 100%;
-		// display: flex;
-		// align-items: center;
 		color: $uni-text-color-grey;
 		margin-bottom: 30rpx;
+		font-size: $uni-font-size-sm;
 	}
 
 	.c_name text {
 		color: $uni-color-primary;
 		font-weight: bold;
-		// font-size:$uni-font-size-lg ;
+		font-size:$uni-font-size-lg ;
 	}
 
 	.c_nr {
+		width: 100%;
 		color: $uni-text-color;
-		display: flex;
 		margin-top: 10rpx;
-		flex-wrap: wrap;
-		font-size: $uni-font-size-sm;
+		overflow: hidden;
+		font-size: $uni-font-size-base;
 	}
 
 	.bt_pl {
