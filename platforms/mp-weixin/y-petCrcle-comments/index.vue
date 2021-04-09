@@ -44,9 +44,17 @@
 		<view class="c_mian pD">
 			<view class="c_name" v-for="(ite,ide) in commentData" :key="ide"  @tap="PopUp(ide)">
 				<!-- 用户ID -->
-				
-				<text>{{ite.usernmae}}</text>:评论<text>{{ite.replyId}}</text>
+				<view class="avatar">
+					<!-- 头像 -->
+					<image src="{{ite.img}}" mode=""></image>
+					<!-- ID -->
+				<view class="detail">					
+				<text>{{ite.usernmae}}</text> 回复 : <text>{{ite.replyIdname}}</text>
 				<view class="fot-s">{{ite.CommentTime}}</view>
+				</view>
+				<!-- 回复 -->
+				<view class="huifu">回复</view>
+				</view>
 				<view class="c_nr">{{ite.CommentContent}}</view>
 			</view>
 
@@ -61,8 +69,8 @@
 	<!-- 底部评论 -->
 	<view class="bt_pl">
 		<view class="inpt">
-			<input type="text" :focus="showPopupBottom"  v-show="focu"  placeholder="评论:" v-model="content"  />
-				<input type="text" :focus="reply" v-show="!focu"  :placeholder="'回复' + replyId" v-model="content" />
+			<input type="text" :focus="showPopupBottom" @confirm="goLogin"  v-show="focu"  placeholder="评论:" v-model="content"  />
+				<input type="text" :focus="reply" v-show="!focu"  @confirm="goLogin"  :placeholder="'回复'+name" v-model="content" />
 			<button type="default" @click="send">发送</button>
 		</view>
 	</view>
@@ -89,7 +97,8 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 				focu:true, // input 显示隐藏
 				showPopupBottom: false, //input聚焦
 				reply: false, //回复聚焦
-			
+				yes:true, //有回复是显示
+
 			}
 		},
 			onLoad(option) {
@@ -99,7 +108,7 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 				let user = JSON.parse(decodeURIComponent(option.id));
 				// console.log(uSearchVue)
 				// this.+(this.name,[],user)
-				// console.log(this.commentData)
+				console.log(this.commentData)
 				this.user = user
 				this.DunamicId = user.DunamicId
 				this.list()
@@ -111,7 +120,7 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 			    success: function (res) {
 						console.log(res.data.usernmae);
 						_this.CommentId = res.data.id
-						_this.name = res.data.usernmae
+						// _this.name = res.data.usernmae
 			    }
 			});
 			},
@@ -125,10 +134,20 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 
 			// 回复信息方法
 			 PopUp(i){
-				this.focu = false
-				this.replyId = this.commentData[i].usernmae
-				this.reply = true
-				this.showPopupBottom = false;
+				
+				this.replyId = this.commentData[i].id
+				
+				
+				this.name = this.commentData[i].usernmae
+				if(this.replyId == this.CommentId ){
+					this.focu = true
+					this.showPopupBottom = true;
+					this.reply = false
+				}else{
+					this.showPopupBottom = false;
+					this.focu = false
+					this.reply = true
+				}
 				// console.log(this.replyId)
 			},
 
@@ -137,17 +156,20 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 					commentList({
 						DunamicId:this.DunamicId
 					}).then(res=>{
-						console.log(res);
-						this.commentData = res.data.data
-						// console.log(res);
+						console.log(res.data.data);
+			 	  res.data.data.forEach(el=>{
+					    
+							 if(el.replyIdname == null){
+								 el.replyIdname = ''
+								
+							 }
+							  console.log(el.replyIdname);
+						 })
+								this.commentData = res.data.data
 					})
 			},
 
-			// 弹出层收起
-			hide(){
-				console.log('123');
-				this.replyId = ''
-			},
+
 
 			// 调用接口的方法
 			comt(){
@@ -167,7 +189,7 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 			// 发表评论
 			send(){
 				// console.log(this.content)
-					console.log(this.replyId);
+					// console.log(this.replyId);
 				// console.log(this.CommentId)
 				if(this.content == ''){
 						uni.showToast({
@@ -176,7 +198,7 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 							
 						});
 						console.log(this.replyId);
-				}else if(this.replyId == this.name ){
+				}else if(this.replyId == this.CommentId ){
 					this.replyId = ''
 				}else{
 					this.comt()
@@ -184,7 +206,11 @@ import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 				this.replyId = ''
 				}
 			},
-
+			// 回车的按钮发送
+			goLogin(){
+				console.log('123123')
+				this.send()
+			},
 
 			getImgIndex(index) {
 				console.log(index);
@@ -340,7 +366,7 @@ height: 100%;
 		width: 100%;
 		// padding: ;
 		background-color: #fff;
-		padding-bottom: 100rpx;
+		padding-bottom: 200rpx;
 	}
 
 	.c_name {
@@ -353,7 +379,7 @@ height: 100%;
 	.c_name text {
 		color: $uni-color-primary;
 		font-weight: bold;
-		font-size:$uni-font-size-lg ;
+		font-size:$uni-font-size-base ;
 	}
 
 	.c_nr {
@@ -362,6 +388,7 @@ height: 100%;
 		margin-top: 10rpx;
 		overflow: hidden;
 		font-size: $uni-font-size-base;
+		padding-left: 100rpx;
 	}
 
 	.bt_pl {
@@ -373,5 +400,28 @@ height: 100%;
 	}
 	.fot-s {
 		font-size: 22rpx;
+	}
+	.avatar{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		overflow: hidden;
+	}
+	.avatar image{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 100%;
+		margin-right: 20rpx;
+	}
+	.detail{
+		flex: 1;
+	}
+	.huifu{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 20rpx;
+		font-size: $uni-font-size-sm;
+		color: $uni-text-color-grey;
 	}
 </style>
