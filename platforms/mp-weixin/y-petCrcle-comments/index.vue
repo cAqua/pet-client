@@ -1,4 +1,4 @@
-<template>
+<template >
 
 	<view class="content" >
 		<view class="PetCircle" >
@@ -7,28 +7,28 @@
 			<view class="Pet_user">
 				<image :src="user.img" mode=""></image>
 				<view class="name">
-					{{user.name}}
+					{{user.usernmae}}
 					<view class="user-f">
-						{{user.date}}
+						{{user.DuaminTime}}
 					</view>
 				</view>
 			</view>
 			<!-- 标题 -->
 			<view class="Pet_title pD">
 				<text>
-					{{user.content}}
+					{{user.DuamincContent}}
 				</text>
 			</view>
 			<!-- 内容 -->
 			<view class="Pet_img">
-				<view v-for="(item,index) in user.photos" :key="index" class="P_main">
-					<image mode="aspectFill" :src="item.content" @click="getImgIndex(index)"></image>
+				<view v-for="(item,index) in user.DuaminImg" :key="index" class="P_main">
+					<image mode="aspectFill" :src="url + item.content" @click="getImgIndex(index)"></image>
 				</view>
 
 			</view>
 			<view class="Pet_icon ">
 
-				<u-icon :label="user.zan" label-size="24" size="35" @click="show = true" name="chat"></u-icon>
+				<u-icon :label="user.zan" label-size="24" size="35"  name="chat"></u-icon>
 
 			</view>
 		</view>
@@ -40,77 +40,131 @@
 		</view>
 		<!-- 总体评论 -->
 		<view class="c_mian pD">
-			<view class="c_name" @tap="open = true">
+			<view class="c_name" v-for="(ite,ide) in commentData" :key="ide"  @tap="open = true">
 				<!-- 用户ID -->
-				<text>我是你的</text> :
-				<view class="c_nr">阿斯加德哈萨克见到过会撒娇好的gas大家好噶啥大事件货款搭嘎实践活动gas大家好gas大家好噶三等奖哈撒给登记哈</view>
+				<text>{{ite.usernmae}}</text> :
+				<view class="fot-s">{{ite.CommentTime}}</view>
+				<view class="c_nr">{{ite.CommentContent}}</view>
 			</view>
+
 			<!-- 回复某人 -->
-			<view class="c_name" @tap="open = true">
-				<!-- 用户ID -->
+<!-- 			<view class="c_name" @tap="open = true">
+				用户ID
 				<text>我是你的</text>回复:<text>多大肯定</text>
 				<view class="c_nr">阿斯加德哈萨克见到过会撒娇好的gas大家好噶啥大事件货款搭嘎实践活动gas大家好gas大家好噶三等奖哈撒给登记哈</view>
-			</view>
+			</view> -->
 		</view>
 
 	
 
 		<!-- 评论弹出层 -->
-		<view style="padding: 0 40rpx;">
+<!-- 		<view style="padding: 0 40rpx;">
 			<u-popup v-model="show" mode="bottom" :mask="bg" width="100%" height="300rpx">
 				<view class="inpt">
 					<input type="text" placeholder="评论:" value="" />
 					<button type="default">发送</button>
 				</view>
 			</u-popup>
-			<!-- <u-button @click="show = true">打开</u-button> -->
-		</view>
+			<u-button @click="show = true">打开</u-button>
+		</view> -->
 		<!-- 回复弹出层 -->
 		<view style="padding: 0 40rpx;">
 			<u-popup v-model="open" mode="bottom" :mask="bg" width="100%" height="300rpx">
 				<view class="inpt">
-					<input type="text" placeholder="回复某某某:" value="" />
+					<input type="text" placeholder="回复某某某:" v-model="content" />
 					<button type="default">发送</button>
 				</view>
 			</u-popup>
 			<!-- <u-button @click="show = true">打开</u-button> -->
 		</view>
+
+
 </view>
 	<!-- 底部评论 -->
 	<view class="bt_pl">
 		<view class="inpt">
-			<input type="text" placeholder="评论:" value="" />
-			<button type="default">发送</button>
+			<input type="text" placeholder="评论:" v-model="content" />
+			<button type="default" @click="send">发送</button>
 		</view>
 	</view>
 	</view>
 </template>
 
 <script>
+	import { comment,commentList } from '@/store/mp-weixin/Weapp-User-Api.js';
+import uSearchVue from '../../../UI/uView/components/u-search/u-search.vue';
 	export default {
 		data() {
 			return {
-				show: false,
 				open: false,
 				bg: false,
-				user: []
+				user: [],
+				CommentId:'', //评论ID
+				// id:'123',        //用户ID
+				DunamicId:'' , //动态ID
+				content:'', //  发表内容
+				// cont:'', // 回复内容
+				replyId:'', //回复ID
+				url: 'http://8.136.181.16/',
+				commentData:[],
 			}
 		},
-
-		methods: {
 			onLoad(option) {
 				console.log("已加载就触发9999");
 				// console.log(option.id)
 				// console.log(JSON.parse(decodeURIComponent(option.id)));
 				let user = JSON.parse(decodeURIComponent(option.id));
-				console.log(user)
+				// console.log(uSearchVue)
 				// this.+(this.name,[],user)
-				// console.log(this.name)
+				console.log(this.commentData)
 				this.user = user
+				this.DunamicId = user.DunamicId
+				this.list()
 			},
-			open() {
-				console.log(this.user)
+			mounted(){
+					let _this = this
+	    uni.getStorage({
+			    key: 'UserInfo',
+			    success: function (res) {
+						// console.log(res.data);
+						_this.CommentId = res.data.id
+			    }
+			});
 			},
+		methods: {
+
+
+			//  获取评论列表的方法
+			list(){
+					commentList({
+						DunamicId:this.DunamicId
+					}).then(res=>{
+						// console.log(res);
+						this.commentData = res.data.data
+						console.log(this.commentData);
+					})
+			},
+			// 调用接口的方法
+			comt(){
+				comment({
+					CommentId:this.CommentId   ,//评论ID
+					// id:this.id , //用户ID
+					DunamicId:this.DunamicId  , //动态ID
+					CommentContent: this.content ,//评论内容
+					replyId: this.replyId , //回复ID
+				}).then(res =>{
+			    this.list()
+
+				})
+			},
+			
+			send(){
+				console.log(this.content)
+				console.log(this.CommentId)
+				this.comt()
+			},
+
+
 			getImgIndex(index) {
 				console.log(index);
 
@@ -126,13 +180,9 @@
 					current: index,
 
 				})
-
-
-
-
-				//调用预览图片的方法
-
 			},
+
+			
 		}
 	}
 </script>
@@ -154,7 +204,6 @@ height: 100%;
 		background-color: #fff;
 		margin-bottom: 10px;
 		box-shadow: 1px 1px 6px #ccc;
-		flex: 1;
 	}
 
 	.Pet_user {
@@ -296,8 +345,13 @@ height: 100%;
 	}
 
 	.bt_pl {
-		    flex: 1;
-		    overflow-x: hidden;
+		width: 100%;
+		    position: fixed;
+		    bottom: 0;
 				box-shadow: 1px 1px 6px #ccc;
+				background-color: #fff;
+	}
+	.fot-s {
+		font-size: 22rpx;
 	}
 </style>

@@ -43,11 +43,7 @@ export default {
   },
   onLoad() {
 
-    // uni.setStorage({
-    //   //客户类型 商家 || 用户
-    //   key: "UserType",
-    //   data: "user",
-    // });
+
 
 
       

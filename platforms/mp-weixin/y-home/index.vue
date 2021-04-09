@@ -1,8 +1,15 @@
 <template>
-  <scroll-view scroll-y="true" class="home_body">
+  <scroll-view
+    scroll-y="true"
+    class="home_body"
+  >
     <view class="home">
       <!-- 轮播图 -->
-      <uni-swiper-dot class="uni-swiper-dot" :current="current" :info="info">
+      <uni-swiper-dot
+        class="uni-swiper-dot"
+        :current="current"
+        :info="info"
+      >
         <swiper
           class="swiper-box"
           @change="swiperSlide"
@@ -12,9 +19,15 @@
           previous-margin="5px"
         >
           <!-- indicator-dots="true" -->
-          <swiper-item v-for="(item, index) in swiperInfo" :key="index">
+          <swiper-item
+            v-for="(item, index) in swiperInfo"
+            :key="index"
+          >
             <view class="swiper-item">
-              <image :src="item.content" mode="scaleToFill" />
+              <image
+                :src="item.content"
+                mode="scaleToFill"
+              />
             </view>
           </swiper-item>
         </swiper>
@@ -58,7 +71,10 @@
 
                 <view class="BusinessHours">
                   <!-- <uni-icons type="phone-filled" ></uni-icons> -->
-                  <u-icon name="clock" size="36"></u-icon>
+                  <u-icon
+                    name="clock"
+                    size="36"
+                  ></u-icon>
                   {{ item.BusinessHours }}
                 </view>
 
@@ -75,7 +91,11 @@
               <view class="R_info">
                 <view class="distance">{{ item.distance }}</view>
 
-                <button size="mini" type="default" @click="ToDetail()">
+                <button
+                  size="mini"
+                  type="default"
+                  @click="ToDetail()"
+                >
                   进店
                 </button>
               </view>
@@ -84,12 +104,12 @@
         </view>
       </view>
 
-      <drag-button
+      <!-- <drag-button
         v-show="!UmaskFlag"
         :isDock="true"
         :existTabBar="true"
         @btnClick="ToChatList()"
-      />
+      /> -->
     </view>
 
     <!-- uView自定义导航栏 -->
@@ -163,6 +183,10 @@ export default {
   },
   created() {},
   onLoad() {
+
+
+
+
     return;
     uni.getLocation({
       type: "wgs84",
@@ -228,23 +252,29 @@ export default {
         });
         return;
       }
-      this.userLogin("silent") //调用静默登录
-        .then((res) => {
-          //登录成功回调
 
-          uni.navigateTo({
-            url: "./home-details/index",
-          });
-          // return uni.showToast({ title: "登录成功" });
-          return;
-        })
-        .catch((err) => {
-          //拒绝授权
-          uni.showToast({
-            title: "请先授权,才能进入页面",
-            icon: "none",
-          });
-        });
+      uni.navigateTo({
+        url: "/platforms/mp-weixin/y-cosplayMask/index",
+      });
+      // this.userLogin() //调用静默登录
+      //   .then((res) => {
+      //     //登录成功回调
+
+      //     uni.navigateTo({
+      //       url: "./home-details/index",
+      //     });
+      //     // return uni.showToast({ title: "登录成功" });
+      //     return;
+      //   })
+      //   .catch((err) => {
+      //     //拒绝授权
+      //     uni.showToast({
+      //       title: "请先授权,才能进入页面",
+      //       icon: "none",
+      //     });
+      //   });
+
+
     },
     ToChatList() {
       //to聊天列表
@@ -280,7 +310,7 @@ export default {
       // console.log(index)
       return true;
     },
-    ...mapActions("home", ["userLogin"]), //异步登录退出
+    ...mapActions("home", ["getUserInfo"]), //异步登录退出
     // ...mapMutations("home", ["userLogin"]), //登录退出
     ...mapMutations("home", {
       //防止多次点击
