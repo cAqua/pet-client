@@ -2,8 +2,6 @@ import {
 	userLoginApi,
 	ifStorte
 } from "@/store/mp-weixin/Weapp-User-Api.js";
-// import { reject, resolve } from "core-js/fn/promise";
-// import { reject, resolve } from "core-js/fn/promise";
 
 
 
@@ -15,10 +13,7 @@ export default {
 		getUserInfoFlag: true, //防止多次点击登录
 		openid: '', //id
 		userType:'', //用户类型
-		userInfo: {
-			username: "Hi,您尚未登录",
-			img: "/static/mp-weixin/icon/default-portrait.png",
-		},
+		userInfo: {username: "Hi,您尚未登录",img: "/static/mp-weixin/icon/default-portrait.png",},
 
 	},
 	mutations: {
@@ -51,8 +46,6 @@ export default {
 		async IfRegistered(state, silent, hint) { //处理用户是否注册
 
 
-			// console.log(state.openid);
-			// console.log(state.UserType);
 
 			return new Promise((resolve, reject) => {
 				try {
@@ -126,7 +119,7 @@ export default {
 							id: _info.id, //唯一id
 							usernmae: this_info.userInfo.nickName, //name
 							img: this_info.userInfo.avatarUrl, //头像
-							place: `${this_info.userInfo.country}-${this_info.userInfo.city}` || '用户没有位置信息', //中国--XX
+							place: `${this_info.userInfo.province}-${this_info.userInfo.city}`, //中国--XX
 							source: "weixin", //来源
 							UserType: _info.UserType
 						};
