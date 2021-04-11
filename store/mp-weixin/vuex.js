@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import home from './vuexUser.js'
+import home from './vuexUser'
+import Merchant from './vuexMerchant'
 
 Vue.use(Vuex)
 
@@ -9,7 +10,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 
 	modules:{
-		home
+		home,Merchant
 	}
 })
 

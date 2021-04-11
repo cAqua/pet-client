@@ -47,9 +47,6 @@ export default {
   name: "home",
   data() {
     return {
-      tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.home.$tcolor, //全局主题颜色
-
     };
   },
   props: {},

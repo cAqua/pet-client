@@ -92,10 +92,15 @@
       wx.setEnableDebug({enableDebug: true,success: () => {console.log('成功调用');},fail: () => {}});
       //#endif
 
-      // 已注册,本地有数据>渲染用户列表 
-      if (uni.getStorageSync('UserType') === 'user' && Object.keys(uni.getStorageSync('UserInfo')).length > 0) {
+    
+      if   // 已注册,本地有数据>渲染用户列表 
+      (
+        (uni.getStorageSync('UserType') === 'user' && Object.keys(uni.getStorageSync('UserInfo')).length > 0) 
+        ||
+        (uni.getStorageSync('UserType') === 'merchant' && Object.keys(uni.getStorageSync('UserInfo')).length > 0) 
+      ){
         //说明有数据不需要本页面,直接跳转到首页
-        console.warn('本地有数据 开始渲染用户列表')
+        console.warn('本地有数据 开始渲染用户 || 商家 页面')
         return this.navigateToRoles() //跳转对应页面
       }
 
@@ -108,12 +113,11 @@
 
           if (res.desc === '用户已经存在') { //就不需要注册了 要调用按钮 授权新信息
 
-            if (res.data[0].UserType === 'user') {  // 远端用户类型为 用户
+            if (res.data[0].UserType === 'user' || res.data[0].UserType === 'merchant') {  // 远端用户类型为 用户
               this.info = res.data[0]; //用户 类型&&id
               this.ModelFlag = true; // 打开授权框
-            }else if(res.data[0].UserType === 'merchant'){
-
-            }else {
+            }
+           else {
               console.log(res);
             }
 
@@ -124,31 +128,15 @@
           }
 
 
+          /* 
+          用户已注册 : 跳转商家列表
+          
+
+          
+          */
+
 
         })
-
-
-
-
-
-      /* 
-      进入这里说明本地没有数据 需要点击按钮 触发 getUserProfile 获取数据
-
-
-         进入页面 发送请求 判断 用户注册了没 
-         如果注册了 返回的是user 或者 商家  这时候 可以直接渲染用户表
-
-         如果没有注册 则弹窗让用户选择角色 ,后进行注册 
-
-        ifStorte 
-        如果返回的是 用户已存在 就弹窗 用户授权按钮
-        如果是未注册 就调用 插入表函数
-
-
-      */
-
-
-
 
 
     },
@@ -249,49 +237,6 @@
 
           })
 
-
-        return
-        this.Registered() //高调登录
-          .then((res) => {
-            //登录成功回调
-
-            console.log(res);
-
-
-            // uni.setStorage({
-            //   //客户类型 商家 || 用户
-            //   key: 'UserType',
-            //   data: e,
-            //   success: () => {
-            //     console.warn('登录成功  ' + res)
-            //     this.navigateToRoles()
-            //   },
-            //   fail: () => {
-            //     return uni.showToast({
-            //       title: '存储类型错误',
-            //     })
-            //   },
-            // })
-          })
-          .catch((err) => {
-            //拒绝授权
-            console.log(err);
-            return
-
-            if (err === 'refuse') {
-              uni.setStorage({
-                //客户类型 商家 || 用户
-                key: 'UserType',
-                data: e,
-                fail: () => {
-                  return uni.showToast({
-                    title: '存储类型错误',
-                  })
-                },
-              })
-              return this.navigateToRoles() //跳转对应页面
-            }
-          })
       },
 
       navigateToRoles() {
@@ -300,13 +245,13 @@
         // return console.log(this.info);
         if (uni.getStorageSync('UserType') === 'user' || this.info.UserType === 'user') {
           console.log('开始渲染用户列表')
-
           uni.switchTab({
             url: '/platforms/mp-weixin/y-home/index',
           })
-        } else {
+        } else if ((uni.getStorageSync('UserType') === 'merchant' || this.info.UserType === 'merchant')) {
           console.log('开始渲染列表商家')
           uni.switchTab({
+            // url: '/platforms/mp-weixin/s-my/index',
             url: '/platforms/mp-weixin/s-chatList/index',
           })
         }

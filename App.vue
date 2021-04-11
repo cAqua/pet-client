@@ -25,6 +25,23 @@ export default {
         pagePath: "/platforms/mp-weixin/y-my/index",
       },
     ],
+    sViewTabBar: [
+      //定义tabbar
+        {
+          iconPath: "/static/mp-weixin/icon/chatList.png",
+          selectedIconPath: "/static/mp-weixin/icon/_chatList.png",
+          text: "聊天列表",
+          pagePath: "/platforms/mp-weixin/s-chatList/index",
+          count:2,
+        },
+
+      {
+        iconPath: "/static/mp-weixin/icon/home.png",
+        selectedIconPath: "/static/mp-weixin/icon/_home.png",
+        text: "我的",
+        pagePath: "/platforms/mp-weixin/s-my/index",
+      },
+    ],
   }, //全局属性 通过 getApp().globalData.*** 读取变量
 
   onLaunch: function () {
