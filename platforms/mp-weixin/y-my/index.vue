@@ -36,27 +36,25 @@ export default {
     };
   },
   computed:{
-
-
-
-
-  },
-  onLoad() {
-
-
-
-
-      
+    ...mapState("home",['userInfo'])
   },
   methods: {
-    ...mapMutations("home",["userlogout"]),
+    ...mapMutations("home",["userlogout"]), //注销
+    onShow(){
 
-    thisLogout(){
+      let i = uni.getStorageSync('UserInfo');
+      if(Object.keys(i).length != 0 ){
+        console.log(i);
+        this.userInfo.username = i.usernmae;
+        this.userInfo.img = i.img;
+      }
+       
+    },
+    thisLogout(){ //注销
 
-      if(Object.keys(uni.getStorageSync("UserInfo")).length <= 0 )return;//防止多次点击注销
+      // if(Object.keys(uni.getStorageSync("UserInfo")).length <= 0 )return;//防止多次点击注销
 
-      this.$refs.myPersonage.userInfo = {usernmae: "Hi,您尚未登录",img: "/static/mp-weixin/icon/default-portrait.png",},
-      this.userlogout()
+      this.userlogout();
 
     },
 

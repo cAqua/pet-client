@@ -9,8 +9,8 @@
 
         <view class="name">
           <view>
-            <button hover-class="none" @click="getuserinfo()">
-              {{ userInfo.usernmae }}
+            <button hover-class="none" @tap="$u.throttle(getuserinfo,1500)"> <!-- 节流 -->
+              {{ userInfo.username }}
               <!-- 名称在vuex.home -->
             </button>
           </view>
@@ -22,6 +22,8 @@
         <view> </view>
       </view>
     </view>
+
+
   </view>
 
   
@@ -31,65 +33,89 @@
 // import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
 import { mapState, mapMutations, mapActions } from "vuex";
 
+/* 
+需求,只要用户有登录状态 一进页面就需要给头像name赋值
+实现方法 watch
+这个值可能会在什么时候变化 
+在用户进入个人中心页面的时候
+在用户点击注销的时候
+
+
+*/
+
 export default {
   name: "home",
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.home.$tcolor, //全局主题颜色
-      userInfo: {
-        usernmae: "Hi,您尚未登录",
-        img: "/static/mp-weixin/icon/default-portrait.png",
-      },
+
     };
   },
   props: {},
   computed: {
     ...mapState(
       "home", //用户数据
-      [ "getUserInfoFlag"]
+      ["getUserInfoFlag","userInfo"]
     ),
   },
+
   created() {
+    /* 
+    需求 当用户进行 登录 注销的时候要 自动变化 头像跟名字
+     */
+  },
+  watch:{
 
-    
-    //页面进入判断本地有没有缓存
-    if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) {
 
-      let Info = uni.getStorageSync("UserInfo");
-      this.userInfo.usernmae = Info.usernmae; //name
-      this.userInfo.img = Info.img; //头像
-      this.getUserInfoFlagFun(); //防止多次点击
-      console.warn("个人中心:其他页面登录了所以这里不用获取缓存");
-    }
   },
   methods: {
     ...mapActions("home", ["userLogin", "userlogout"]), //登录退出
-    ...mapMutations("home", {
-      //防止多次点击
+    ...mapMutations("home", {      //防止多次点击
       getUserInfoFlagFun: "getUserInfoFlag",
     }),
-
     getuserinfo(e) {
 
-      if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) return console.warn("本地已经有数据防止多次点击");
 
-      this.userLogin() //调用静默登录
-        .then((res) => {
-          //登录成功回调
+      if (uni.getStorageSync("UserInfo")) {
+        //本地存在用户数据
+        // this.getUserInfoFlagFun();
+        console.warn("个人中心:\n已有数据不需要请求\n直接进入页面");
+        return;
+      }
 
-          let UserInfo = uni.getStorageSync("UserInfo");
-          this.userInfo.usernmae = UserInfo.usernmae;
-          this.userInfo.img = UserInfo.img;
-          return uni.showToast({ title: "登录成功" });
-        })
-        .catch((err) => {
-          //拒绝授权
-          uni.showToast({
-            title: "登录失败,请授权登录后查看更多信息",
-            icon: "none",
-          });
-        });
+
+      uni.showToast({
+        title:'请授权登录',
+        icon:'none',
+        success:()=>{
+          setTimeout(() => {
+            uni.navigateTo({url: "/platforms/mp-weixin/y-cosplayMask/index",});
+          }, 1500);
+        }
+      })
+
+
+      
+
+      // if (Object.keys(uni.getStorageSync("UserInfo")).length > 0) return console.warn("本地已经有数据防止多次点击");
+
+      // this.userLogin() //调用静默登录
+      //   .then((res) => {
+      //     //登录成功回调
+
+      //     let UserInfo = uni.getStorageSync("UserInfo");
+      //     this.userInfo.usernmae = UserInfo.usernmae;
+      //     this.userInfo.img = UserInfo.img;
+      //     return uni.showToast({ title: "登录成功" });
+      //   })
+      //   .catch((err) => {
+      //     //拒绝授权
+      //     uni.showToast({
+      //       title: "登录失败,请授权登录后查看更多信息",
+      //       icon: "none",
+      //     });
+      //   });
     },
 
     beforeSwitch(index) {

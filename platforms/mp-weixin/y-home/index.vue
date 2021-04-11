@@ -91,13 +91,12 @@
               <view class="R_info">
                 <view class="distance">{{ item.distance }}</view>
 
-                <button
-                  size="mini"
-                  type="default"
+                <u-button type='primary' ripple-bg-color="#accaff" ripple="true" throttle-time='1600'
+                  
                   @click="ToDetail()"
                 >
                   进店
-                </button>
+                </u-button>
               </view>
             </view>
           </view>
@@ -253,9 +252,16 @@ export default {
         return;
       }
 
-      uni.navigateTo({
-        url: "/platforms/mp-weixin/y-cosplayMask/index",
-      });
+
+      uni.showToast({
+        title:'请授权登录',
+        icon:'none',
+        success:()=>{
+          setTimeout(() => {
+            uni.navigateTo({url: "/platforms/mp-weixin/y-cosplayMask/index",      });
+          }, 1500);
+        }
+      })
       // this.userLogin() //调用静默登录
       //   .then((res) => {
       //     //登录成功回调
@@ -422,33 +428,7 @@ export default {
       }
     }
 
-    //附近商家标题
-    // .Merchant_title {
-    //   display: flex;
-    //   align-items: center;
-    //   margin: 10px;
-    //   width: 95%;
-    //   height: 52px;
-    //   padding-left: 2%;
-    //   background: linear-gradient(to top right, #bbdefa, $tcolor);
-    //   border-radius: $uni-border-radius-lg;
 
-    //   .Merchant_title_main {
-    //     width: 100%;
-    //     border-left: 4rpx solid #ffffff;
-    //     display: flex;
-    //     flex-direction: column;
-    //     font-size: $uni-font-size-title;
-    //     padding-left: 2%;
-    //     color: #ffffff;
-    //     font-weight: 700;
-
-    //     .nearby {
-    //       font-weight: normal;
-    //       font-size: $uni-font-size-sm;
-    //     }
-    //   }
-    // }
   }
 
   //商家信息

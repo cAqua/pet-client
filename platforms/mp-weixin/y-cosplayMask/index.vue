@@ -3,21 +3,38 @@
 
   <view class="wrap">
 
-    <view class="cosplay" v-if="cosplayFlag">
+    <view
+      class="cosplay"
+      v-if="cosplayFlag"
+    >
       <view class="select">选择您的角色</view>
       <view class="selectBtn">
-        <button style="background-color: #2979ff" @click="Umask('user')">
+        <button
+          style="background-color: #2979ff"
+          @click="cosplay('user')"
+        >
           用户
         </button>
-        <button style="background-color: #fa3534" @click="Umask('merchant')">
+        <button
+          style="background-color: #fa3534"
+          @click="cosplay('merchant')"
+        >
           商家
         </button>
       </view>
     </view>
 
-    <u-modal @confirm='ModelTrue' @cancel="ModelFalse" v-model="ModelFlag" :show-cancel-button="ModelStyle.ModelNoBtn"
-      :content="ModelStyle.content" :confirm-text="ModelStyle.confirmText" :cancel-text="ModelStyle.cancelText"
-      :cancel-color="ModelStyle.cancelcolor" :confirm-color="ModelStyle.confirmcolor"></u-modal>
+    <u-modal
+      @confirm='ModelTrue'
+      @cancel="ModelFalse"
+      v-model="ModelFlag"
+      :show-cancel-button="ModelStyle.ModelNoBtn"
+      :content="ModelStyle.content"
+      :confirm-text="ModelStyle.confirmText"
+      :cancel-text="ModelStyle.cancelText"
+      :cancel-color="ModelStyle.cancelcolor"
+      :confirm-color="ModelStyle.confirmcolor"
+    ></u-modal>
 
   </view>
 </template>
@@ -70,19 +87,10 @@
       }
     },
     created() {
-
       // 打开调试
       //#ifdef MP-WEIXIN
-      wx.setEnableDebug({
-        enableDebug: true,
-        success: () => {
-          console.log('成功调用');
-        },
-        fail: () => {}
-      })
+      wx.setEnableDebug({enableDebug: true,success: () => {console.log('成功调用');},fail: () => {}});
       //#endif
-
-
 
       // 已注册,本地有数据>渲染用户列表 
       if (uni.getStorageSync('UserType') === 'user' && Object.keys(uni.getStorageSync('UserInfo')).length > 0) {
@@ -93,17 +101,19 @@
 
 
 
-      this.IfRegistered() //判断用户是否存在
-        .then(res => {
+      this.IfRegistered() //到了这一步 说明本地没有数据,但不知道用户注册没有需要发起 请求判断用户是否注册过
+        .then(res => {  
+
+          // console.log(res);
 
           if (res.desc === '用户已经存在') { //就不需要注册了 要调用按钮 授权新信息
 
-            // 有的信息 用户id 类型
+            if (res.data[0].UserType === 'user') {  // 远端用户类型为 用户
+              this.info = res.data[0]; //用户 类型&&id
+              this.ModelFlag = true; // 打开授权框
+            }else if(res.data[0].UserType === 'merchant'){
 
-            if (res.data[0].UserType === 'user') {
-              this.info = res.data[0]; //用户类型 id
-              this.ModelFlag = true; //授权框状态
-            } else {
+            }else {
               console.log(res);
             }
 
@@ -145,7 +155,7 @@
     methods: {
       ...mapActions('home', ['IfRegistered', 'Registered', 'getUserInfo']),
 
-      ModelTrue() { //模态框确定
+      ModelTrue() { //模态框状态 如果模态框 打开了说明用户已经注册过了但本地没有数据
 
         this.getUserInfo(this.info) //获取用户信息
           .then(res => {
@@ -165,7 +175,7 @@
 
                   })
 
-                  if (this.wxflag) {
+                  if (this.wxflag) { //如果用户联系点击了 解决授权则会直接触发页面跳转
                     this.ModelFlag = true;
                     this.wxflag = false;
                     return
@@ -184,18 +194,17 @@
         uni.setStorage({
           key: 'UserType', //客户类型 商家 || 用户
           data: this.info.UserType,
-
         })
 
         this.navigateToRoles();
 
       },
 
-      Umask(e) { //遮罩层 选择用户商家
+      cosplay(e) { //遮罩层 选择用户商家
 
 
         //选择用户 商家 授权
-        this.info.UserType = e
+        this.info.UserType = e;
         this.getUserInfo(this.info) //获取用户信息
           .then(res => {
 
@@ -203,16 +212,15 @@
 
               this.Registered()
                 .then(res => {
-                  console.log(res)
 
-                  if (red.data.desc === '插入成功') {
-                    this.navigateToRoles() //获取用户信息成功渲染 对应商家||用户首页
+                  if (res.desc === '插入成功') {//获取用户信息成功渲染 对应商家||用户首页
+                    this.navigateToRoles() 
                   }
 
 
                 })
                 .catch(err => {
-                  console.log(err);
+                  console.error(err);
                 })
 
             }
@@ -221,23 +229,23 @@
           })
           .catch(err => {
 
-            // if(err === 'refuse'){ //拒绝微信授权
+            if(err === 'refuse'){ //拒绝微信授权
 
-            //   uni.showToast({
-            //     title:'请授权',
-            //     icon:'none',
-            //     success:()=>{
+              uni.showToast({
+                title:'请选择角色并授权',
+                icon:'none',
+                success:()=>{
 
-            //       // if(this.wxflag){
-            //       //   this.ModelFlag = true;
-            //       //   this.wxflag = false;
-            //       //   return
-            //       // }
-            //       // this.navigateToRoles();
-            //     },
-            //   })
+                  // if(this.wxflag){
+                  //   this.ModelFlag = true;
+                  //   this.wxflag = false;
+                  //   return
+                  // }
+                  // this.navigateToRoles();
+                },
+              })
 
-            // }
+            }
 
           })
 
@@ -308,55 +316,55 @@
 </script>
 
 <style lang="scss" scoped>
-  //遮罩层
-  .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+//遮罩层
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: url("http://image.xinli001.com/20160819/062459l2mzm8sp93q59i16.jpg");
+  background-size: 100% 100%;
+
+  .cosplay {
     width: 100%;
-    height: 100vh;
-    background: url("http://image.xinli001.com/20160819/062459l2mzm8sp93q59i16.jpg");
-    background-size: 100% 100%;
+    height: 30vh;
+    font-size: $uni-font-size-lg;
+    color: #ffffff;
 
-    .cosplay {
+    .select {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      height: 30vh;
-      font-size: $uni-font-size-lg;
-      color: #ffffff;
-
-      .select {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 20%;
-        color: #000000;
-      }
-
-      .selectBtn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 45%;
-
-        button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 175rpx;
-          height: 175rpx;
-          margin: 0 40rpx;
-          border-radius: 50%;
-          color: #ffffff;
-        }
-      }
+      height: 20%;
+      color: #000000;
     }
 
-    .slot-content {
-      font-size: 28rpx;
-      color: $u-content-color;
-      padding-left: 30rpx;
+    .selectBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 45%;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 175rpx;
+        height: 175rpx;
+        margin: 0 40rpx;
+        border-radius: 50%;
+        color: #ffffff;
+      }
     }
   }
+
+  .slot-content {
+    font-size: 28rpx;
+    color: $u-content-color;
+    padding-left: 30rpx;
+  }
+}
 </style>
