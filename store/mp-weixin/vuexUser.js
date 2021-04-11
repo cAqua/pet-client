@@ -60,9 +60,10 @@ export default {
 				try {
 
 					uni.getUserProfile({
+						lang:"zh_CH",
 						desc: '获取用户信息登录',
 						success: (this_info) => {
-
+						
 							uni.login({ //wx_code
 								provider: "weixin",
 								success: function (wxCode) {
@@ -73,12 +74,12 @@ export default {
 									uni.request({ //openid
 										url: url, // 请求路径
 										success: (result) => {
-
+                     
 											info = {
 												id: result.data.openid, //唯一id
 												usernmae: this_info.userInfo.nickName, //name
 												img: this_info.userInfo.avatarUrl, //头像
-												place: `${this_info.userInfo.country}-${this_info.userInfo.city}`, //中国--XX
+												place: `${this_info.userInfo.province}-${this_info.userInfo.city}`, //中国--XX
 												source: "weixin", //来源
 												userlongitude: "116.3971281", //经度
 												userlaitude: "39.9165271", //纬度

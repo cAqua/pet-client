@@ -140,11 +140,12 @@ export default {
 	width: 18%;
   height: 60rpx;
 }
-
+							
 .tar {
-  width: 90%;
+  width: 100%;
   padding: 10rpx 0 20rpx 30rpx;
   font-weight: 500;
   background-color: #f5f5f5;
+  margin:0 auto;
 }
 </style>

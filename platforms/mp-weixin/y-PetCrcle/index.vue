@@ -35,6 +35,7 @@
         </view>
       </view>
       <view class="Pet_icon">
+        <view class="city">#{{cont.place}}</view>
         <u-icon
           :label="cont.num"
           label-size="26"
@@ -282,10 +283,10 @@ page {
 .Pet_icon {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content:space-between;
   // align-items: center;
   // text-align: right;
-  padding: 30rpx 60rpx 0;
+  padding: 30rpx 50rpx 0 15rpx;
 }
 
 .Publish {
@@ -298,5 +299,9 @@ page {
   bottom: 20%;
   line-height: 80rpx;
   text-align: center;
+}
+.city{
+  font-size:$uni-font20 ;
+  color:$uni-color-light;
 }
 </style>

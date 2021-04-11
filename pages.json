@@ -92,7 +92,18 @@
 		// },
 		// //#endif
 
-	],
+
+
+        ,{
+            "path" : "platforms/mp-weixin/y-petCrcle-reply/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "评论详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 
 
 	"tabBar": {
