@@ -159,35 +159,27 @@ export default {
       //调用预览图片的方法
     },
     go() {
-      if (uni.getStorageSync("UserInfo")) {
-        //本地存在用户数据
-        // this.getUserInfoFlagFun();
-        console.warn("首页:\n已有数据不需要请求\n直接进入页面");
-        uni.navigateTo({
-          url: "../y-petCrcle-Publish/index",
-        });
-        return;
-      }
-      this.userLogin("silent") //调用静默登录
-        .then((res) => {
-          //登录成功回调
 
-          uni.navigateTo({
-            url: "../y-petCrcle-Publish/index",
-          });
-          // return uni.showToast({ title: "登录成功" });
-          return;
-        })
-        .catch((err) => {
-          //拒绝授权
-          uni.showToast({
-            title: "请先授权,才能进入页面",
-            icon: "none",
-          });
-        });
-      // uni.navigateTo({
-      // 	url: '../y-petCrcle-Publish/index'
-      // })
+			if (uni.getStorageSync("UserInfo")) {
+			  //本地存在用户数据
+			  // this.getUserInfoFlagFun();
+			  console.warn("首页:\n已有数据不需要请求\n直接进入页面");
+			  uni.navigateTo({
+			    url: "../y-petCrcle-Publish/index",
+			  });
+			  return;
+			}
+			
+			
+			uni.showToast({
+			  title:'请授权登录',
+			  icon:'none',
+			  success:()=>{
+			    setTimeout(() => {
+			      uni.navigateTo({url: "/platforms/mp-weixin/y-cosplayMask/index",      });
+			    }, 1500);
+			  }
+			})
     },
     To(i) {
       let user = encodeURIComponent(JSON.stringify(this.user[i]));
