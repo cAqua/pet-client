@@ -35,7 +35,7 @@
 				<!-- 用户ID -->
 				<view class="avatar">
 					<!-- ID -->
-					<view class="detail">
+					<view class="detail" @tap="PopUp(item)">
 						<text>{{ item.usernmae }}</text>
 						<text class="fot-s mR">{{ item.CommentTime }}</text>
 						<!-- <view class="huifu">回复</view> -->
@@ -163,6 +163,8 @@
 						CommentContent: this.content, //当前评论内容
 						replyId: '1' //回复id
 					}).then((res) => {
+						this.refocus = false;
+						this.focus = false;
 						console.log(this.commentData.CommentId)
 						this.content = '';
 						this.selectcommentSon();
@@ -180,6 +182,8 @@
 						this.commentfun = true; //评论输入框
 						this.replyIdfunc = false; //回复输入框
 						this.selectcommentSon();
+						this.refocus = false;
+						this.focus = false;
 					})
 				}
 
@@ -190,7 +194,6 @@
 					DunamicId: this.commentData.DunamicId //当前评论的动态id
 				}).then((res) => {
 					this.details = res.data.data;
-					console.log(this.details)
 				})
 			},
 			PopUp(items) { //点击当前评论
