@@ -139,19 +139,25 @@
 				this.send()
 			},
 			pupu(item,ite){ //回复的回复
-			this.refocus = true;
-				if (ite.id == this.id) { //判断当前用户是否要评论自己
-					this.commentfun = false; //评论输入框
-					this.replyIdfunc = true; //回复输入框
+			
+				if (this.id === ite.id && this.id === item.id) { //判断当前用户是否要评论自己
+					this.commentfun = true; //评论输入框
+					this.replyIdfunc = false; //回复输入框
 					this.usernmae = item.usernmae;
 					this.replyId = item.id;
 					this.discussid = item.CommentId;
-				} else {
+					this.focus = true;
+				}else if(this.id === ite.id ){
+			    this.commentfun = false
+					this.replyIdfunc = true
+					this.refocus = true;
+				}else{
 					this.commentfun = false; //评论输入框
 					this.replyIdfunc = true; //回复输入框
 					this.usernmae = ite.usernmae;
 					this.replyId = ite.id;
 					this.discussid = item.CommentId;
+					this.refocus = true;
 				}
 			},
 			ThatReply() { //评论接口
@@ -183,7 +189,7 @@
 						this.replyIdfunc = false; //回复输入框
 						this.selectcommentSon();
 						this.refocus = false;
-						this.focus = false;
+						
 					})
 				}
 
