@@ -24,14 +24,15 @@
           v-for="(item, index) in cont.DuaminImg"
           :key="index"
         >
-          <u-lazy-load
-            height="250"
-            img-mode="aspectFill"
-            :image="url + item.content"
-            :loading-img="loadingImg"
-            :error-img="errorImg"
+				<scroll-view>
+          <image
+					lazy-load	="true"
+            mode="aspectFill"
+            :src="url + item.content"
             @click="getImgIndex(index, ind)"
-          ></u-lazy-load>
+						 :fade-show="false"
+          ></image>
+					</scroll-view>
         </view>
       </view>
       <view class="Pet_icon">
@@ -83,10 +84,13 @@ export default {
     };
   },
   onLoad() {
-    this.call();
+    this.call();//页面加载是调用宠物圈列表方法
   },
   onShow() {},
-  onPullDownRefresh() {
+  onPullDownRefresh() { //下拉刷新
+		this.cor = "1";
+		this.der = "10";
+		this.load = true;
     crcle({
       curPage: this.cor,
       pageSize: this.der,
@@ -116,7 +120,7 @@ export default {
     },
     // 底部加载方法
     call() {
-      crcle({
+      crcle({ //获取宠物圈列表
         curPage: this.cor,
         pageSize: this.der,
       }).then((res) => {
@@ -140,7 +144,7 @@ export default {
       // console.log(index)
       return true;
     },
-
+  //调用预览图片的方法
     getImgIndex(index, ind) {
       console.log(index, ind);
 
@@ -156,7 +160,7 @@ export default {
         current: index,
       });
 
-      //调用预览图片的方法
+    
     },
     go() {
 
@@ -267,7 +271,7 @@ page {
   padding: 5rpx;
 }
 
-.P_main u-lazy-load {
+.P_main image {
   width: 100%;
   height: 250rpx;
 }

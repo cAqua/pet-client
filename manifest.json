@@ -70,13 +70,14 @@
         "appid" : "wx2603e459c7f9b084",
         "setting" : {
             "urlCheck" : false,
-						 "checkSiteMap":false
-					
+            "checkSiteMap" : false,
+            "es6" : false,
+            "postcss" : false
         },
         "usingComponents" : true,
-        "permission": {
-            "scope.userLocation": {
-                "desc": "你的位置信息将用于小程序位置接口的效果展示"
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             }
         }
     },
