@@ -13,12 +13,22 @@
 		//#ifdef MP-WEIXIN
 
 		//#endif		
+
+		{
+			"path": "platforms/mp-weixin/s-register/index", //用户
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+
+
 		{
 			"path": "platforms/mp-weixin/y-cosplayMask/index", //用户
 			"style": {
 				"navigationBarTitleText": "角色选择"
 			}
 		},
+
 		{
 			"path": "platforms/mp-weixin/y-my/index", //用户
 			"style": {
@@ -51,12 +61,7 @@
 		},
 
 
-		{
-			"path": "platforms/mp-weixin/s-register/index", //用户
-			"style": {
-				"navigationBarTitleText": "商家注册"
-			}
-		},
+
 		{
 			"path": "platforms/mp-weixin/s-chatList/index",
 			"style": {

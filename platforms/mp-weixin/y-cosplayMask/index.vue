@@ -86,7 +86,7 @@
 
       }
     },
-    created() {
+    onLoad() {
       // 打开调试
       //#ifdef MP-WEIXIN
       wx.setEnableDebug({enableDebug: true,success: () => {console.log('成功调用');},fail: () => {}});
@@ -103,7 +103,6 @@
         console.warn('本地有数据 开始渲染用户 || 商家 页面')
         return this.navigateToRoles() //跳转对应页面
       }
-
 
 
       this.IfRegistered() //到了这一步 说明本地没有数据,但不知道用户注册没有需要发起 请求判断用户是否注册过
@@ -141,13 +140,36 @@
 
     },
     methods: {
-      ...mapActions('home', ['IfRegistered', 'Registered', 'getUserInfo']),
+      ...mapActions('user', ['Registered']), //用户注册
+      ...mapActions('WeappPublic', ['IfRegistered','getUserInfo', ]),
 
       ModelTrue() { //模态框状态 如果模态框 打开了说明用户已经注册过了但本地没有数据
 
         this.getUserInfo(this.info) //获取用户信息
           .then(res => {
-            this.navigateToRoles(); //获取用户信息成功渲染 对应商家||用户首页
+
+            uni.setStorage({ //用户信息
+							key:'UserInfo',
+							data:res,
+							success: () => {
+								uni.setStorage({
+									key: 'UserType',	//客户类型 商家 || 用户
+									data: res.UserType,
+									success:()=>{
+                    console.warn('储存成功');
+                    this.navigateToRoles(); //获取用户信息成功渲染 对应商家||用户首页
+                  }
+								})
+								
+							},
+							fail: () => {
+								return uni.showToast({
+									title: '存储类型错误',
+								})
+							},
+						})
+            
+            
           })
           .catch(err => {
 
@@ -187,21 +209,52 @@
         this.navigateToRoles();
 
       },
+      cosplay(e) { //遮罩层 如果打开了遮罩层 说明用户第一次登录让其  选择用户商家
 
-      cosplay(e) { //遮罩层 选择用户商家
+      /* 
+
+     如果是用户的话 用户确定授权 取消授权都可以跳转到 首页列表
+
+     如果是商家的话必须 强制授权 才能进入页面 
+     商家的话有俩种情况
+     商家已注册 和商家未注册
+     
+     
+      */
 
 
         //选择用户 商家 授权
         this.info.UserType = e;
-        this.getUserInfo(this.info) //获取用户信息
+        this.getUserInfo(this.info) //获取用户信息并返回
           .then(res => {
 
-            if (res === '授权成功') {
+            let _info = res;
 
-              this.Registered()
+            if(e === 'user'){ //调用用户注册
+
+              this.Registered(_info)
                 .then(res => {
 
                   if (res.desc === '插入成功') {//获取用户信息成功渲染 对应商家||用户首页
+                    uni.setStorage({ //用户信息
+                      key:'UserInfo',
+                      data:_info,
+                      success: () => {
+                        uni.setStorage({
+                          key: 'UserType',	//客户类型 商家 || 用户
+                          data: _info.UserType,
+                          success:()=>{
+                            console.warn('储存成功');
+                          }
+                        })
+                        
+                      },
+                      fail: () => {
+                        return uni.showToast({
+                          title: '存储类型错误',
+                        })
+                      },
+                    })
                     this.navigateToRoles() 
                   }
 
@@ -211,6 +264,21 @@
                   console.error(err);
                 })
 
+            }else if(e === 'merchant'){//调用商家注册
+
+            uni.navigateTo({
+              url:'/platforms/mp-weixin/s-register/index',
+              success:()=>{
+              setTimeout(() => { //疑问为什么这里页面传值需要 定时器才能触发
+                uni.$emit('businessRegistration',_info)
+              }, 100);
+              },
+              fail:(err)=>{
+                console.log(err);
+              }
+
+            })
+              
             }
 
 

@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.home.$tcolor,
+      $tcolor: this.$store.state.user.$tcolor,
       cor: "1", //当前第几页
       der: "10", //每页多少条
       user: [],
