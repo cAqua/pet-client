@@ -41,8 +41,8 @@ export default {
 
 		async IfRegistered(state, silent, hint) { //处理用户是否注册`	
 
-
-
+			// console.log(ifStorte);
+			// 	return
 			return new Promise((resolve, reject) => {
 				try {
 					uni.login({ //wx_code
@@ -101,7 +101,7 @@ export default {
 		},
 		async getUserInfo(state,info) { //获取用户 信息
 			
-			let _info = info
+			let _info = info;
 			
 			return new Promise((resolve, reject) => {
 				
@@ -129,7 +129,7 @@ export default {
 					fail: (error) => {
 						//点击了取消授权
 
-						console.warn('用户拒绝了授权');
+						// console.warn('用户拒绝了授权');
 						reject('refuse')
 					}
 				})

@@ -1,5 +1,5 @@
 // import { reject, resolve } from 'core-js/fn/promise';
-import request from './request'; // 封装好的请求组件
+import {request} from './request'; // 封装好的请求组件
 
 
 /* 登录api */

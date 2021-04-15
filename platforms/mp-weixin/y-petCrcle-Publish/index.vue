@@ -48,6 +48,7 @@ export default {
       });
       this.filesArr = file;//上传的所以图片添加到filesArr
       console.log(this.filesArr);
+      
       if (this.from.DuamincContent != "" && this.filesArr == "") { // 判断是否有图片上传
         dunamic({
           id: this.from.id,    //上传的参数

@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 /*每个页面公共css */
 
 /* #ifdef MP-WEIXIN */
