@@ -34,6 +34,10 @@ function request (params) { //请求
 			},
 			fail: err => {
 				reject(console.log('请求失败' + err))
+				uni.showToast({
+				  title: "请求失败",
+				  icon: "none",
+				});
 			},
 			complete: () => {
 

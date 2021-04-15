@@ -71,8 +71,8 @@
         "setting" : {
             "urlCheck" : false,
             "checkSiteMap" : false,
-            "es6" : false,
-            "postcss" : false
+            "es6" : true,
+            "postcss" : true
         },
         "usingComponents" : true,
         "permission" : {
