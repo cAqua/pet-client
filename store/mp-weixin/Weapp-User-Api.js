@@ -1,9 +1,9 @@
 // import { reject, resolve } from 'core-js/fn/promise';
-import request from './request'; // 封装好的请求组件
+import {request} from './request'; // 封装好的请求组件
 
 
-
-function userLoginApi(params, form) { //静默登录
+/* 登录api */
+function userLoginApi(params, form) { //用户注册 插入表
 	return request({
 		url: "insertUser",
 		method: "POST",
@@ -11,6 +11,7 @@ function userLoginApi(params, form) { //静默登录
 		form: form || true, //登录类型
 	})
 }
+
 
 function ifStorte(params) { //判 断用户 || 商家 是否存在的接口
 	return request({
@@ -22,7 +23,7 @@ function ifStorte(params) { //判 断用户 || 商家 是否存在的接口
 
 
 
-
+/* 宠物圈 Api */
 function dunamic(param) { //插入表
 	return request({
 		url: "dunamic",
@@ -83,7 +84,7 @@ function thisreply(param) { //回复的列表
 
 
 export {
-	userLoginApi,
+	userLoginApi,//用户注册
 	dunamic,
 	crcle,
 	ifStorte,
@@ -91,5 +92,5 @@ export {
 	commentList,
 	commentSon,
 	reply,
-	thisreply
+	thisreply,
 }

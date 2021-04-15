@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       tabbar: getApp().globalData.sViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
+      $tcolor: this.$store.state.user.$tcolor, //全局主体颜色
     };
   },
   mounted() {

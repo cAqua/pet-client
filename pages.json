@@ -12,12 +12,24 @@
 	"pages": [ // 这里的条件编译是 不同平台展示的  第一启动项不一样
 
 
+
+		
+
+
 		{
 			"path": "platforms/mp-weixin/y-cosplayMask/index", //用户
 			"style": {
 				"navigationBarTitleText": "角色选择"
 			}
 		},
+
+		{
+			"path": "platforms/mp-weixin/s-register/index", //用户
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		
 		{
 			"path": "platforms/mp-weixin/y-my/index", //用户
 			"style": {
@@ -50,12 +62,7 @@
 		},
 
 
-		{
-			"path": "platforms/mp-weixin/s-register/index", //用户
-			"style": {
-				"navigationBarTitleText": "商家注册"
-			}
-		},
+
 		{
 			"path": "platforms/mp-weixin/s-chatList/index",
 			"style": {
@@ -87,7 +94,7 @@
 			"style": {
 				"navigationBarTitleText": "发表说说"
 			}
-		}
+		},
 
 
 		// //#ifdef H5
@@ -101,7 +108,8 @@
 
 
 
-		, {
+
+		{
 			"path": "platforms/mp-weixin/y-petCrcle-reply/index",
 			"style": {
 				"navigationBarTitleText": "评论详情",
@@ -109,17 +117,18 @@
 			}
 
 		},
+
+
+
 		{
-		         "path" : "platforms/mp-weixin/y-map/index",
-		         "style" :                                                                                    
-		         {
-		             "navigationBarTitleText": "地图",
-		             "enablePullDownRefresh": false
-		         }
-		         
-		     }
-     
-    ],
+			"path": "platforms/mp-weixin/y-map/index",
+			"style": {
+				"navigationBarTitleText": "地图",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
 
 
 	"tabBar": {

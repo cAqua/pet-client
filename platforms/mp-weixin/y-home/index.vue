@@ -132,7 +132,7 @@ export default {
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.home.$tcolor, //全局主体颜色
+      $tcolor: this.$store.state.user.$tcolor, //全局主体颜色
       siteIcon: "/static/mp-weixin/icon/_site.png",
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
