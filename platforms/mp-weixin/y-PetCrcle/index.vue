@@ -76,11 +76,11 @@ export default {
       $tcolor: this.$store.state.home.$tcolor,
       cor: "1", //当前第几页
       der: "10", //每页多少条
-      user: [],
-      arr: [],
-      url: "http://8.136.181.16/",
-      sum: 10,
-      load: true,
+      user: [], //存放宠物圈列表数据
+      // arr: [], //
+      url: "http://8.136.181.16/", //添加图片前缀路径
+      // sum: 10, //
+      load: true, //是否上啦加载
     };
   },
   onLoad() {

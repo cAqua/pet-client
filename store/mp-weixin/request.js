@@ -33,6 +33,10 @@ export default function (params) {
 			},
 			fail: err => {
 				reject(console.log('请求失败' + err))
+				uni.showToast({
+				  title: "请求失败",
+				  icon: "none",
+				});
 			},
 			complete: () => {
 				

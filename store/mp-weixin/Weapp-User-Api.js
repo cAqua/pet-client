@@ -30,7 +30,7 @@ function dunamic(param) { //插入表
 		data: param,
 	})
 }
-function crcle(param) { //获取列表
+function crcle(param) { //获取宠物圈列表
 	return request({
 		url: "dunamicList",
 		method: 'POST',
