@@ -48,8 +48,8 @@ export default {
 				 　　display:'ALWAYS',//常显
 				    padding:10, //内边距
 						textAlign:'center' //文字居中
-				 },
-			console.log(el)
+				 }
+			// console.log(el)
 			
  
 		})
@@ -76,7 +76,7 @@ export default {
         type: "gcj02",
         success: function (res) {
           // 暂时
-					console.log(res)
+					// console.log(res)
           that.longitude = res.longitude; //118.787575;
           that.latitude = res.latitude; //32.05024;
 					that.markers.unshift({

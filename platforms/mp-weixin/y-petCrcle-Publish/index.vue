@@ -35,30 +35,71 @@ export default {
         fliename: "",
       },
       filesArr: [], // 存放上传图片的数组
+			usernmae:'', //用户名
+			img:'', //用户头像
+			place:'', //地区
+			
     };
   },
   onLoad() {},
   // 上传中
-
+  mounted() {
+    let _this = this;
+    let fliename = `${new Date().getTime()}-${Math.random()
+      .toString(36)
+      .substr(2)}`; //生成文件夹名字
+    _this.from.fliename = fliename;
+    uni.getStorage({
+      key: "UserInfo",
+      success: function (res) {
+				console.log(res)
+        _this.from.id = res.data.id;
+        _this.usernmae = res.data.usernmae;
+        _this.img = res.data.img;
+        _this.place = res.data.place;
+				
+      },
+    });
+  },
   methods: {
+		// 发表的方法
+		upload(){
+			dunamic({
+			  id: this.from.id,    //上传的参数
+			  DuamincContent: this.from.DuamincContent,//上传的参数
+			  fliename: this.from.fliename,//上传的参数
+			}).then((res) => {
+				console.log(res.data.data[0].DuaminImg)
+				let pages = getCurrentPages();  //获取所有页面栈实例列表
+				let nowPage = pages[ pages.length - 1];  //当前页页面实例
+				let prevPage = pages[ pages.length - 2 ];  //上一页页面实例
+				prevPage.$vm.otherFun({
+					DuaminImg:res.data.data[0].DuaminImg,
+					DuaminTime:res.data.data[0].DuaminTime,
+					DuamincContent:res.data.data[0].DuamincContent,
+					DunamicId:res.data.data[0].DunamicId,
+					img:this.img,
+					num:'0',
+					place:this.place,
+					usernmae:this.usernmae
+				});   //修改上一页data里面的searchVal参数值为1211
+			  uni.navigateBack({  //uni.navigateTo跳转的返回，默认1为返回上一级
+			   delta: 1
+			      });
+			})
+			
+			},
     submit() {
       let file = [];
       this.$refs.uUpload.lists.forEach((el) => {
         file.push(el.url); //上传的所以图片添加到file
       });
       this.filesArr = file;//上传的所以图片添加到filesArr
-      console.log(this.filesArr);
+      // console.log(this.filesArr);
       if (this.from.DuamincContent != "" && this.filesArr == "") { // 判断是否有图片上传
-        dunamic({
-          id: this.from.id,    //上传的参数
-          DuamincContent: this.from.DuamincContent,//上传的参数
-          fliename: this.from.fliename,//上传的参数
-        }).then((res) => {
-          console.log(res);
-        }),
-          uni.navigateBack({
-            delta: 1,
-          });
+           this.upload()
+				
+
       } else if (this.from.DuamincContent != "") {
         this.$refs.uUpload.upload();
       } else {
@@ -72,16 +113,10 @@ export default {
     },
     onuploaded(lists, name) {
       // 全部图片上传完后触发
-      dunamic({
-        id: this.from.id,
-        DuamincContent: this.from.DuamincContent,
-        fliename: this.from.fliename,
-      }).then((res) => {
-        console.log(res);
-      }),
-        uni.navigateBack({
-          delta: 1,
-        });
+       this.upload()
+        // uni.navigateBack({
+        //   delta: 1,
+        // });
     },
     onPro() {
       uni.showLoading({
@@ -102,19 +137,7 @@ export default {
       });
     },
   },
-  mounted() {
-    let _this = this;
-    let fliename = `${new Date().getTime()}-${Math.random()
-      .toString(36)
-      .substr(2)}`; //生成文件夹名字
-    _this.from.fliename = fliename;
-    uni.getStorage({
-      key: "UserInfo",
-      success: function (res) {
-        _this.from.id = res.data.id;
-      },
-    });
-  },
+
 };
 </script>
 <style>

@@ -81,12 +81,18 @@ export default {
       url: "http://8.136.181.16/", //添加图片前缀路径
       // sum: 10, //
       load: true, //是否上啦加载
+			// searchVal:[],
     };
   },
   onLoad() {
     this.call();//页面加载是调用宠物圈列表方法
+		
   },
-  onShow() {},
+  onShow() {
+		// this.user.unshift(this.searchVal)
+		//  console.log(this.searchVal)
+		 // console.log(this.user)
+	},
   onPullDownRefresh() { //下拉刷新
 		this.cor = "1";
 		this.der = "10";
@@ -112,6 +118,15 @@ export default {
     }
   },
   methods: {
+		// 发表返回时展现第一条内容
+		otherFun(object) {
+		      if (object) {
+		      console.log(object)
+		      this.user.unshift(object)
+		      } else {
+		        console.log('123')
+		      }
+		    },
     qqq() {
       console.log(this.show);
     },
