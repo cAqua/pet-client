@@ -34,7 +34,7 @@ export default {
         DuamincContent: "",
         fliename: "",
       },
-      filesArr: [],
+      filesArr: [], // 存放上传图片的数组
     };
   },
   onLoad() {},
@@ -44,15 +44,15 @@ export default {
     submit() {
       let file = [];
       this.$refs.uUpload.lists.forEach((el) => {
-        file.push(el.url);
+        file.push(el.url); //上传的所以图片添加到file
       });
-      this.filesArr = file;
+      this.filesArr = file;//上传的所以图片添加到filesArr
       console.log(this.filesArr);
-      if (this.from.DuamincContent != "" && this.filesArr == "") {
+      if (this.from.DuamincContent != "" && this.filesArr == "") { // 判断是否有图片上传
         dunamic({
-          id: this.from.id,
-          DuamincContent: this.from.DuamincContent,
-          fliename: this.from.fliename,
+          id: this.from.id,    //上传的参数
+          DuamincContent: this.from.DuamincContent,//上传的参数
+          fliename: this.from.fliename,//上传的参数
         }).then((res) => {
           console.log(res);
         }),

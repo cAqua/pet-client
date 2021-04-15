@@ -48,7 +48,7 @@
             :clearabled="true"
           ></u-search>
           <view>
-            <view class="icon">
+            <view class="icon"  @click="map">
               <image :src="siteIcon"></image>
             </view>
           </view>
@@ -322,6 +322,11 @@ export default {
       //防止多次点击
       // getUserInfoFlagFun: "getUserInfoFlag",
     }),
+		map(){
+			uni.navigateTo({
+				url:'../y-map/index'
+			})
+		}
   },
 };
 </script>

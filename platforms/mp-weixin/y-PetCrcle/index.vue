@@ -24,14 +24,15 @@
           v-for="(item, index) in cont.DuaminImg"
           :key="index"
         >
-          <u-lazy-load
-            height="250"
-            img-mode="aspectFill"
-            :image="url + item.content"
-            :loading-img="loadingImg"
-            :error-img="errorImg"
+				<scroll-view>
+          <image
+					lazy-load	="true"
+            mode="aspectFill"
+            :src="url + item.content"
             @click="getImgIndex(index, ind)"
-          ></u-lazy-load>
+						 :fade-show="false"
+          ></image>
+					</scroll-view>
         </view>
       </view>
       <view class="Pet_icon">
@@ -83,10 +84,13 @@ export default {
     };
   },
   onLoad() {
-    this.call();
+    this.call();//页面加载是调用宠物圈列表方法
   },
   onShow() {},
-  onPullDownRefresh() {
+  onPullDownRefresh() { //下拉刷新
+		this.cor = "1";
+		this.der = "10";
+		this.load = true;
     crcle({
       curPage: this.cor,
       pageSize: this.der,
@@ -116,7 +120,7 @@ export default {
     },
     // 底部加载方法
     call() {
-      crcle({
+      crcle({ //获取宠物圈列表
         curPage: this.cor,
         pageSize: this.der,
       }).then((res) => {
@@ -140,7 +144,7 @@ export default {
       // console.log(index)
       return true;
     },
-
+  //调用预览图片的方法
     getImgIndex(index, ind) {
       console.log(index, ind);
 
@@ -156,38 +160,30 @@ export default {
         current: index,
       });
 
-      //调用预览图片的方法
+    
     },
     go() {
-      if (uni.getStorageSync("UserInfo")) {
-        //本地存在用户数据
-        // this.getUserInfoFlagFun();
-        console.warn("首页:\n已有数据不需要请求\n直接进入页面");
-        uni.navigateTo({
-          url: "../y-petCrcle-Publish/index",
-        });
-        return;
-      }
-      this.userLogin("silent") //调用静默登录
-        .then((res) => {
-          //登录成功回调
 
-          uni.navigateTo({
-            url: "../y-petCrcle-Publish/index",
-          });
-          // return uni.showToast({ title: "登录成功" });
-          return;
-        })
-        .catch((err) => {
-          //拒绝授权
-          uni.showToast({
-            title: "请先授权,才能进入页面",
-            icon: "none",
-          });
-        });
-      // uni.navigateTo({
-      // 	url: '../y-petCrcle-Publish/index'
-      // })
+			if (uni.getStorageSync("UserInfo")) {
+			  //本地存在用户数据
+			  // this.getUserInfoFlagFun();
+			  console.warn("首页:\n已有数据不需要请求\n直接进入页面");
+			  uni.navigateTo({
+			    url: "../y-petCrcle-Publish/index",
+			  });
+			  return;
+			}
+			
+			
+			uni.showToast({
+			  title:'请授权登录',
+			  icon:'none',
+			  success:()=>{
+			    setTimeout(() => {
+			      uni.navigateTo({url: "/platforms/mp-weixin/y-cosplayMask/index",      });
+			    }, 1500);
+			  }
+			})
     },
     To(i) {
       let user = encodeURIComponent(JSON.stringify(this.user[i]));
@@ -275,7 +271,7 @@ page {
   padding: 5rpx;
 }
 
-.P_main u-lazy-load {
+.P_main image {
   width: 100%;
   height: 250rpx;
 }

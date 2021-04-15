@@ -41,7 +41,7 @@ function crcle(param) { //获取列表
 }
 function comment(param) { //发表评论
 	return request({
-		url: "dunamiclistcomment",
+		url: "comment",
 		method: 'POST',
 		data: param,
 

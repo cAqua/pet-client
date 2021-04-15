@@ -113,7 +113,7 @@ export default {
     ToChatList(){
       uni.navigateTo({
 
-        url:'/platforms/mp-weixin/y-ChatList/index'
+        url:'/platforms/mp-weixin/y-map/index'
       })
       
     }
