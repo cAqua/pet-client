@@ -54,7 +54,6 @@ export default {
 								WorkingTime:"8:00~22:00", //工作时间
 								phone:13800138000, //电话
 								address:'深圳市龙岗区布吉街道奥斯卡的骄傲圣诞节哈', //地址
- 
             }],
       // markerHeight: 30, //
 			show: false ,//隐藏弹出层

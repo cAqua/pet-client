@@ -16,6 +16,7 @@
     ></u-upload>
   </view>
 </template>
+
 <script>
 import { dunamic } from "@/store/mp-weixin/Weapp-User-Api.js";
 export default {
