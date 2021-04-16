@@ -452,19 +452,9 @@ export default {
                   key:'UserInfo',
                   data:i, //授权的用户信息
                   success: () => {
-                    uni.setStorage({
-                      key: 'UserType',	//客户类型 商家 || 用户
-                      data: 'merchant',
-                      success:()=>{
-                        this.submitFlag = true; 
-
-                      uni.switchTab({
-                        url: '/platforms/mp-weixin/s-my/index',
-                      })
-                        // console.warn('储存成功');
-                      }
+                    uni.switchTab({
+                      url: '/platforms/mp-weixin/s-my/index',
                     })
-                    
                   },
                   fail: () => {
                     return uni.showToast({
