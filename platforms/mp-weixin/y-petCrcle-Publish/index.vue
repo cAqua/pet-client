@@ -1,14 +1,10 @@
 <template>
-  <view class="content">
-    <view class="load">
-      <button @click="submit">发表</button>
-    </view>
-    <textarea
-      class="tar"
-      v-model="from.DuamincContent"
-      placeholder="记录每一刻~"
-    />
-    <u-upload
+	<view class="content">
+		<view class="load">
+			<button @click="submit">发表</button>
+		</view>
+		<textarea class="tar" v-model="from.DuamincContent" placeholder="记录每一刻~" />
+		<u-upload
       ref="uUpload"
       :form-data="from"
       :action="action"
