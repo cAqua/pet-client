@@ -56,10 +56,10 @@
           ></u-search>
         </view>
 
-        <view class="address">
+        <navigator url='/platforms/mp-weixin/y-map/index' class="address">
           <image :src=" '/static/mp-weixin/icon/'+ mapIcon"></image>
           <view>地图找店</view>
-        </view>
+        </navigator>
 
       </view>
 
