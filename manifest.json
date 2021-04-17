@@ -58,7 +58,13 @@
                         "UniversalLinks" : ""
                     }
                 },
-                "geolocation" : {}
+                "geolocation" : {
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "7a30b7c17dad397cceb40db15b36e3ce",
+                        "appkey_android" : "7a30b7c17dad397cceb40db15b36e3ce"
+                    }
+                }
             }
         }
     },

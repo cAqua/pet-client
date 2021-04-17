@@ -79,6 +79,14 @@ function thisreply(param) { //回复的列表
 
 	})
 }
+function map(param) { //回复的列表
+	return request({
+		url: "stotemap",
+		method: 'POST',
+		data: param,
+
+	})
+}
 
 
 
@@ -93,4 +101,5 @@ export {
 	commentSon,
 	reply,
 	thisreply,
+	map,
 }

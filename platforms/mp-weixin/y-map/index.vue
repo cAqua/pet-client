@@ -9,88 +9,89 @@
 			show-compass	="true"
 			enable-traffic	='true'
 			@markertap='puon'
+			@click="hid"
     ></map>
-			<view>
-				<u-popup v-model="show" mode="bottom" :mask="hid" height ="auto">
-					<view class="box" >
+			
+					<view class="box" v-if="see">
 						<!-- 标题 -->
-						<view class="box-son">
-							<view class="son-title">{{information.title}}</view>
-							<text>工作日:{{information.WorkingTime}}</text>
+						<view class="box-son" >
+							<view class="son-title">{{information.callout.content}}</view>
+							<text>营业时间:{{information.WorkingTime}}</text>
 							<view class="son-phone">电话：{{information.phone}}</view>
 							<text>{{information.address}}</text>
 						</view>
 						<!-- 按钮 -->
 						<view class="box-btn">
-							<button class="pD" type="default">进店</button>
+							<button class="pD" type="default" @click="navigation">导航</button>
 						</view>
 					</view>
-				</u-popup>
-			</view>
   </view>
 </template>
 
 <script>
+	import {map} from "@/store/mp-weixin/Weapp-User-Api.js"
 export default {
   data() {
     return {
       latitude: '',  // 中心纬度
       longitude: '', //中心经度 
       scale: 12, // 默认16
-      markers: [{
-				        id:1,
-                latitude: 22.63858, //纬度
-                longitude: 114.108434, //经度 
-								title:'布吉店',//标注点名
-								WorkingTime:"8:00~22:00", //工作时间
-								phone:10086, //电话
-								address:'广州市打卡四六级撒垃圾', //地址
-               
-            }, {
-							  id:2,
-                latitude: 22.625054,
-                longitude: 114.142716,
-								title:'龙岗店',//标注点名
-								WorkingTime:"8:00~22:00", //工作时间
-								phone:13800138000, //电话
-								address:'深圳市龙岗区布吉街道奥斯卡的骄傲圣诞节哈', //地址
-            }],
-      // markerHeight: 30, //
-			show: false ,//隐藏弹出层
-			hid:false, //隐藏遮罩层
+      markers: [],
+			see:false,//隐藏弹出层
 			information:[], //存放点击的店铺信息
+			url: "http://8.136.181.16", //添加图片前缀路径
     };
   },
 	onLoad() {
-		this.markers.forEach(el=>{
-		    el.width = 25;
-				el.height = 30;
-				el.iconPath =  '/static/mp-weixin/icon/zuobiao.png';
-				// el.callout = {//自定义标记点上方的气泡窗口 点击有效
-				//  // 　　content:'幸福花园店A组',//文本
-				//  　　color:'#ffffff',//文字颜色
-				//  　　fontSize:14,//文本大小
-				//  　　borderRadius:30,//边框圆角
-				// 　　 bgColor:'#45b97c',//背景颜色
-				//  　　display:'ALWAYS',//常显
-				//     padding:10, //内边距
-				// 		textAlign:'center' //文字居中
-				//  }
-			// console.log(el)
-			
- 
-		})
+		this.merchants()
+
 	},
   methods: {
+		// 获取所以商家数据
+		merchants(){
+			let sum = 0;
+			map().then(res=>{
+				this.markers = res.data.data
+				this.markers.forEach(el=>{
+					 sum += 1;
+					  console.log(el)
+				  el.width = 25,
+					el.height = 30,
+					el.id = sum ,
+					el.latitude = el.Storelaitude, //纬度
+					el.longitude = el.Storelongitude, //经度 
+					// el.title = el.ShopName,//标注点名
+					el.WorkingTime = el.StoreTime, //工作时间
+					el.phone = el.phoneNumber, //电话
+					el.address = el.DetailedAddress //地址
+					el.iconPath =this.url + el.StoreImage, //头像
+					el.callout = {//自定义标记点上方的气泡窗口 点击有效
+					 　　content:el.ShopName,//文本
+					 　　color:'#ffffff',//文字颜色
+					 　　fontSize:14,//文本大小
+					 　　borderRadius:30,//边框圆角
+					　　 bgColor:'#45b97c',//背景颜色
+					 　　display:'ALWAYS',//常显
+					    padding:10, //内边距
+							textAlign:'center' //文字居中
+					 }
+				})
+				 console.log(this.markers)
+			})
+		},
+	
+		hid(){
+			this.see = false; //点击显示弹出层
+		},
 		 // 点击坐标显示店铺信息
 		puon(e){
-			// console.log(e.detail)
+			console.log(e.detail)
 			  let inprot = e.detail.markerId
 				if(inprot != 0){
-					this.show = true;
-				 // console.log(this.markers[inprot])
-				 this.information = this.markers[inprot]
-				  console.log(this.information)
+					this.see = true; //点击显示弹出层
+				 this.information = this.markers[inprot] //存放点击的数据
+				 // console.log(this.information)
+				 console.log(this.this.markers)
 				}
 		},
     //   初次位置授权
@@ -107,6 +108,24 @@ export default {
         });
       });
     },
+		// 导航
+		navigation(){
+			uni.openLocation({
+			latitude:Number(this.information.latitude), //经纬度
+			longitude:Number(this.information.longitude),
+			name:this.information.callout.content, //地址名
+			address:this.information.address,
+			success: function() {
+			console.log('success');
+			},
+			fail:function(err){
+				console.log(err);
+			}
+			});
+			
+			var map = uni.createMapContext('map');
+			map.moveToLocation()
+		},
     // 确认授权后，获取用户位置
     getLocationInfo() {
       const that = this;
@@ -197,13 +216,16 @@ export default {
 
 <style lang="scss" scoped>
 .box{
+	position: fixed;
+	bottom: 0;
 	width: 100%;
 	height: auto;
 	display: flex;
 	padding: 30rpx;
+	background-color: #fff;
 }
 .box-son{
-	width: 60%;
+	width: 80%;
 	height: auto;
 }
 .son-title{
@@ -223,14 +245,15 @@ export default {
 }
 // 按钮
 .box-btn{
-	width: 40%;
+	width: 20%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	}
 	.box-btn button{
-		width: 90%;
+		padding: 6rpx 20rpx;
 		background-color: $uni-color-primary;
 		color: #fff;
 	}
+	
 </style>
