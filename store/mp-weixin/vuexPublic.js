@@ -6,6 +6,8 @@ import {
 
 
 
+
+
 export default {
 	namespaced: true,
 	state: {
@@ -30,22 +32,32 @@ export default {
 					})
 				}
 			})
-		}
-
-
-
-
+		},
+		//  getStorageUserInfo(state){
+		// 	
+			 
+		// },
 
 	},
 	actions: {
+		async getStorageUserInfo(state){
+			return new Promise(resolve =>{
+				let {id,UserType} =  uni.getStorageSync('UserInfo');
+				resolve({id,UserType})
+			})
+			 
+		},
 
 		async IfRegistered (state, silent, hint) { //处理用户是否注册`	
 			return new Promise((resolve, reject) => {
 				try {
+
+
 					uni.login({ //wx_code
 						provider: "weixin",
 						success: function (wxCode) {
-							let appid = "wx2603e459c7f9b084";
+							let appid = uni.getAccountInfoSync().miniProgram.appId;
+							// let appid = 'wx2603e459c7f9b084';
 							let secret = "9fd640b3208f6e196258b7b9324d0504";
 							let url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + wxCode.code + "&grant_type=authorization_code";
 
@@ -129,5 +141,11 @@ export default {
 
 
 	}
+
+
+
+
+
+
 
 }

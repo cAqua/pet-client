@@ -37,8 +37,15 @@
 				@confirm="search">
 			</uni-search-bar> -->
       <!-- 搜索框 -->
-      <view class="search">
-        <view class="search_Card">
+      <view class="search_Card">
+
+        <view class="search">
+
+          <view class="positionIcon" :style="{color:positionColor}">
+            <image :src="'/static/mp-weixin/icon/'+ positionIcon"></image>
+            <view>定位</view>
+          </view>
+
           <u-search
             bgColor="#ffffff"
             class="u-search"
@@ -47,12 +54,13 @@
             v-model="searchConteng"
             :clearabled="true"
           ></u-search>
-          <view>
-            <view class="icon"  @click="map">
-              <image :src="siteIcon"></image>
-            </view>
-          </view>
         </view>
+
+        <view class="address">
+          <image :src=" '/static/mp-weixin/icon/'+ mapIcon"></image>
+          <view>地图找店</view>
+        </view>
+
       </view>
 
       <view class="Merchant">
@@ -91,8 +99,11 @@
               <view class="R_info">
                 <view class="distance">{{ item.distance }}</view>
 
-                <u-button type='primary' ripple-bg-color="#accaff" ripple="true" throttle-time='1600'
-                  
+                <u-button
+                  type='primary'
+                  ripple-bg-color="#accaff"
+                  ripple="true"
+                  throttle-time='1600'
                   @click="ToDetail()"
                 >
                   进店
@@ -128,12 +139,14 @@ import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
 import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
 
 export default {
+
   components: { dragButton },
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
       $tcolor: this.$store.state.user.$tcolor, //全局主体颜色
-      siteIcon: "/static/mp-weixin/icon/_site.png",
+      positionIcon: "_site.png",
+      mapIcon: "_map.png",
       searchConteng: "", //搜索框的值
       current: 0, //轮播图索引
       swiperInfo: [
@@ -180,13 +193,18 @@ export default {
       ],
     };
   },
+  computed:{
+    positionColor(){
+        return this.positionIcon.indexOf('_') != -1 ?"#e42a50" : '#bfbfbf' 
+    }
+  },
   created() {},
   onLoad() {
 
+    // 目的 如果这个值包含了 _ 则 一个颜色 如果不是则 一个颜色
+    
+    
 
-
-
-    return;
     uni.getLocation({
       type: "wgs84",
       success: (i) => {
@@ -194,8 +212,6 @@ export default {
       },
       fail: (e) => {
         uni.showToast({ title: "获取地址失败", icon: "none" });
-
-        return;
 
         //展示默认的地理位置信息
         this.MerchantList = [
@@ -373,47 +389,58 @@ export default {
   .home {
     background: #f1f0f1;
     // margin-top: 100rpx;
-
-    // .uni-search-bar {
-    //搜索栏
-    // width: 100%;
-    // position: fixed;
-    // top: 0;
-    // z-index: 99;
-    // }
-
-    .search {
-      //搜索栏
+    .search_Card {
+      // 搜索栏
       width: 100%;
       height: 114rpx;
-      height: 150rpx;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      background: #ffffff;
+      margin: 10rpx 0;
+      padding: 0 5rpx;
+      
+      /* 地图找店 */
+      .address {
+        width: 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 19rpx;
+        margin-left: 2rpx;
+        image {
+          width: 50rpx;
+          height: 50rpx;
+        }
+      }
 
-      .search_Card {
+      /* 搜索框内部 */
+      .search {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 95%;
+        width: 90%;
         height: 114rpx;
         border-radius: 7rpx;
-        background: #ffffff;
-        // padding: 15rpx 20rpx;
+        margin: 15rpx 0;
+        
         .u-search {
-          width: 88%;
+          width: 90%;
           border: 2rpx solid #e6e6e6;
-          border-radius: 10rpx;
-          margin: 15rpx 0 15rpx 10rpx;
+          // border-radius: 10rpx;
         }
-        .icon {
-          margin-right: 6rpx;
-          width: 5%;
-
+        .positionIcon {
+          width: 10%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-size: 19rpx;
+          font-weight: 600;
           image {
-            width: 35px;
-            height: 35px;
+            width: 50rpx;
+            height: 50rpx;
           }
         }
       }
@@ -432,8 +459,6 @@ export default {
         }
       }
     }
-
-
   }
 
   //商家信息

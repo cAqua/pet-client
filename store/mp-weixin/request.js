@@ -10,14 +10,15 @@ function request (params) { //请求
 	if (params.form != 'silent') {//如果请求api的时候有带 silent 的字段表示静默登录 如果没有带 默认提示登录
 		ajaxTimes++
 		uni.showLoading({
+			
 			title: '加载中...',
 			mask: true,
 			icon: 'loading'
 		})
 	}
 	return new Promise((resolve, reject) => {
-
 		uni.request({
+
 
 			url: baseURL + params.url,
 			data: params.data || {},
