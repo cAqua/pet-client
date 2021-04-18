@@ -110,13 +110,13 @@ export default {
   created() {},
   methods: {
 
-    ToChatList(){
-      uni.navigateTo({
+    // ToChatList(){
+    //   uni.navigateTo({
 
-        url:'/platforms/mp-weixin/y-map/index'
-      })
+    //     url:'/platforms/mp-weixin/y-map/index'
+    //   })
       
-    }
+    // }
 
   },
 };

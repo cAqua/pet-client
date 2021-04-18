@@ -124,7 +124,7 @@
 		}}
 </script>
 
-<style lang="scss">
+<style scoped lang="scss" >
 	.drag {
 		display: flex;
 		justify-content: center;

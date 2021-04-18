@@ -12,21 +12,37 @@
 	"pages": [ // 这里的条件编译是 不同平台展示的  第一启动项不一样
 
 
+		//#ifdef H5
 		{
-			"path": "platforms/mp-weixin/y-home/index", //用户
+			"path": "platforms/h5/home/index",
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
 		},
-
-
-
-		{
+		//#endif
+		
+		
+		
+	{
 			"path": "platforms/mp-weixin/y-cosplayMask/index", //用户
 			"style": {
 				"navigationBarTitleText": "角色选择"
 			}
 		},
+
+{
+			"path": "platforms/mp-weixin/y-home/index", //用户
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "platforms/mp-weixin/y-test/index", //用户
+			"style": {
+				"navigationBarTitleText": "测试"
+			}
+		},
+	
 
 		{
 			"path": "platforms/mp-weixin/s-register/index", //用户
@@ -96,14 +112,6 @@
 		},
 
 
-		// //#ifdef H5
-		// {
-		// 	"path": "platforms/h5/home/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "首页"
-		// 	}
-		// },
-		// //#endif
 
 
 

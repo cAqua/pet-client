@@ -7,8 +7,8 @@
       <!-- 轮播图 -->
       <uni-swiper-dot
         class="uni-swiper-dot"
-        :current="current"
-        :info="info"
+        :current="swiper.current"
+        :info="swiper.info.content"
       >
         <swiper
           class="swiper-box"
@@ -20,7 +20,7 @@
         >
           <!-- indicator-dots="true" -->
           <swiper-item
-            v-for="(item, index) in swiperInfo"
+            v-for="(item, index) in swiper.info"
             :key="index"
           >
             <view class="swiper-item">
@@ -41,8 +41,12 @@
 
         <view class="search">
 
-          <view class="positionIcon" :style="{color:positionColor}">
-            <image :src="'/static/mp-weixin/icon/'+ positionIcon"></image>
+          <view
+            class="positionIcon"
+            :style="{color:positionStyle.color ? positionStyle.color : '#bfbfbf'}"
+            @click='position()'
+          >
+            <image :src=" '/static/mp-weixin/icon/'+ [positionStyle.icon ? positionStyle.icon : '/site.png'] "></image>
             <view>定位</view>
           </view>
 
@@ -51,13 +55,16 @@
             class="u-search"
             shape="spuare"
             placeholder="搜索附近商家"
-            v-model="searchConteng"
+            v-model="searchContent"
             :clearabled="true"
           ></u-search>
         </view>
 
-        <navigator url='/platforms/mp-weixin/y-map/index' class="address">
-          <image :src=" '/static/mp-weixin/icon/'+ mapIcon"></image>
+        <navigator
+          url='/platforms/mp-weixin/y-map/index'
+          class="address"
+        >
+          <image :src=" '/static/mp-weixin/icon/'+ style.mapIcon"></image>
           <view>地图找店</view>
         </navigator>
 
@@ -99,15 +106,18 @@
               <view class="R_info">
                 <view class="distance">{{ item.distance }}</view>
 
-                <u-button
-                  type='primary'
-                  ripple-bg-color="#accaff"
-                  ripple="true"
-                  throttle-time='1600'
-                  @click="ToDetail()"
-                >
-                  进店
-                </u-button>
+                <view class="btn">
+                  <u-button
+                    type='primary'
+                    ripple-bg-color="#accaff"
+                    ripple="true"
+                    throttle-time='1600'
+                    @click="ToDetail()"
+                    :custom-style="style.customStyle"
+                  >
+                    进店
+                  </u-button>
+                </view>
               </view>
             </view>
           </view>
@@ -127,6 +137,7 @@
       :list="tabbar"
       :mid-button="true"
       :active-color="$tcolor"
+      inactive-color='#bfbfbf'
       :before-switch="beforeSwitch"
     >
     </u-tabbar>
@@ -135,87 +146,31 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
-import { getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
-import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
+import { uploadLongitude } from "@/store/mp-weixin/Weapp-public-Api.js";
+// import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
 
 export default {
-
-  components: { dragButton },
+  // components: { dragButton },
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.user.$tcolor, //全局主体颜色
-      positionIcon: "_site.png",
-      mapIcon: "_map.png",
-      searchConteng: "", //搜索框的值
-      current: 0, //轮播图索引
-      swiperInfo: [
-        {
-          content: "/static/mp-weixin/home_image/1.jpg",
-        },
-      ],
-      MerchantList: [
-        {
-          shopName: "柴柴宠物店",
-          range: "经营范围洗澡、狗粮、宠物用品",
-          BusinessHours: "营业时间 : 10:00-22:00",
-          address: "广东省天河区珠村南端大街三号",
-          distance: "500m",
-        },
-        {
-          shopName: "员村宠物店",
-          range: "经营范围洗澡、狗粮、宠物用品",
-          BusinessHours: "营业时间 : 8:00-22:00",
-          address: "广东省天河区员村南端大街三号",
-          distance: "600m",
-        },
-        {
-          shopName: "黄村宠物店",
-          range: "经营范围洗澡、狗粮、宠物用品",
-          BusinessHours: "营业时间 : 6:00-18:00",
-          address: "广东省天河区黄村南端大街三号",
-          distance: "1.2km",
-        },
-        {
-          shopName: "珠村宠物店",
-          range: "经营范围洗澡、狗粮、宠物用品",
-          BusinessHours: "营业时间 : 9:00-18:00",
-          address: "广东省天河区珠村南端大街三号",
-          distance: "3.0km",
-        },
-        {
-          shopName: "车陂宠物店",
-          range: "经营范围洗澡、狗粮、宠物用品",
-          BusinessHours: "营业时间 : 08:00-16:00",
-          address: "广东省天河区车陂南端大街三号",
-          distance: "10km",
-        },
-      ],
-    };
-  },
-  computed:{
-    positionColor(){
-        return this.positionIcon.indexOf('_') != -1 ?"#e42a50" : '#bfbfbf' 
-    }
-  },
-  created() {},
-  onLoad() {
-
-    // 目的 如果这个值包含了 _ 则 一个颜色 如果不是则 一个颜色
-    
-    
-
-    uni.getLocation({
-      type: "wgs84",
-      success: (i) => {
-        console.log(i);
+      $tcolor: this.$store.state.WeappPublic.$tcolor, //全局主体颜色
+      style:{ //页面样式
+        mapIcon: "_map.png",
+        customStyle:{height:'34px'}, //找店按钮样式
       },
-      fail: (e) => {
-        uni.showToast({ title: "获取地址失败", icon: "none" });
-
-        //展示默认的地理位置信息
-        this.MerchantList = [
+      swiper:{//轮播图
+        info: [ 
           {
+            content: "/static/mp-weixin/home_image/1.jpg",
+          },
+        ],
+        current: 0, //轮播图索引
+      },
+      searchContent: "", //搜索框的值
+      MerchantList: [
+
+            {
             shopName: "柴柴宠物店",
             range: "经营范围洗澡、狗粮、宠物用品",
             BusinessHours: "营业时间 : 10:00-22:00",
@@ -250,13 +205,101 @@ export default {
             address: "广东省天河区车陂南端大街三号",
             distance: "10km",
           },
-        ];
-      },
-    });
+        
+      ],//商家列表
+      UserLocation:{},//位置信息
+    };
+  },
+  computed:{
+    positionStyle(){ //定位图标字体颜色
+        if(Object.keys(this.UserLocation).length > 0){
+          // console.log('成功');
+          return {icon:'_site.png',color:'#e42a50',}
+        }else{
+          // console.log('失败');
+          return {icon:'site.png',color:'#bfbfbf',}
+        }
+    }
+  },
+  watch:{
+
+
+    
+  },
+  onReady() {
+
+
+    this.getposition();
+
+      
+
+    
   },
   methods: {
-    ToDetail() {
+    //组件事件------------------------------
+    search(e) {
+      //搜索框触发
+      console.log(e);
+    },
+    swiperSlide(e) {
+      //轮播图 滑动触发
+      this.current = e.detail.current;
+    },
+    onReachBottom() {
+      //触底函数
+      console.log("触底增加列表数据");
+    },
+    beforeSwitch(index) {//tabbar 切换 前 事件
+      // console.log(index)
+      return true;
+    },
+    getposition(){ //获取列表
+          
+      this.getUserPosition() //获取 经纬度
+      .then(res =>{
+        // this.UserLocation = res;
+        if(res.longitude){
+
+          this.UserLocation = res;//经纬度
+
+          this.getStorageUserInfo().then(({id})=> {
+
+            uploadLongitude({ //获取首页列表
+              id:id,
+              typename:0,
+              userlongitude:res.longitude,
+              userlaitude:res.latitude,
+            })
+            .then(res=>{
+                console.log(res);
+              })
+            .catch(err =>{
+              console.log(err);
+            })
+            
+          })
+ 
+
+
+
+
+          
+          
+        }
+      })
+      .catch(err =>{
+        console.error(err);
+      })
+    },
+
+
+
+    //页面跳转------------------------------ 
+    ToDetail() { //商家详情页
       //如果在遮罩层没有授权,则这里需要授权后才能进入
+
+    
+      return
 
       if (uni.getStorageSync("UserInfo")) {
         //本地存在用户数据
@@ -278,71 +321,25 @@ export default {
           }, 1500);
         }
       })
-      // this.userLogin() //调用静默登录
-      //   .then((res) => {
-      //     //登录成功回调
-
-      //     uni.navigateTo({
-      //       url: "./home-details/index",
-      //     });
-      //     // return uni.showToast({ title: "登录成功" });
-      //     return;
-      //   })
-      //   .catch((err) => {
-      //     //拒绝授权
-      //     uni.showToast({
-      //       title: "请先授权,才能进入页面",
-      //       icon: "none",
-      //     });
-      //   });
-
 
     },
-    ToChatList() {
-      //to聊天列表
+    ToChatList() {//to聊天列表
+      
 
       uni.navigateTo({
         url: "/platforms/mp-weixin/y-ChatList/index",
       });
     },
 
-    getMerchantInfo() {
-      //获取商家 信息
 
-      console.log("开始获取商家数据");
-    },
-
-    search(e) {
-      //搜索框触发
-      console.log(e);
-    },
-
-    swiperSlide(e) {
-      //轮播图 滑动触发
-      this.current = e.detail.current;
-    },
-
-    onReachBottom() {
-      //触底函数
-      console.log("触底增加列表数据");
-    },
-
-    beforeSwitch(index) {
-      //切换前回调 true 允许 false不允许 详见 https://uviewui.com/components/tabbar.html
-      // console.log(index)
-      return true;
-    },
+    // vuex函数引入
     ...mapActions("home", ["getUserInfo"]), //异步登录退出
-    // ...mapMutations("home", ["userLogin"]), //登录退出
+    ...mapActions("WeappPublic", ["getUserPosition","getStorageUserInfo"]), //获取地理位置
     ...mapMutations("home", {
       //防止多次点击
       // getUserInfoFlagFun: "getUserInfoFlag",
     }),
-		map(){
-			uni.navigateTo({
-				url:'../y-map/index'
-			})
-		}
+
   },
 };
 </script>
@@ -358,34 +355,6 @@ export default {
     border: none;
   }
 
-  .selectBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-
-    .rectt {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0 30rpx;
-      width: 100%;
-      height: 120px;
-      // background-color: #fff;
-
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 150rpx;
-        height: 150rpx;
-        border-radius: 50%;
-        margin: 0 40rpx;
-        color: #ffffff;
-      }
-    }
-  }
-
   .home {
     background: #f1f0f1;
     // margin-top: 100rpx;
@@ -399,7 +368,7 @@ export default {
       background: #ffffff;
       margin: 10rpx 0;
       padding: 0 5rpx;
-      
+
       /* 地图找店 */
       .address {
         width: 10%;
@@ -423,8 +392,8 @@ export default {
         width: 90%;
         height: 114rpx;
         border-radius: 7rpx;
-        margin: 15rpx 0;
-        
+        // margin: 15rpx 0;
+
         .u-search {
           width: 90%;
           border: 2rpx solid #e6e6e6;
@@ -503,8 +472,6 @@ export default {
         .address {
           display: flex;
           align-items: flex-start;
-          uni-icons {
-          }
         }
       }
 
@@ -515,20 +482,48 @@ export default {
         justify-content: space-between;
         text-align: right;
         font-size: $uni-font-size-base;
-        .distance {
-        }
-
-        // .detail {
-        button {
-          background-color: $tcolor;
-          color: #ffffff;
-          padding: 2rpx 45rpx;
-          border-radius: 9rpx;
-        }
-        // }
       }
     }
   }
 }
+
+//  this.MerchantList = [
+//   {
+//     shopName: "柴柴宠物店",
+//     range: "经营范围洗澡、狗粮、宠物用品",
+//     BusinessHours: "营业时间 : 10:00-22:00",
+//     address: "广东省天河区珠村南端大街三号",
+//     distance: "500m",
+//   },
+//   {
+//     shopName: "员村宠物店",
+//     range: "经营范围洗澡、狗粮、宠物用品",
+//     BusinessHours: "营业时间 : 8:00-22:00",
+//     address: "广东省天河区员村南端大街三号",
+//     distance: "600m",
+//   },
+//   {
+//     shopName: "黄村宠物店",
+//     range: "经营范围洗澡、狗粮、宠物用品",
+//     BusinessHours: "营业时间 : 6:00-18:00",
+//     address: "广东省天河区黄村南端大街三号",
+//     distance: "1.2km",
+//   },
+//   {
+//     shopName: "珠村宠物店",
+//     range: "经营范围洗澡、狗粮、宠物用品",
+//     BusinessHours: "营业时间 : 9:00-18:00",
+//     address: "广东省天河区珠村南端大街三号",
+//     distance: "3.0km",
+//   },
+//   {
+//     shopName: "车陂宠物店",
+//     range: "经营范围洗澡、狗粮、宠物用品",
+//     BusinessHours: "营业时间 : 08:00-16:00",
+//     address: "广东省天河区车陂南端大街三号",
+//     distance: "10km",
+//   },
+// ];
 </style>
  
+

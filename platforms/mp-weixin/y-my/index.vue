@@ -34,6 +34,7 @@
       :list="tabbar"
       :mid-button="true"
       :active-color="$tcolor"
+      inactive-color='#bfbfbf'
       :before-switch="beforeSwitch"
     >
     </u-tabbar>
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.user.$tcolor, //全局主题颜色
+      $tcolor: this.$store.state.WeappPublic.$tcolor, //全局主题颜色
       UserType: uni.getStorageSync("UserType"), //当前是 用户 || 商家
     };
   },

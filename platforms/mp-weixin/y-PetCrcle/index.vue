@@ -56,8 +56,10 @@
       :list="tabbar"
       :mid-button="true"
       :active-color="$tcolor"
+      inactive-color='#bfbfbf'
       :before-switch="beforeSwitch"
-    ></u-tabbar>
+    >
+    </u-tabbar>
   </view>
 </template>
 
@@ -73,7 +75,7 @@ export default {
   data() {
     return {
       tabbar: getApp().globalData.uViewTabBar, //刷新tabbar
-      $tcolor: this.$store.state.user.$tcolor,
+      $tcolor: this.$store.state.WeappPublic.$tcolor,
       cor: "1", //当前第几页
       der: "10", //每页多少条
       user: [], //存放宠物圈列表数据
