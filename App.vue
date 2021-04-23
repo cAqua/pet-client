@@ -42,7 +42,19 @@ export default {
         pagePath: "/platforms/mp-weixin/s-my/index",
       },
     ],
+    getStorageUserInfo:function(){
+    let { id, UserType } = uni.getStorageSync('UserInfo');
+    return {id,UserType}
+    },
+    
   }, //全局属性 通过 getApp().globalData.*** 读取变量
+
+
+  		// async getStorageUserInfo (state) { //获取用户 id 与类型
+			// return new Promise(resolve => {
+			// 	
+			// 	resolve({ id, UserType })
+			// })
 
   onLaunch: function () {
     //全局出发一次

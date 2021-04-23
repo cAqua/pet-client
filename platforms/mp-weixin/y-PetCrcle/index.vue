@@ -24,15 +24,15 @@
           v-for="(item, index) in cont.DuaminImg"
           :key="index"
         >
-				<scroll-view>
+		<scroll-view>
           <image
-					lazy-load	="true"
+			azy-load="true"
             mode="aspectFill"
             :src="url + item.content"
             @click="getImgIndex(index, ind)"
 						 :fade-show="false"
           ></image>
-					</scroll-view>
+		</scroll-view>
         </view>
       </view>
       <view class="Pet_icon">
@@ -48,7 +48,7 @@
     </view>
     <!-- 发表按钮 -->
     <view class="Publish" @tap="go()">
-      <u-icon name="plus" color="#666" size="36"></u-icon>
+      <u-icon name="plus" color="#fff" size="36" ></u-icon>
     </view>
 
     <!-- <u-divider bg-color="#f5f5f5">到底了</u-divider> -->
@@ -66,6 +66,7 @@
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 import { crcle, getUserInfoApi } from "@/store/mp-weixin/Weapp-User-Api.js";
+import { getChina} from "@/store/mp-weixin/ciyt.js"
 import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
 // import { crcle } from "@/store/mp-weixin/Weapp-User-Api.js"
 export default {
@@ -122,12 +123,11 @@ export default {
   methods: {
 		// 发表返回时展现第一条内容
 		otherFun(object) {
-		      if (object) {
-		      console.log(object)
-		      this.user.unshift(object)
-		      } else {
-		        console.log('123')
-		      }
+			if(object){
+				let place = getChina(object.place);
+				object.place = place;
+			   this.user.unshift(object);
+			}
 		    },
     qqq() {
       console.log(this.show);
@@ -150,7 +150,7 @@ export default {
           return;
         }
         this.user = [...this.user, ...res.data.data];
-        console.log(this.user);
+        // console.log(this.user);
         // this.user =res.data.data
         // console.log(typeof( res.data.data.length))
       });
@@ -297,21 +297,21 @@ page {
   width: 100%;
   display: flex;
   justify-content:space-between;
-  // align-items: center;
-  // text-align: right;
   padding: 30rpx 50rpx 0 15rpx;
 }
 
 .Publish {
   width: 80rpx;
   height: 80rpx;
-  background-color: #ccc;
+  background: linear-gradient(45deg, #1DA1F2, #c648c8);
   border-radius: 100%;
   position: fixed;
-  right: 10rpx;
+  right: 30rpx;
   bottom: 20%;
-  line-height: 80rpx;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 2px #888888;
 }
 .city{
   font-size:$uni-font20 ;

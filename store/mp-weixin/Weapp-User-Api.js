@@ -21,6 +21,14 @@ function ifStorte(params) { //判 断用户 || 商家 是否存在的接口
 	})
 }
 
+/* 首页api */
+function merchantList(params){//获取商家列表
+	return request({
+		url: "userindexlist",
+		method: "POST",
+		data: params, //参数
+	})
+}
 
 
 /* 宠物圈 Api */
@@ -102,4 +110,5 @@ export {
 	reply,
 	thisreply,
 	map,
+	merchantList,
 }

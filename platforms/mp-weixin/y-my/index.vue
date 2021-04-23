@@ -27,8 +27,8 @@
 
     
 
-    <view style="width:100%;height:30px;text-align:center;background-color:aqua"
-     @click="thisLogout()">注销</view>
+    <!-- <view style="width:100%;height:30px;text-align:center;background-color:aqua"
+     @click="thisLogout()">注销</view> -->
     <!-- 自定义rabbar栏 -->
     <u-tabbar
       :list="tabbar"

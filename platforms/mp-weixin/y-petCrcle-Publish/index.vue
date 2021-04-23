@@ -81,7 +81,7 @@ export default {
 				});   //修改上一页data里面的searchVal参数值为1211
 			  uni.navigateBack({  //uni.navigateTo跳转的返回，默认1为返回上一级
 			   delta: 1
-			      });
+			   });
 			})
 			
 			},

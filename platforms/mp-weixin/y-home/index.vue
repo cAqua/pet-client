@@ -32,40 +32,36 @@
           </swiper-item>
         </swiper>
       </uni-swiper-dot>
-
-      <!-- 			<uni-search-bar class="uni-search-bar" placeholder="输入查询店铺名称" radius="15" clearButton="auto" maxlength="10"
-				@confirm="search">
-			</uni-search-bar> -->
       <!-- 搜索框 -->
       <view class="search_Card">
 
         <view class="search">
-
-          <view
-            class="positionIcon"
-            :style="{color:positionStyle.color ? positionStyle.color : '#bfbfbf'}"
-            @click='position()'
-          >
-            <image :src=" '/static/mp-weixin/icon/'+ [positionStyle.icon ? positionStyle.icon : '/site.png'] "></image>
-            <view>定位</view>
-          </view>
-
-          <u-search
+	   <view
+			class="positionIcon"
+			:style="{color:positionStyle.color ? positionStyle.color : '#bfbfbf'}"
+			@click='position()'
+			>
+	    <image :src=" '/static/mp-weixin/icon/'+ [positionStyle.icon ? positionStyle.icon : '/site.png'] "></image>
+		   <!-- <view>定位</view> -->
+		 </view> 
+        <u-search
             bgColor="#ffffff"
             class="u-search"
             shape="spuare"
             placeholder="搜索附近商家"
             v-model="searchContent"
             :clearabled="true"
+			:show-action='false'
           ></u-search>
+		
         </view>
 
-        <navigator
+       <navigator
           url='/platforms/mp-weixin/y-map/index'
           class="address"
         >
           <image :src=" '/static/mp-weixin/icon/'+ style.mapIcon"></image>
-          <view>地图找店</view>
+          <view class='map_text'>地图找店</view>
         </navigator>
 
       </view>
@@ -146,7 +142,8 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
-import { uploadLongitude } from "@/store/mp-weixin/Weapp-public-Api.js";
+import { uploadLongitude, } from "@/store/mp-weixin/Weapp-public-Api.js";
+import { merchantList } from "@/store/mp-weixin/Weapp-User-Api.js";
 // import dragButton from "@/components/mp-weixin/drag-button/drag-button.vue"; //悬浮按钮
 
 export default {
@@ -167,46 +164,52 @@ export default {
         ],
         current: 0, //轮播图索引
       },
+
       searchContent: "", //搜索框的值
       MerchantList: [
 
-            {
-            shopName: "柴柴宠物店",
-            range: "经营范围洗澡、狗粮、宠物用品",
-            BusinessHours: "营业时间 : 10:00-22:00",
-            address: "广东省天河区珠村南端大街三号",
-            distance: "500m",
-          },
-          {
-            shopName: "员村宠物店",
-            range: "经营范围洗澡、狗粮、宠物用品",
-            BusinessHours: "营业时间 : 8:00-22:00",
-            address: "广东省天河区员村南端大街三号",
-            distance: "600m",
-          },
-          {
-            shopName: "黄村宠物店",
-            range: "经营范围洗澡、狗粮、宠物用品",
-            BusinessHours: "营业时间 : 6:00-18:00",
-            address: "广东省天河区黄村南端大街三号",
-            distance: "1.2km",
-          },
-          {
-            shopName: "珠村宠物店",
-            range: "经营范围洗澡、狗粮、宠物用品",
-            BusinessHours: "营业时间 : 9:00-18:00",
-            address: "广东省天河区珠村南端大街三号",
-            distance: "3.0km",
-          },
-          {
-            shopName: "车陂宠物店",
-            range: "经营范围洗澡、狗粮、宠物用品",
-            BusinessHours: "营业时间 : 08:00-16:00",
-            address: "广东省天河区车陂南端大街三号",
-            distance: "10km",
-          },
+          //   {
+          //   shopName: "柴柴宠物店",
+          //   range: "经营范围洗澡、狗粮、宠物用品",
+          //   BusinessHours: "营业时间 : 10:00-22:00",
+          //   address: "广东省天河区珠村南端大街三号",
+          //   distance: "500m",
+          // },
+          // {
+          //   shopName: "员村宠物店",
+          //   range: "经营范围洗澡、狗粮、宠物用品",
+          //   BusinessHours: "营业时间 : 8:00-22:00",
+          //   address: "广东省天河区员村南端大街三号",
+          //   distance: "600m",
+          // },
+          // {
+          //   shopName: "黄村宠物店",
+          //   range: "经营范围洗澡、狗粮、宠物用品",
+          //   BusinessHours: "营业时间 : 6:00-18:00",
+          //   address: "广东省天河区黄村南端大街三号",
+          //   distance: "1.2km",
+          // },
+          // {
+          //   shopName: "珠村宠物店",
+          //   range: "经营范围洗澡、狗粮、宠物用品",
+          //   BusinessHours: "营业时间 : 9:00-18:00",
+          //   address: "广东省天河区珠村南端大街三号",
+          //   distance: "3.0km",
+          // },
+          // {
+          //   shopName: "车陂宠物店",
+          //   range: "经营范围洗澡、狗粮、宠物用品",
+          //   BusinessHours: "营业时间 : 08:00-16:00",
+          //   address: "广东省天河区车陂南端大街三号",
+          //   distance: "10km",
+          // },
         
       ],//商家列表
+      ListParams:{
+        curPage:'1',
+        pageSize:'10',
+        id:'',
+      },
       UserLocation:{},//位置信息
     };
   },
@@ -228,15 +231,71 @@ export default {
   },
   onReady() {
 
-
+    /* 
+    判断用户当前位置 是否跟上次的yizhi
+    */
+  //  return console.log(
+  //       merchantList
+  //  );
     this.getposition();
-
+      
       
 
     
   },
   methods: {
     //组件事件------------------------------
+    getposition(){ //获取 经纬度
+          
+      this.getUserPosition() 
+      .then(res =>{
+
+        if(res.longitude){
+
+          let id = this.ListParams.id = getApp().globalData.getStorageUserInfo().id;
+
+            uploadLongitude({ //上传用户地理位置
+			      "id":id,
+			      "typename":"0",
+			      "userlongitude":res.longitude,
+			      "userlaitude":res.latitude
+            })
+            .then(res=>{
+              // console.log(res);
+              if(res.data.desc === "插入成功"){
+                this.UserLocation = res;
+                this.getmerchantList(id);
+              }else{
+                console.warn(res);
+              }
+              
+              
+            })
+            .catch(err =>{
+              console.log(err);
+            })
+            
+          
+          
+        }
+      })
+      .catch(err =>{
+        console.error(err);
+      })
+    },
+    getmerchantList(){ //获取商家列表
+
+      let params = this.ListParams;
+
+      merchantList(params)
+      .then(res =>{
+        console.log(res);
+      })
+      .catch(err =>{
+        console.log(err);
+      })
+
+    },
     search(e) {
       //搜索框触发
       console.log(e);
@@ -253,53 +312,13 @@ export default {
       // console.log(index)
       return true;
     },
-    getposition(){ //获取列表
-          
-      this.getUserPosition() //获取 经纬度
-      .then(res =>{
-        // this.UserLocation = res;
-        if(res.longitude){
 
-          this.UserLocation = res;//经纬度
-
-          this.getStorageUserInfo().then(({id})=> {
-
-            uploadLongitude({ //获取首页列表
-              id:id,
-              typename:0,
-              userlongitude:res.longitude,
-              userlaitude:res.latitude,
-            })
-            .then(res=>{
-                console.log(res);
-              })
-            .catch(err =>{
-              console.log(err);
-            })
-            
-          })
- 
-
-
-
-
-          
-          
-        }
-      })
-      .catch(err =>{
-        console.error(err);
-      })
-    },
 
 
 
     //页面跳转------------------------------ 
     ToDetail() { //商家详情页
       //如果在遮罩层没有授权,则这里需要授权后才能进入
-
-    
-      return
 
       if (uni.getStorageSync("UserInfo")) {
         //本地存在用户数据
@@ -360,58 +379,92 @@ export default {
     // margin-top: 100rpx;
     .search_Card {
       // 搜索栏
-      width: 100%;
-      height: 114rpx;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
-      margin: 10rpx 0;
-      padding: 0 5rpx;
+	  width: 94%;
+	  height: 114rpx;
+	  display: flex;
+	  z-index: 999;
+	  background: #ffffff;
+	  position: relative;
+	  top: -35rpx;
+	  margin: 0 auto;
+	  border-radius: 10rpx;
+	  padding: 10rpx;
+	  box-shadow: 6rpx 5rpx 10rpx #888888;
+      // width: 100%;
+      // height: 114rpx;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      // background: #ffffff;
+      // margin: 10rpx 0;
+      // padding: 0 5rpx;
 
       /* 地图找店 */
       .address {
-        width: 10%;
-        display: flex;
+        // width: 10%;
+        // display: flex;
+		// flex:2;
+		display: flex;
+		width: 12%;
+		margin-left: 15rpx;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 19rpx;
-        margin-left: 2rpx;
+        // align-items: center;
+        // justify-content: center;
+        // font-size: 19rpx;
+        // margin-left: 2rpx;
+		.map_text{
+			// flex: 1;
+			font-size: 15rpx;
+			text-align: center;
+			line-height: 35rpx;
+		}
         image {
-          width: 50rpx;
-          height: 50rpx;
+			// flex: 1;
+			// width: 30%;
+			// margin: 0 auto;
+			width: 73%;
+			height: 55%;
+			margin: 0 auto;
         }
       }
 
       /* 搜索框内部 */
       .search {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 90%;
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+        // width: 90%;
+		// flex:8;
         height: 114rpx;
-        border-radius: 7rpx;
+		width: 90%;
+		display: flex;
+        // border-radius: 7rpx;
         // margin: 15rpx 0;
 
         .u-search {
-          width: 90%;
-          border: 2rpx solid #e6e6e6;
-          // border-radius: 10rpx;
+		  flex:9;
+		  height: 75rpx;
+		  border: 2rpx solid #e6e6e6;
+		  border-radius: 10rpx;
+		  transform: translate(10rpx,10rpx);
         }
-        .positionIcon {
-          width: 10%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          font-size: 19rpx;
-          font-weight: 600;
-          image {
-            width: 50rpx;
-            height: 50rpx;
-          }
-        }
+		.positionIcon {
+			flex: 1;
+			padding-top: 15rpx;
+		//      // width: 10%;
+				   // flex:1;
+		//      // display: flex;
+		//      // flex-direction: column;
+		//      align-items: center;
+		//      justify-content: center;
+		//      // font-size: 19rpx;
+		//      // font-weight: 600;
+		     image {
+		      width: 100%;
+		      height: 55%;
+		      margin: 0 auto;
+		     }
+		   }
       }
     }
 
@@ -431,6 +484,10 @@ export default {
   }
 
   //商家信息
+  .Merchant{
+	  position: relative;
+	  top: -22rpx;
+  }
   .Merchant_list {
     width: 100%;
     height: 300rpx;

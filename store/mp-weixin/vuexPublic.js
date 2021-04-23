@@ -33,13 +33,7 @@ export default {
 
 	},
 	actions: {
-		async getStorageUserInfo (state) { //获取用户 id 与类型
-			return new Promise(resolve => {
-				let { id, UserType } = uni.getStorageSync('UserInfo');
-				resolve({ id, UserType })
-			})
 
-		},
 		async IfRegistered (state, silent, hint) { //处理用户是否注册`	
 			return new Promise((resolve, reject) => {
 				try {
